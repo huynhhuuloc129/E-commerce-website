@@ -4,11 +4,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
    
-    // {
-    //   path: '/upload-post',
-    //   name: 'upload post',
-    //   component: () => import('../views/UploadPost.vue')
-    // },
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/HomePage.vue')
+    },
     // {
     //   path: '/admin',
     //   name: 'admin',
