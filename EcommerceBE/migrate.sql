@@ -1,31 +1,78 @@
-USE bv;
+USE ecommerce;
 
-CREATE TABLE IF NOT EXISTS PhongBan (
-    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    tenPhongBan varchar(255) NOT NULL
+CREATE TABLE IF NOT EXISTS Brand (
+    brandId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS DonViBanHang (
-    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    ten varchar(255),
-    maSoThue varchar(255),
-    diaChi varchar(1000),
-    sdt varchar(255),
-    email varchar(255),
-    taiKhoan varchar(1000)
+CREATE TABLE IF NOT EXISTS Tag (
+    tagId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS NguoiDung (
-    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    taiKhoan varchar(255) NOT NULL,
-    matKhau TEXT NOT NULL,
-    hoTen varchar(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS Component (
+    componentId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    description TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Category (
+    catId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    description TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Product (
+    proId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    catId int NOT NULL,
+    brandId int NOT NULL,
+    name varchar(255) NOT NULL,
+    description TEXT NOT NULL,
+    unit varchar(255) NOT NULL,
+    unitPrice int NOT NULL,
+    quantityInStock int NOT NULL,
+    guide TEXT NOT NULL
+    FOREIGN KEY (catId)
+      REFERENCES Category (catId)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE,
+    FOREIGN KEY (brandId)
+      REFERENCES Brand (brandId)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE,
+);
+CREATE TABLE IF NOT EXISTS Product_Tag (
+    productTagId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    tagId int NOT NULL,
+    productId int NOT NULL
+    FOREIGN KEY (tagId)
+      REFERENCES Tag (tagId)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE,
+    FOREIGN KEY (productId) 
+      REFERENCES Product (proId) 
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Product_Component (
+    productComponentId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    productId int NOT NULL,
+    componentId int NOT NULL,
+    percentage int NOT NULL,
+    FOREIGN KEY (componentId)
+      REFERENCES Component (componentId)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE,
+    FOREIGN KEY (productId) 
+      REFERENCES Product (proId) 
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Account (
+    loginId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    password varchar(255) NOT NULL,
+    name varchar(255) NOT NULL,
     email varchar(255) NOT NULL,
-    sdt varchar(255),
-    ngaySinh date,
+    phone varchar(255),
+    birthDate date,
     avatar LONGTEXT,
-    vaiTro varchar(255) NOT NULL,
-    idPhongBan int,
-    maNhanVien varchar(45),
-    chucVu varchar(255)
 );
 
 

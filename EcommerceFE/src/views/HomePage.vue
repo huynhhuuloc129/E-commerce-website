@@ -178,6 +178,9 @@
             </ul>
 
         </div>
+        <div class="container mb-5">
+            Khám phá sản phẩm trang điểm từ L'Oreal Paris
+        </div>
 
         <img id="cover3" src="../assets/Cover3.png">
         <div class="container mt-5">
@@ -261,10 +264,9 @@
                 </li>
             </ul>
 
-        </div>
-
-        <div class="container mb-5">
-            Khám phá sản phẩm trang điểm từ L'Oreal Paris
+            <div class="text-center mt-2 mb-3">
+                Khám phá sản phẩm tóc từ L'Oreal Paris
+            </div>
         </div>
 
     </div>
@@ -278,7 +280,9 @@
 </script>
 
 <style scoped>
-#cover, #cover1, #cover2 {
+#cover,
+#cover1,
+#cover2 {
     width: 100vw;
 }
 
