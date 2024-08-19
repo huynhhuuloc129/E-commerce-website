@@ -26,6 +26,11 @@
                             <a href="" class="link">{{ brand }}</a>
                         </div>
                     </div>
+                    <div class="col ms-5 mb-3">
+                        <div v-for="brand in brands4" class="mt-1" :key="brand">
+                            <a href="" class="link">{{ brand }}</a>
+                        </div>
+                    </div>
                 </li>
             </ul>
 
@@ -407,6 +412,7 @@
                 <li><a class="dropdown-item" href="#">Something else here2</a></li>
             </ul>
         </div>
+
     </div>
 </template>
 
@@ -416,11 +422,13 @@ import { ref, onMounted } from 'vue';
 const brands1 = ref([] as string[]);
 const brands2 = ref([] as string[]);
 const brands3 = ref([] as string[]);
+const brands4 = ref([] as string[]);
 
 onMounted(() => {
-    brands1.value = [`L'Oréal Paris`, `Estée Lauder`, `MAC Cosmetics`, `Chanel`, `Dior`, `Lancôme`]
-    brands2.value = [`Clinique`, `Maybelline`, `NARS Cosmetics`, `Urban Decay`, `Shiseido`, `Benefit Cosmetics`, `Bobbi Brown`]
-    brands3.value = [`Fenty Beauty`, `Charlotte Tilbury`, `Giorgio Armani Beauty`, `Yves Saint Laurent Beauty`, `Tarte Cosmetics`, `Huda Beauty`, `Sephora Collection`]
+    brands1.value = [`L'Oréal Paris`, `Estée Lauder`, `MAC Cosmetics`, `Chanel`, `Dior`]
+    brands2.value = [`Lancôme`, `Clinique`, `Maybelline`, `NARS Cosmetics`, `Urban Decay`]
+    brands3.value = [`Shiseido`, `Benefit Cosmetics`, `Bobbi Brown`, `Fenty Beauty`, `Charlotte Tilbury`]
+    brands4.value = [`Giorgio Armani Beauty`, `Yves Saint Laurent Beauty`, `Tarte Cosmetics`, `Huda Beauty`, `Sephora Collection`]
 
 })
 
