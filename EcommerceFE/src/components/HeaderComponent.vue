@@ -1,6 +1,13 @@
 <template>
     <div id="header" class="w-100 text-center">
-
+        <form action="" id="search-input">
+            <input type="text" id="text-search-input" placeholder="Tìm sản phẩm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="search-button" class="bi bi-search ms-2"
+                viewBox="0 0 16 16">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+            </svg>
+        </form>
         <h1 class="text-center mb-4 text-uppercase">Sunny Cosmetic</h1>
         <div class="d-flex justify-content-between container">
             <button class="header-item fw-bold text-uppercase btn border-0 " type="button" id="dropdownMenuButton1"
@@ -467,6 +474,12 @@ onMounted(() => {
     color: black;
     background-color: white;
 
+    #text-search-input {
+        background-color: white;
+        color: black;
+        border-bottom: 1px solid black;
+    }
+
     .header-item {
         color: black;
     }
@@ -476,5 +489,26 @@ onMounted(() => {
     border: 1px 0 0 0;
     border-radius: 0px;
     width: 100%;
+}
+
+#search-input {
+    position: absolute;
+    right: 0;
+    margin-right: 50px;
+}
+
+#text-search-input {
+    color: white;
+    width: 300px;
+    transition: 0.3s;
+    background-color: #292929;
+    border: none;
+    border-bottom: 1px solid white;
+}
+#text-search-input:focus{
+    outline: none;
+}
+#search-button:hover{
+    cursor: pointer;
 }
 </style>

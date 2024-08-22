@@ -1,6 +1,6 @@
-exports.getAllLTS = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM loaitaisan', (err, rows) => {
+        connection.query('SELECT * FROM category', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -8,7 +8,7 @@ exports.getAllLTS = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    lts: rows,
+                    category: rows,
                 },
             });
         });
@@ -19,9 +19,9 @@ exports.getAllLTS = async (req, res) => {
         });
     }
 };
-exports.getOneLTS = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM loaitaisan WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM category WHERE catId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -29,7 +29,7 @@ exports.getOneLTS = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    lts: row,
+                    category: row,
                 },
             });
         });
@@ -44,13 +44,18 @@ exports.getOneLTS = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.ten) {
+        if (req.body && req.body.ten && req.body.maSoThue && req.body.diaChi && req.body.sdt && req.body.email && req.body.taiKhoan) {
 
-            const newLTS = {
+            const newDVBH = {
                 'ten': req.body.ten,
+                'maSoThue': req.body.maSoThue,
+                'diaChi': req.body.diaChi,
+                'sdt': req.body.sdt,
+                'email': req.body.email,
+                'taiKhoan': req.body.taiKhoan,
             }
 
-            connection.query('INSERT INTO loaitaisan SET ?', newLTS, (err, row) => {
+            connection.query('INSERT INTO category SET ?', newDVBH, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -80,7 +85,7 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        connection.query("DELETE FROM loaitaisan WHERE id = ?", req.params.id, (err, row) => {
+        connection.query("DELETE FROM category WHERE catId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
                 res.status(400).json({

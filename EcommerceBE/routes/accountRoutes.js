@@ -1,15 +1,15 @@
 const express = require('express');
-const chtsController = require('./../controller/cauHinhThongSoController');
+const accController = require('./../controller/accountController');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(chtsController.getAllCHTS)
-  .post(chtsController.create);
+  .get(accController.getAll)
+  .post(accController.create);
 router
   .route('/:id')
-  .get(chtsController.getOneCHTS)
+  .get(accController.getOne)
 // .delete(chtsController.deleteCHTS);
 
 module.exports = router;

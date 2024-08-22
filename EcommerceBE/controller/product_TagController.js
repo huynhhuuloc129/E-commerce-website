@@ -1,6 +1,6 @@
-exports.getAllHD = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM hoatdong', (err,rows) => {
+        connection.query('SELECT * FROM product_tag', (err,rows) => {
             if(err) throw err;
             
             console.log('Data received from Db:');
@@ -8,7 +8,7 @@ exports.getAllHD = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    hd: rows,
+                    product_tag: rows,
                 },
             });
         });
@@ -19,9 +19,9 @@ exports.getAllHD = async (req, res) => {
     });
     }
 };
-exports.getOneHD = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM hoatdong WHERE id = ?', req.params.id, (err,row) => {
+        connection.query('SELECT * FROM product_tag WHERE id = ?', req.params.id, (err,row) => {
             if(err) throw err;
             
             console.log('Data received from Db:');
@@ -29,7 +29,7 @@ exports.getOneHD = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    hd: row,
+                    product_tag: row,
                 },
             });
         });

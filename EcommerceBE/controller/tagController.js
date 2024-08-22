@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 
-exports.getAllND = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM nguoidung', (err, rows) => {
+        connection.query('SELECT * FROM tag', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -22,9 +22,9 @@ exports.getAllND = async (req, res) => {
         });
     }
 };
-exports.getOneND = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM nguoidung WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM tag WHERE id = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');

@@ -5,11 +5,11 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(pxController.getAllPX)
+    .get(pxController.getAll)
     .post(pxController.create);
 router
     .route('/:id')
-    .get(pxController.getOnePX)
+    .get(pxController.getOne)
 // .delete(ptsController.deletePTS);
 
 module.exports = router;

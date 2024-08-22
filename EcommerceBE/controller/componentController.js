@@ -1,6 +1,6 @@
-exports.getAllPH = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phanhoi', (err, rows) => {
+        connection.query('SELECT * FROM component', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -8,7 +8,7 @@ exports.getAllPH = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    ph: rows,
+                    component: rows,
                 },
             });
         });
@@ -19,9 +19,9 @@ exports.getAllPH = async (req, res) => {
         });
     }
 };
-exports.getOnePH = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phanhoi WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM component WHERE componentId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -29,7 +29,7 @@ exports.getOnePH = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    ph: row,
+                    component: row,
                 },
             });
         });

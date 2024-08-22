@@ -1,6 +1,6 @@
-exports.getAllPN = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phieunhap ORDER BY ngayTao DESC', (err, rows) => {
+        connection.query('SELECT * FROM product_component ORDER BY createdAt DESC', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -19,9 +19,9 @@ exports.getAllPN = async (req, res) => {
         });
     }
 };
-exports.getOnePN = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phieunhap WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM product_component WHERE productComponentId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -61,7 +61,7 @@ exports.create = async (req, res) => {
                 'ngayTao': req.body.ngayTao
             }
 
-            connection.query('INSERT INTO phieunhap SET ?', newPN, (err, row) => {
+            connection.query('INSERT INTO product_component SET ?', newPN, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({

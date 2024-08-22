@@ -1,6 +1,6 @@
-exports.getAllCHTS = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM cauhinhthongso', (err, rows) => {
+        connection.query('SELECT * FROM product', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -8,7 +8,7 @@ exports.getAllCHTS = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    chts: rows,
+                    products: rows,
                 },
             });
         });
@@ -19,9 +19,9 @@ exports.getAllCHTS = async (req, res) => {
         });
     }
 };
-exports.getOneCHTS = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM cauhinhthongso WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM product WHERE proId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -29,7 +29,7 @@ exports.getOneCHTS = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    chts: row,
+                    products: row,
                 },
             });
         });
@@ -41,21 +41,16 @@ exports.getOneCHTS = async (req, res) => {
     }
 };
 
+
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.cpu && req.body.ram && req.body.hdd && req.body.ssd && req.body.cardDoHoa && req.body.manHinh && req.body.idTaiSan) {
+        if (req.body && req.body.ten) {
 
-            const newCHTS = {
-                'cpu': req.body.cpu,
-                'ram': req.body.ram,
-                'hdd': req.body.hdd,
-                'ssd': req.body.ssd,
-                'cardDoHoa': req.body.cardDoHoa,
-                'manHinh': req.body.manHinh,
-                'idTaiSan': req.body.idTaiSan
+            const newLTS = {
+                'ten': req.body.ten,
             }
 
-            connection.query('INSERT INTO cauhinhthongso SET ?', newCHTS, (err, row) => {
+            connection.query('INSERT INTO product SET ?', newLTS, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -75,6 +70,30 @@ exports.create = async (req, res) => {
                 status: false
             });
         }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.delete = async (req, res) => {
+    try {
+        connection.query("DELETE FROM product WHERE id = ?", req.params.id, (err, row) => {
+            if (err) {
+                console.log(err)
+                res.status(400).json({
+                    errorMessage: err,
+                    status: false
+                });
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Delete Successfully.'
+                });
+        }
+        )
     } catch (err) {
         res.status(404).json({
             status: 'fail',

@@ -1,15 +1,15 @@
 const express = require('express');
-const hdController = require('./../controller/hoatDongController');
+const catController = require('./../controller/categoryController');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(hdController.getAllHD)
+  .get(catController.getAll)
   // .post(hdController.createHD);
 router
   .route('/:id')
-  .get(hdController.getOneHD)
+  .get(catController.getOne)
   // .delete(hdController.deleteHD);
 
 module.exports = router;

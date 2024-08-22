@@ -5,12 +5,12 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(tsController.getAllTS)
+  .get(tsController.getAll)
   .post(tsController.create)
   .patch(tsController.update);
 router
   .route('/:id')
-  .get(tsController.getOneTS)
+  .get(tsController.getOne)
   .delete(tsController.delete);
 
 module.exports = router;

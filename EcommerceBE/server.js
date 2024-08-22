@@ -10,7 +10,7 @@ global.connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'bv'
+  database: 'sunny_cosmetic'
 });
 
 

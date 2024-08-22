@@ -5,11 +5,11 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(tbController.getAllTB)
+  .get(tbController.getAll)
   // .post(tbController.createTB);
 router
   .route('/:id')
-  .get(tbController.getOneTB)
+  .get(tbController.getOne)
   // .delete(tbController.deleteTB);
 
 module.exports = router;

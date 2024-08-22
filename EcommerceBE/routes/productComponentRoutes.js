@@ -1,15 +1,15 @@
 const express = require('express');
-const phController = require('./../controller/phanHoiController');
+const productComponentController = require('./../controller/productComponentController');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(phController.getAllPH)
+  .get(productComponentController.getAll)
   // .post(phController.createPH);
 router
   .route('/:id')
-  .get(phController.getOnePH)
+  .get(productComponentController.getOne)
   // .delete(phController.deletePH);
 
 module.exports = router;
