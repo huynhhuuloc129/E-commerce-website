@@ -41,21 +41,16 @@ exports.getOne = async (req, res) => {
     }
 };
 
-
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.ten && req.body.maSoThue && req.body.diaChi && req.body.sdt && req.body.email && req.body.taiKhoan) {
+        if (req.body && req.body.name && req.body.description) {
 
-            const newDVBH = {
-                'ten': req.body.ten,
-                'maSoThue': req.body.maSoThue,
-                'diaChi': req.body.diaChi,
-                'sdt': req.body.sdt,
-                'email': req.body.email,
-                'taiKhoan': req.body.taiKhoan,
+            const newCategory = {
+                'name': req.body.name,
+                'description': req.body.description
             }
 
-            connection.query('INSERT INTO category SET ?', newDVBH, (err, row) => {
+            connection.query('INSERT INTO category SET ?', newCategory, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({

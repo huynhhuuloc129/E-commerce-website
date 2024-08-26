@@ -6,10 +6,10 @@ const router = express.Router();
 router
     .route('/')
     .get(tagController.getAll)
-    // .post(psTbttController.create)
+    .post(tagController.create)
 router
     .route('/:id')
-    // .get(psTbttController.getAllByPsId)
-    // .delete(psTbttController.truncate);
+    .get(tagController.getOne)
+    .delete(tagController.delete);
 
 module.exports = router;

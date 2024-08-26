@@ -9,7 +9,7 @@ router
     .post(brandController.create);
 router
     .route('/:id')
-    .get(brandController.getOne);
-    // .delete(dvbhController.delete);
+    .get(brandController.getOne)
+    .delete(brandController.delete);
 
 module.exports = router;

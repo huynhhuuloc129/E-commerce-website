@@ -10,6 +10,6 @@ router
 router
   .route('/:id')
   .get(accController.getOne)
-// .delete(chtsController.deleteCHTS);
+  .delete(accController.delete);
 
 module.exports = router;

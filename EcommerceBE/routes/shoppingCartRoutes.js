@@ -1,16 +1,16 @@
 const express = require('express');
-const psController = require('./../controller/shoppingCartController');
+const shoppingCartController = require('./../controller/shoppingCartController');
 
 const router = express.Router();
 
 router
     .route('/')
-    .get(psController.getAll)
-    // .post(psController.create)
+    .get(shoppingCartController.getAll)
+    .post(shoppingCartController.create)
     // .patch(psController.update)
 router
     .route('/:id')
-    .get(psController.getOne)
-    // .delete(psController.delete);
+    .get(shoppingCartController.getOne)
+    .delete(shoppingCartController.delete);
 
 module.exports = router;

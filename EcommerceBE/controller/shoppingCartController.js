@@ -21,7 +21,7 @@ exports.getAll = async (req, res) => {
 };
 exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phieusua WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM shopping_cart WHERE shoppingCartId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');

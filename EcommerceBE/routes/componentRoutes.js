@@ -6,10 +6,10 @@ const router = express.Router();
 router
     .route('/')
     .get(compController.getAll)
-    // .post(compController.create);
+    .post(compController.create);
 router
     .route('/:id')
     .get(compController.getOne)
-    // .delete(compController.delete);
+    .delete(compController.delete);
 
 module.exports = router;

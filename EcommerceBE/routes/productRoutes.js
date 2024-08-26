@@ -10,6 +10,6 @@ router
 router
     .route('/:id')
     .get(prodController.getOne)
-// .delete(ptsController.deletePTS);
+    .delete(prodController.delete);
 
 module.exports = router;

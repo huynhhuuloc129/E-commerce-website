@@ -43,25 +43,15 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.idTaiSan && req.body.idDonViBanHang && req.body.donViMua && req.body.maSoThue && req.body.diaChi && req.body.soLuong && req.body.donGia && req.body.thanhTien && req.body.tienThue && req.body.tienThanhToan && req.body.hinhThucThanhToan && req.body.donViTienTe && req.body.ngayTao) {
+        if (req.body && req.body.productId && req.body.componentId && req.body.percentage) {
 
-            const newPN = {
-                'idTaiSan': req.body.idTaiSan,
-                'idDonViBanHang': req.body.idDonViBanHang,
-                'donViMua': req.body.donViMua,
-                'maSoThue': req.body.maSoThue,
-                'diaChi': req.body.diaChi,
-                'soLuong': req.body.soLuong,
-                'donGia': req.body.donGia,
-                'thanhTien': req.body.thanhTien,
-                'tienThue': req.body.tienThue,
-                'tienThanhToan': req.body.tienThanhToan,
-                'hinhThucThanhToan': req.body.hinhThucThanhToan,
-                'donViTienTe': req.body.donViTienTe,
-                'ngayTao': req.body.ngayTao
+            const newPC = {
+                'productId': req.body.productId,
+                'componentId': req.body.componentId,
+                'percentage': req.body.percentage,
             }
 
-            connection.query('INSERT INTO product_component SET ?', newPN, (err, row) => {
+            connection.query('INSERT INTO product_component SET ?', newPC, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -80,6 +70,30 @@ exports.create = async (req, res) => {
                 status: false
             });
         }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.delete = async (req, res) => {
+    try {
+        connection.query("DELETE FROM product_component WHERE productComponentId = ?", req.params.id, (err, row) => {
+            if (err) {
+                console.log(err)
+                res.status(400).json({
+                    errorMessage: err,
+                    status: false
+                });
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Delete Successfully.'
+                });
+        }
+        )
     } catch (err) {
         res.status(404).json({
             status: 'fail',

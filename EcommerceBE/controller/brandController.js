@@ -43,19 +43,13 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.cpu && req.body.ram && req.body.hdd && req.body.ssd && req.body.cardDoHoa && req.body.manHinh && req.body.idTaiSan) {
+        if (req.body && req.body.name) {
 
-            const newCHTS = {
-                'cpu': req.body.cpu,
-                'ram': req.body.ram,
-                'hdd': req.body.hdd,
-                'ssd': req.body.ssd,
-                'cardDoHoa': req.body.cardDoHoa,
-                'manHinh': req.body.manHinh,
-                'idTaiSan': req.body.idTaiSan
+            const newBrand = {
+                'name': req.body.name
             }
 
-            connection.query('INSERT INTO brand SET ?', newCHTS, (err, row) => {
+            connection.query('INSERT INTO brand SET ?', newBrand, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -75,6 +69,30 @@ exports.create = async (req, res) => {
                 status: false
             });
         }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.delete = async (req, res) => {
+    try {
+        connection.query("DELETE FROM brand WHERE brandId = ?", req.params.id, (err, row) => {
+            if (err) {
+                console.log(err)
+                res.status(400).json({
+                    errorMessage: err,
+                    status: false
+                });
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Delete Successfully.'
+                });
+        }
+        )
     } catch (err) {
         res.status(404).json({
             status: 'fail',

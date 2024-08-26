@@ -6,10 +6,10 @@ const router = express.Router();
 router
   .route('/')
   .get(productComponentController.getAll)
-  // .post(phController.createPH);
+  .post(productComponentController.create);
 router
   .route('/:id')
   .get(productComponentController.getOne)
-  // .delete(phController.deletePH);
+  .delete(productComponentController.delete);
 
 module.exports = router;

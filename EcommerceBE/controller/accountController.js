@@ -20,27 +20,27 @@ exports.getAll = async (req, res) => {
     }
 };
 
-exports.getAllByPsId = async (req, res) => {
-    try {
-        connection.query('SELECT * FROM account WHERE accountId = ?', req.params.id, (err, rows) => {
-            if (err) throw err;
+// exports.getAllByPsId = async (req, res) => {
+//     try {
+//         connection.query('SELECT * FROM account WHERE accountId = ?', req.params.id, (err, rows) => {
+//             if (err) throw err;
 
-            console.log('Data received from Db:');
-            res.status(200).json({
-                status: 'success',
-                total: rows.length,
-                data: {
-                    accounts: rows,
-                },
-            });
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            message: err,
-        });
-    }
-};
+//             console.log('Data received from Db:');
+//             res.status(200).json({
+//                 status: 'success',
+//                 total: rows.length,
+//                 data: {
+//                     accounts: rows,
+//                 },
+//             });
+//         });
+//     } catch (err) {
+//         res.status(404).json({
+//             status: 'fail',
+//             message: err,
+//         });
+//     }
+// };
 exports.getOne = async (req, res) => {
     try {
         connection.query('SELECT * FROM account WHERE accountId = ?', req.params.id, (err, row) => {
@@ -63,28 +63,93 @@ exports.getOne = async (req, res) => {
     }
 };
 
-exports.create = async (req, res) => {
+exports.register = async (req, res) => {
     try {
 
-        if (req.body && req.body.idPhieuSua && req.body.idThietBiThayThe) {
+        if (req.body && req.body.username && req.body.password && req.body.name && req.body.email) {
+            username = req.body.username
+            connection.query('SELECT * FROM account WHERE username = ?', req.body.username, (err, row) => {
+                if (err) throw err;
 
-            const newPS = {
-                'idPhieuSua': req.body.idPhieuSua,
-                'idThietBiThayThe': req.body.idThietBiThayThe,
-            }
+                console.log('Data received from Db:');
 
-            connection.query('INSERT INTO phieusua_tbtt SET ?', newPS, (err, row) => {
-                if (err) {
-                    console.log(err)
+
+                if (row == undefined || row.length == 0) {
+                    const salt = bcrypt.genSaltSync(10)
+
+                    const newAccount = {
+                        'createdAt': '',
+                        'updatedAt': '',
+                        'deletedAt': '',
+                        'username': req.body.username,
+                        'password': bcrypt.hashSync(req.body.password, salt),
+                        'name': req.body.name,
+                        'email': req.body.email,
+                    }
+
+                    connection.query('INSERT INTO account SET ?', newAccount, (err, row) => {
+                        if (err) {
+                            console.log(err)
+                            res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        } else
+                            res.status(200).json({
+                                status: true,
+                                title: 'Registered Successfully.'
+                            });
+                    })
+
+                } else {
+                    // console.log(`UserName ${req.body.username} Already Exist!`);
                     res.status(400).json({
-                        errorMessage: err,
+                        errorMessage: `UserName ${req.body.username} Already Exist!`,
                         status: false
                     });
-                } else
-                    res.status(200).json({
-                        status: true,
-                        title: 'Created Successfully.'
+                }
+            });
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.getMe = async (req, res) => {
+    try {
+        if (req.header('token')) {
+            let token = req.header('token');
+
+            var decoded = jwt.verify(token, 'shhhhh11111');
+            connection.query('SELECT * FROM nguoidung WHERE id = ?', decoded.id, (err, row) => {
+                if (err) {
+                    res.status(500).json({
+                        status: 'fail',
+                        message: err,
                     });
+                };
+
+                if (row.length >= 0) {
+                    res.status(200).json({
+                        status: 'success',
+                        data: {
+                            account: row,
+                        },
+                    });
+                } else {
+                    res.status(404).json({
+                        errorMessage: `User not found!`,
+                        status: false
+                    });
+                }
             })
         } else {
             res.status(400).json({
@@ -102,8 +167,6 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        var ids = req.body.ids
-
         connection.query("DELETE FROM account WHERE accountId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
@@ -125,6 +188,138 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+
+exports.login = async (req, res) => {
+    try {
+        if (!req.body || !req.body.username || !req.body.password) {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+        username = req.body.username
+        user = {}
+        connection.query('SELECT * FROM account WHERE username = ?', username, async (err, row) => {
+            if (err) {
+                res.status(500).json({
+                    status: 'fail',
+                    message: err,
+                });
+            };
+
+            console.log('Data received from Db');
+            if (row == null || row.length == 0) {
+                res.status(400).json({
+                    errorMessage: 'No accounts found!',
+                    status: false
+                });
+            }
+            user.password = row[0].password;
+            user.username = row[0].username;
+            user.id = row[0].accountId;
+
+            await bcrypt.compare(req.body.password, user.password, (err, data) => {
+                if (err) throw err
+                if (data) {
+                    checkUserAndGenerateToken(user, req, res);
+                } else {
+                    res.status(401).json({ msg: "Invalid credencial!" })
+                }
+            })
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.changePassword = async (req, res) => {
+    try {
+        
+        if (req.body && req.body.username && req.body.id && req.body.newPassword) {
+            user = {}
+
+            connection.query('SELECT * FROM account WHERE accountId = ?', req.body.id, async (err, row) => {
+                if (err) {
+                    res.status(500).json({
+                        status: 'fail',
+                        message: err,
+                    });
+                };
+
+                
+                if (row.length >= 0) {
+                    user.password = row[0].password;
+                    await bcrypt.compare(req.body.password, user.password, (err, data) => {
+                        if (err) throw err
+
+                        if (data) {
+                            const salt = bcrypt.genSaltSync(10)
+
+                            const newPassword = bcrypt.hashSync(req.body.newPassword, salt)
+
+                            sql = `UPDATE account SET password = '${newPassword}' WHERE accountId = ${req.body.id};`
+
+                            connection.query(sql, (err, row) => {
+                                if (err) {
+                                    res.status(500).json({
+                                        status: 'fail',
+                                        message: err,
+                                    });
+                                };
+
+                                res.status(200).json({
+                                    status: 'update success',
+                                    data: {
+                                        nd: row,
+                                    },
+                                });
+                            })
+                        } else {
+                            res.status(401).json({ msg: "Invalid credencial!" })
+                        }
+                    })
+                } else {
+                    res.status(404).json({
+                        errorMessage: `User not found!`,
+                        status: false
+                    });
+                }
+            })
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+function checkUserAndGenerateToken(data, req, res) {
+    jwt.sign({ user: data.username, id: data.id }, 'shhhhh11111', { expiresIn: '1d' }, (err, token) => {
+        if (err) {
+            res.status(400).json({
+                status: false,
+                errorMessage: err,
+            });
+        } else {
+            res.status(200).json({
+                message: 'Login Successfully.',
+                id: data.id,
+                token: token,
+                status: true
+            });
+        }
+    });
+}
 
 // exports.truncate = async (req, res) => {
 //     try {
