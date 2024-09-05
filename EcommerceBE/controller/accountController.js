@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+
 exports.getAll = async (req, res) => {
     try {
         connection.query('SELECT * FROM account', (err, rows) => {
@@ -66,7 +69,7 @@ exports.getOne = async (req, res) => {
 exports.register = async (req, res) => {
     try {
 
-        if (req.body && req.body.username && req.body.password && req.body.name && req.body.email) {
+        if (req.body && req.body.username && req.body.password && req.body.name && req.body.email && req.body.phone && req.body.birthDate && req.body.billingAddress) {
             username = req.body.username
             connection.query('SELECT * FROM account WHERE username = ?', req.body.username, (err, row) => {
                 if (err) throw err;
@@ -78,13 +81,13 @@ exports.register = async (req, res) => {
                     const salt = bcrypt.genSaltSync(10)
 
                     const newAccount = {
-                        'createdAt': '',
-                        'updatedAt': '',
-                        'deletedAt': '',
                         'username': req.body.username,
                         'password': bcrypt.hashSync(req.body.password, salt),
                         'name': req.body.name,
                         'email': req.body.email,
+                        'phone': req.body.phone,
+                        'birthDate': req.body.birthDate,
+                        'billingAddress': req.body.billingAddress
                     }
 
                     connection.query('INSERT INTO account SET ?', newAccount, (err, row) => {
@@ -129,7 +132,7 @@ exports.getMe = async (req, res) => {
             let token = req.header('token');
 
             var decoded = jwt.verify(token, 'shhhhh11111');
-            connection.query('SELECT * FROM nguoidung WHERE id = ?', decoded.id, (err, row) => {
+            connection.query('SELECT * FROM account WHERE accountId = ?', decoded.id, (err, row) => {
                 if (err) {
                     res.status(500).json({
                         status: 'fail',
@@ -239,10 +242,10 @@ exports.login = async (req, res) => {
 exports.changePassword = async (req, res) => {
     try {
         
-        if (req.body && req.body.username && req.body.id && req.body.newPassword) {
+        if (req.body && req.body.username && req.body.accountId && req.body.newPassword) {
             user = {}
 
-            connection.query('SELECT * FROM account WHERE accountId = ?', req.body.id, async (err, row) => {
+            connection.query('SELECT * FROM account WHERE accountId = ?', req.body.accountId, async (err, row) => {
                 if (err) {
                     res.status(500).json({
                         status: 'fail',
@@ -261,7 +264,7 @@ exports.changePassword = async (req, res) => {
 
                             const newPassword = bcrypt.hashSync(req.body.newPassword, salt)
 
-                            sql = `UPDATE account SET password = '${newPassword}' WHERE accountId = ${req.body.id};`
+                            sql = `UPDATE account SET password = '${newPassword}' WHERE accountId = ${req.body.accountId};`
 
                             connection.query(sql, (err, row) => {
                                 if (err) {
@@ -304,7 +307,7 @@ exports.changePassword = async (req, res) => {
 };
 
 function checkUserAndGenerateToken(data, req, res) {
-    jwt.sign({ user: data.username, id: data.id }, 'shhhhh11111', { expiresIn: '1d' }, (err, token) => {
+    jwt.sign({ user: data.username, accountId: data.accountId }, 'shhhhh11111', { expiresIn: '1d' }, (err, token) => {
         if (err) {
             res.status(400).json({
                 status: false,
@@ -313,7 +316,7 @@ function checkUserAndGenerateToken(data, req, res) {
         } else {
             res.status(200).json({
                 message: 'Login Successfully.',
-                id: data.id,
+                accountId: data.accountId,
                 token: token,
                 status: true
             });

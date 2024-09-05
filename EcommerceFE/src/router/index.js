@@ -9,22 +9,31 @@ const router = createRouter({
       name: 'home',
       component: () => import('../views/HomePage.vue')
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginPage.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/SignUpPage.vue')
+    },
     // {
     //   path: '/admin',
     //   name: 'admin',
     //   component: () => import('../views/AdminPage.vue')
     // },
-    // {
-    //   path: '/tag/:id',
-    //   name: 'tag',
-    //   component: () => import('../views/ListPostTags.vue')
-    // }
-    // ,
-    // {
-    //   path: '/search/:content',
-    //   name: 'search',
-    //   component: () => import('../views/SearchPost.vue')
-    // }
+    {
+      path: '/products/:id',
+      name: 'products',
+      component: () => import('../views/ProductsPage.vue')
+    },
+    {
+      path: '/search/:content',
+      name: 'search',
+      component: () => import('../views/SearchPage.vue')
+    }
   ]
 })
 

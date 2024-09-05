@@ -6,7 +6,15 @@ const router = express.Router();
 router
   .route('/')
   .get(accController.getAll)
-  .post(accController.create);
+router
+  .route('/me')
+  .get(accController.getMe)
+router
+  .route('/login')
+  .post(accController.login);
+router
+  .route('/register')
+  .post(accController.register);
 router
   .route('/:id')
   .get(accController.getOne)

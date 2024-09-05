@@ -25,25 +25,50 @@ class AccountService {
     }
   }
 
-//   async create(data: any) {
-//     try {
-//       const resp = await this.api.post(
-//         "http://localhost:3000/api/donvibanhang",
-//         data
-//       );
-//       return resp.data;
-//     } catch (err: any) {
-//       handlingError(err);
-//     }
-//   }
+  async register(data: any) {
+    try {
+      const resp = await this.api.post(
+        "http://localhost:3000/api/accounts/register",
+        data
+      );
+      return resp.data;
+    } catch (err: any) {
+      handlingError(err);
+    }
+  }
 
-//   async delete(id: number) {
-//     try {
-//       return await this.api.delete("/donvibanhang/" + id);
-//     } catch (err) {
-//       handlingError(err);
-//     }
-//   }
+  async login(data: any) {
+    try {
+        const tokens = (await this.api.post("http://localhost:3000/api/accounts/login", data));
+        return tokens.data;
+
+    } catch (err: any) {
+        if (err.response.status == '401') throw new Error("Sai email hoặc mật khẩu, vui lòng nhập lại");
+        else if (err.response.status == '400') throw new Error("Các trường nhập vào không hợp lệ hoặc không đủ ký tự, vui lòng nhập lại");
+        throw new Error("Lỗi hệ thống")
+    }
+}
+
+  async delete(id: number) {
+    try {
+      return await this.api.delete("/accounts/" + id);
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getMe(token: string) {
+    return await axios.get("http://localhost:3000/api/accounts/me", {
+      headers: {
+        Token: token
+      }
+    }).then((res) => {
+      return res.data;
+    }).catch((err) => {
+        if (err.response.status == '404') throw new Error("Chưa đăng nhập");
+        throw new Error("Lỗi hệ thống")
+    })
+}
 }
 
 export default new AccountService();

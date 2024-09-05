@@ -87,7 +87,7 @@
             </ul>
 
         </div>
-        <div class="container mb-5">
+        <div class="container mb-5 text-uppercase fw-bold">
             Khám phá dưỡng da từ L'Oreal Paris
         </div>
 
@@ -178,7 +178,7 @@
             </ul>
 
         </div>
-        <div class="container mb-5">
+        <div class="container mb-5 text-uppercase fw-bold">
             Khám phá sản phẩm trang điểm từ L'Oreal Paris
         </div>
 
@@ -264,7 +264,7 @@
                 </li>
             </ul>
 
-            <div class="text-center mt-2 mb-3">
+            <div class="text-center mt-2 mb-3 text-uppercase fw-bold">
                 Khám phá sản phẩm tóc từ L'Oreal Paris
             </div>
         </div>
@@ -276,7 +276,15 @@
 </template>
 
 <script setup lang="ts">
+import { useCookies } from "vue3-cookies";
+import { useRouter } from "vue-router";
 import { onMounted, ref } from 'vue';
+import Swal from "sweetalert2";
+
+const router = useRouter();
+onMounted(() => {
+});
+
 </script>
 
 <style scoped>

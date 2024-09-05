@@ -88,15 +88,14 @@ CREATE TABLE IF NOT EXISTS Product_Component (
 );
 CREATE TABLE IF NOT EXISTS Account (
     accountId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    createdAt Date NOT NULL,
-    updatedAt Date NOT NULL,
-    deletedAt Date,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     name varchar(255) NOT NULL,
     email varchar(255) NOT NULL,
-    phone varchar(255),
-    birthDate date,
+    phone varchar(255)  NOT NULL,
+    birthDate date  NOT NULL,
     avatar LONGTEXT,
     billingAddress TEXT NOT NULL
 );
