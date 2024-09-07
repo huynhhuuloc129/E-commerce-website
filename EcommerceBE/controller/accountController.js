@@ -128,18 +128,18 @@ exports.register = async (req, res) => {
 
 exports.getMe = async (req, res) => {
     try {
-        if (req.header('token')) {
-            let token = req.header('token');
+        if (req.header('Token')) {
+            let token = req.header('Token');
 
             var decoded = jwt.verify(token, 'shhhhh11111');
-            connection.query('SELECT * FROM account WHERE accountId = ?', decoded.id, (err, row) => {
+
+            connection.query('SELECT * FROM account WHERE username = ?', decoded.user, (err, row) => {
                 if (err) {
                     res.status(500).json({
                         status: 'fail',
                         message: err,
                     });
-                };
-
+                } else
                 if (row.length >= 0) {
                     res.status(200).json({
                         status: 'success',

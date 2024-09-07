@@ -65,8 +65,8 @@ class AccountService {
     }).then((res) => {
       return res.data;
     }).catch((err) => {
-        if (err.response.status == '404') throw new Error("Chưa đăng nhập");
-        throw new Error("Lỗi hệ thống")
+        // if (err.respon == '404') throw new Error("Chưa đăng nhập" + err);
+        throw new Error("Lỗi hệ thống "+  err)
     })
 }
 }

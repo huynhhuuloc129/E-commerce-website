@@ -9,8 +9,8 @@ class BrandService {
   }
   async getAll() {
     try {
-      const chts = await this.api.get("/brands");
-      return chts.data;
+      const brands = await this.api.get("/brands");
+      return brands.data;
     } catch (err) {
       handlingError(err);
     }
@@ -18,8 +18,8 @@ class BrandService {
 
   async getOne(id: number) {
     try {
-      const chts = await this.api.get("/brands/" + id);
-      return chts.data;
+      const brands = await this.api.get("/brands/" + id);
+      return brands.data;
     } catch (err) {
       handlingError(err);
     }

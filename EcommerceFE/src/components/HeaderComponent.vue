@@ -382,22 +382,22 @@
                     <h6 class=" ms-5 mt-3">Các thương hiệu</h6>
                     <li class="row">
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands1" class="mt-1" :key="brand">
+                            <div v-for="brand in brands1" class="mt-1 text-uppercase" :key="brand">
                                 <a href="" class="link">{{ brand }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands2" class="mt-1" :key="brand">
+                            <div v-for="brand in brands2" class="mt-1 text-uppercase" :key="brand">
                                 <a href="" class="link">{{ brand }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands3" class="mt-1" :key="brand">
+                            <div v-for="brand in brands3" class="mt-1 text-uppercase" :key="brand">
                                 <a href="" class="link">{{ brand }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands4" class="mt-1" :key="brand">
+                            <div v-for="brand in brands4" class="mt-1 text-uppercase" :key="brand">
                                 <a href="" class="link">{{ brand }}</a>
                             </div>
                         </div>
@@ -405,30 +405,35 @@
                 </ul>
             </div>
 
-            <div class="d-flex justify-content-between">
-                <!-- <button class="btn btn-light me-2 fw-bold text-white" style="background-color: #fbbfc0;">
-                    <a class="header-link-login" href="#">
-                        Đăng nhập
-                    </a></button>
-                <button class="btn btn-light fw-bold"><a class="header-link-signup" href="#">Đăng ký</a></button> -->
-
-                <div class="dropdown">
-                    <button data-mdb-button-init data-mdb-ripple-init data-mdb-dropdown-init
-                        class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
-                        data-mdb-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user" style="color: #fbbfc0; "></i>
-
-                    </button>
-                    <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+            <div>
+                <div v-if="currentUser.accountId == 0" class="d-flex justify-content-between">
+                    <button class="btn btn-light me-2 fw-bold text-white" style="background-color: #fbbfc0;">
+                        <a class="header-link-login" href="#" @click="pushToLogin($event)">
+                            Đăng nhập
+                        </a></button>
+                    <button class="btn btn-light fw-bold"><a class="header-link-signup" href="#"
+                            @click="pushToSignUp($event)">Đăng ký</a></button>
                 </div>
-                <button class="btn btn-light me-5">
 
-                    <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
-                </button>
+                <div v-else class="d-flex justify-content-between">
+                    <div class="dropdown">
+                        <button data-mdb-button-init data-mdb-ripple-init data-mdb-dropdown-init
+                            class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
+                            data-mdb-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user" style="color: #fbbfc0; "></i>
+
+                        </button>
+                        <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Tài khoản cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Đơn mua</a></li>
+                            <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-light me-5">
+
+                        <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -436,10 +441,14 @@
 
 <script setup lang="ts">
 import accountServices from '@/services/account.services';
+import brandServices from '@/services/brand.services';
 
 import { useCookies } from "vue3-cookies";
-import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { onMounted, ref } from 'vue';
 import Swal from "sweetalert2";
+
+const router = useRouter();
 
 const cookies = useCookies();
 const token = cookies.cookies.get("Token");
@@ -463,16 +472,82 @@ const currentUser = ref({
     updated_at: null,
 });
 
+const brands = ref([
+    {
+        brandId: 0,
+        name: '',
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+function pushToSignUp(e: any) {
+    e.preventDefault();
+    router.push({ name: "signup" });
+}
+
+
+function pushToLogin(e: any) {
+    e.preventDefault();
+    router.push({ name: "login" });
+}
+
+function signOut() {
+    document.cookie = "Token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    window.location.reload();
+}
 
 onMounted(async () => {
-    brands1.value = [`L'Oréal Paris`, `Estée Lauder`, `MAC Cosmetics`, `Chanel`, `Dior`]
-    brands2.value = [`Lancôme`, `Clinique`, `Maybelline`, `NARS Cosmetics`, `Urban Decay`]
-    brands3.value = [`Shiseido`, `Benefit Cosmetics`, `Bobbi Brown`, `Fenty Beauty`, `Charlotte Tilbury`]
-    brands4.value = [`Giorgio Armani Beauty`, `Yves Saint Laurent Beauty`, `Tarte Cosmetics`, `Huda Beauty`, `Sephora Collection`]
+    let resp = await brandServices.getAll();
+    brands.value = resp.data.brand
 
-    let resp = await accountServices.getMe(token);
-    currentUser.value = resp.data.account[0];
-    console.log(currentUser.value)
+    let arrLen = Math.floor(brands.value.length / 4)
+    let arrLenMod = brands.value.length % 4
+    brands1.value = []
+    brands2.value = []
+    brands3.value = []
+    brands4.value = []
+
+    console.log(arrLen, arrLenMod)
+
+    for (let i = 0; i < arrLen; i++) {
+        brands1.value.push(brands.value[i].name)
+        if (arrLenMod == 1) {
+            brands2.value.push(brands.value[i + arrLen + 1].name)
+            brands3.value.push(brands.value[i + arrLen * 2].name)
+            brands4.value.push(brands.value[i + arrLen * 3].name)
+        } else if (arrLenMod == 2) {
+            brands2.value.push(brands.value[i + arrLen + 1].name)
+            brands3.value.push(brands.value[i + arrLen * 2 + 1].name)
+            brands4.value.push(brands.value[i + arrLen * 3].name)
+        } else if (arrLenMod == 3) {
+            brands2.value.push(brands.value[i + arrLen + 1].name)
+            brands3.value.push(brands.value[i + arrLen * 2 + 1].name)
+            brands4.value.push(brands.value[i + arrLen * 3 + 1].name)
+        } else {
+            brands2.value.push(brands.value[i + arrLen].name)
+            brands3.value.push(brands.value[i + arrLen * 2].name)
+            brands4.value.push(brands.value[i + arrLen * 3].name)
+        }
+    }
+
+    if (arrLenMod == 1) {
+        brands1.value.push(brands.value[arrLen].name)
+    } else if (arrLenMod == 2) {
+        brands1.value.push(brands.value[arrLen].name)
+        brands2.value.push(brands.value[arrLen * 2 + 1].name)
+    } else {
+        brands1.value.push(brands.value[arrLen].name)
+        brands2.value.push(brands.value[arrLen * 2 + 1].name)
+        brands3.value.push(brands.value[arrLen * 3 + 2].name)
+    }
+
+    try {
+        let resp = await accountServices.getMe(token);
+        currentUser.value = resp.data.account[0];
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 </script>
@@ -592,5 +667,9 @@ onMounted(async () => {
 .dropdown>.dropdown-toggle:active {
     /*Without this, clicking will make it sticky*/
     pointer-events: none;
+}
+
+.dropdown-menu {
+    overflow-x: hidden;
 }
 </style>
