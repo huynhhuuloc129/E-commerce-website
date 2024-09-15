@@ -39,7 +39,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TOÀN BỘ SẢN PHẨM CHĂM SÓC DA MẶT
                                 </a>
                             </div>
@@ -63,7 +63,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TẤT CẢ SẢN PHẨM TẨY TRANG VÀ LÀM SẠCH
                                 </a>
                             </div>
@@ -82,7 +82,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TẤT CẢ KEM CHỐNG NẮNG
                                 </a>
                             </div>
@@ -116,7 +116,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold text-uppercase">
                                     Tất cả Sản phẩm Dưỡng da
                                 </a>
                             </div>
@@ -156,7 +156,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TOÀN BỘ SẢN PHẨM TRANG ĐIỂM MẶT
                                 </a>
                             </div>
@@ -175,7 +175,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TOÀN BỘ TRANG ĐIỂM MÔI
                                 </a>
                             </div>
@@ -199,7 +199,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TẤT CẢ SẢN PHẨM TRANG ĐIỂM MẮT
                                 </a>
                             </div>
@@ -233,7 +233,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold text-uppercase">
                                     Tất cả Sản phẩm Trang điểm
                                 </a>
                             </div>
@@ -277,7 +277,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TOÀN BỘ SẢN PHẨM CHĂM SÓC TÓC
                                 </a>
                             </div>
@@ -296,7 +296,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold">
                                     XEM TẤT CẢ THUỐC NHUỘM TÓC
                                 </a>
                             </div>
@@ -330,7 +330,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold text-uppercase">
                                     Tất cả Sản phẩm Tóc
                                 </a>
                             </div>
@@ -364,7 +364,7 @@
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="" class="link fw-bold text-uppercase">
                                     Tất cả Sản phẩm Trang điểm
                                 </a>
                             </div>
