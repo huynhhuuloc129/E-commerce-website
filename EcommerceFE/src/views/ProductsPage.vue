@@ -240,54 +240,170 @@
 
         <hr class="w-100">
 
-        <div class="container rating d-flex flex-column align-items-center justify-content-center mb-5">
+        <div class="container rating d-flex flex-column align-items-center justify-content-center">
             <h4 class="text-uppercase ">Đánh giá sản phẩm</h4>
+        </div>
 
+        <section>
+            <div class="py-5 text-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-6">
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-start w-100">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar"
+                                        width="65" height="65" />
+                                    <div class="w-100">
+                                        <h5>Thêm bình luận</h5>
+                                        <div class="container-wrapper w-100">
+                                            <div class="container d-flex align-items-center justify-content-start mt-3 mb-3">
+                                                <div class="row justify-content-center">
 
-            <div class="container-wrapper w-100">
-                <div class="container d-flex align-items-center justify-content-center">
-                    <div class="row justify-content-center">
+                                                    <!-- star rating -->
+                                                    <div class="rating-wrapper p-2">
 
-                        <!-- star rating -->
-                        <div class="rating-wrapper p-2">
+                                                        <!-- star 5 -->
+                                                        <input class="rating-input" type="radio" id="5-star-rating"
+                                                            name="star-rating" value="5">
+                                                        <label for="5-star-rating" class="star-rating">
+                                                            <i class="fas fa-star d-inline-block"></i>
+                                                        </label>
 
-                            <!-- star 5 -->
-                            <input class="rating-input" type="radio" id="5-star-rating" name="star-rating" value="5">
-                            <label for="5-star-rating" class="star-rating">
-                                <i class="fas fa-star d-inline-block"></i>
-                            </label>
+                                                        <!-- star 4 -->
+                                                        <input class="rating-input" type="radio" id="4-star-rating"
+                                                            name="star-rating" value="4">
+                                                        <label for="4-star-rating" class="star-rating star">
+                                                            <i class="fas fa-star d-inline-block"></i>
+                                                        </label>
 
-                            <!-- star 4 -->
-                            <input class="rating-input" type="radio" id="4-star-rating" name="star-rating" value="4">
-                            <label for="4-star-rating" class="star-rating star">
-                                <i class="fas fa-star d-inline-block"></i>
-                            </label>
+                                                        <!-- star 3 -->
+                                                        <input class="rating-input" type="radio" id="3-star-rating"
+                                                            name="star-rating" value="3">
+                                                        <label for="3-star-rating" class="star-rating star">
+                                                            <i class="fas fa-star d-inline-block"></i>
+                                                        </label>
 
-                            <!-- star 3 -->
-                            <input class="rating-input" type="radio" id="3-star-rating" name="star-rating" value="3">
-                            <label for="3-star-rating" class="star-rating star">
-                                <i class="fas fa-star d-inline-block"></i>
-                            </label>
+                                                        <!-- star 2 -->
+                                                        <input class="rating-input" type="radio" id="2-star-rating"
+                                                            name="star-rating" value="2">
+                                                        <label for="2-star-rating" class="star-rating star">
+                                                            <i class="fas fa-star d-inline-block"></i>
+                                                        </label>
 
-                            <!-- star 2 -->
-                            <input class="rating-input" type="radio" id="2-star-rating" name="star-rating" value="2">
-                            <label for="2-star-rating" class="star-rating star">
-                                <i class="fas fa-star d-inline-block"></i>
-                            </label>
+                                                        <!-- star 1 -->
+                                                        <input class="rating-input" type="radio" id="1-star-rating"
+                                                            name="star-rating" value="1">
+                                                        <label for="1-star-rating" class="star-rating star">
+                                                            <i class="fas fa-star d-inline-block"></i>
+                                                        </label>
 
-                            <!-- star 1 -->
-                            <input class="rating-input" type="radio" id="1-star-rating" name="star-rating" value="1">
-                            <label for="1-star-rating" class="star-rating star">
-                                <i class="fas fa-star d-inline-block"></i>
-                            </label>
+                                                    </div>
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-mdb-input-init class="form-outline">
+                                            <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+                                            <label class="form-label" for="textAreaExample">What is your view?</label>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                                class="btn btn-success">Xóa</button>
+                                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                                class="btn btn-danger">
+                                                Gửi <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
+        </section>
 
-        </div>
+        <section>
+            <div class=" py-5 text-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-11 col-lg-9 col-xl-7">
+                        <div class="d-flex flex-start mb-4">
+                            <img class="rounded-circle shadow-1-strong me-3"
+                                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar"
+                                width="65" height="65" />
+                            <div class="card w-100">
+                                <div class="card-body p-4">
+                                    <div class="">
+
+                                        <h5>Johny Cash</h5>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+
+                                        <p class="small">3 hours ago</p>
+                                        <p>
+                                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque
+                                            ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus
+                                            viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+                                            Donec lacinia congue felis in faucibus ras purus odio, vestibulum in
+                                            vulputate at, tempus viverra turpis.
+                                        </p>
+
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <a href="#!" class="link-muted me-2"><i
+                                                        class="fas fa-thumbs-up me-1"></i>132</a>
+                                                <a href="#!" class="link-muted"><i
+                                                        class="fas fa-thumbs-down me-1"></i>15</a>
+                                            </div>
+                                            <a href="#!" class="link-muted"><i class="fas fa-reply me-1"></i>
+                                                Reply</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-start">
+                            <img class="rounded-circle shadow-1-strong me-3"
+                                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp" alt="avatar"
+                                width="65" height="65" />
+                            <div class="card w-100">
+                                <div class="card-body p-4">
+                                    <div class="">
+                                        <h5>Mindy Campbell</h5>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <p class="small">5 hours ago</p>
+                                        <p>
+                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
+                                            cumque doloribus dolorum dolor repellat nemo animi at iure autem fuga
+                                            cupiditate architecto ut quam provident neque, inventore nisi eos quas?
+                                        </p>
+
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <a href="#!" class="link-muted me-2"><i
+                                                        class="fas fa-thumbs-up me-1"></i>158</a>
+                                                <a href="#!" class="link-muted"><i
+                                                        class="fas fa-thumbs-down me-1"></i>13</a>
+                                            </div>
+                                            <a href="#!" class="link-muted"><i class="fas fa-reply me-1"></i>
+                                                Reply</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
 
