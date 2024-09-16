@@ -429,10 +429,54 @@
                             <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
                         </ul>
                     </div>
-                    <button class="btn btn-light me-5">
+
+
+                    <button type="button" class="btn btn-light me-5 dropdown-toggle" id="dropdownMenuButtonCart"
+                        data-bs-toggle="dropdown" aria-expanded="false">
 
                         <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
                     </button>
+
+                    <div class="dropdown-menu w-25 rounded" aria-labelledby="dropdownMenuButtonCart">
+                        <span class="ms-3">
+                            Sản phẩm mới thêm
+                        </span>
+
+                        <a class="dropdown-item d-flex justify-content-between" href="#">
+                            <div class="d-flex">
+
+                                <img src="https://placehold.co/90x50" class="me-2" alt="">
+                                <div class="text-wrap">Tên sản phẩm</div>
+                            </div>
+                            <div class="price">
+                                100.000 VND
+                            </div>
+                        </a>
+
+                        <a class="dropdown-item d-flex justify-content-between" href="#">
+                            <div class="d-flex">
+
+                                <img src="https://placehold.co/90x50" class="me-2" alt="">
+                                <div class="text-wrap">Tên sản phẩm</div>
+                            </div>
+                            <div class="price">
+                                100.000 VND
+                            </div>
+                        </a>
+
+                        <a class="dropdown-item d-flex justify-content-between" href="#">
+                            <div class="d-flex">
+
+                                <img src="https://placehold.co/90x50" class="me-2" alt="">
+                                <div class="text-wrap">Tên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩm</div>
+                            </div>
+                            <div class="price">
+                                100.000 VND
+                            </div>
+                        </a>
+
+                        <button class="btn cart-btn ms-3 mt-2">Xem giỏ hàng</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -553,6 +597,13 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.cart-btn {
+    background-color: #fbbfc0;
+    color: white;
+    border-radius: 0px;
+
+}
+
 .header-item:hover {
     cursor: pointer;
     text-decoration: underline;

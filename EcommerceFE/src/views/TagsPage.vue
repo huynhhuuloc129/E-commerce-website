@@ -5,13 +5,12 @@
         </div>
 
 
-
         <div class="container mb-5 mt-5 w-100">
 
             <h1 class="mb-5">
                 Các sản phẩm có nhãn
                 <span style="color: brown;" class="fw-bold">
-                    ASDFASDFSAF
+                    #ASDFASDFSAF
                 </span>
             </h1>
 
