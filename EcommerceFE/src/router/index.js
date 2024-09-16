@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/search/:content',
       name: 'search',
       component: () => import('../views/SearchPage.vue')
+    },
+    {
+      path: '/tag/:content',
+      name: 'tag',
+      component: () => import('../views/TagsPage.vue')
     }
   ]
 })

@@ -109,14 +109,12 @@
                     when the user activates the relevant trigger.
                 </div>
             </div>
-            <hr class="w-100">
 
             <div class="d-flex justify-content-end w-100">
                 <button class="cart-button me-3"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng</button>
                 <button class="buy-button">Mua ngay</button>
 
             </div>
-
         </div>
 
         <div class="container mb-5" style="width: 50vw; margin-top: 100px;">
@@ -256,12 +254,13 @@
                                         width="65" height="65" />
                                     <div class="w-100">
                                         <h5>Thêm bình luận</h5>
-                                        <div class="container-wrapper w-100">
-                                            <div class="container d-flex align-items-center justify-content-start mt-3 mb-3">
+                                        <div class="container-wrapper">
+                                            <div
+                                                class="container d-flex align-items-center justify-content-start ">
                                                 <div class="row justify-content-center">
 
                                                     <!-- star rating -->
-                                                    <div class="rating-wrapper p-2">
+                                                    <div class="rating-wrapper">
 
                                                         <!-- star 5 -->
                                                         <input class="rating-input" type="radio" id="5-star-rating"
@@ -309,9 +308,9 @@
                                         </div>
                                         <div class="d-flex justify-content-between mt-3">
                                             <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-success">Xóa</button>
-                                            <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-danger">
+                                                class="btn btn-dark">Xóa</button>
+                                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn"
+                                                style="background-color: #fbbfc0; color: white;">
                                                 Gửi <i class="fas fa-long-arrow-alt-right ms-1"></i>
                                             </button>
                                         </div>
@@ -415,16 +414,7 @@ import CustomSelect from "../components/CustomSelect.vue";
 
 <style>
 .rating-wrapper {
-    align-self: center;
-    box-shadow: 7px 7px 25px rgba(198, 206, 237, .7),
-        -7px -7px 35px rgba(255, 255, 255, .7),
-        inset 0px 0px 4px rgba(255, 255, 255, .9),
-        inset 7px 7px 15px rgba(198, 206, 237, .8);
-    border-radius: 5rem;
-    display: inline-flex;
     direction: rtl !important;
-    margin-left: auto;
-
 
     .star-rating {
         color: rgba(198, 206, 237, .8);
