@@ -255,8 +255,7 @@
                                     <div class="w-100">
                                         <h5>Thêm bình luận</h5>
                                         <div class="container-wrapper">
-                                            <div
-                                                class="container d-flex align-items-center justify-content-start ">
+                                            <div class="container d-flex align-items-center justify-content-start ">
                                                 <div class="row justify-content-center">
 
                                                     <!-- star rating -->
@@ -410,6 +409,76 @@
 import { onMounted, ref } from 'vue';
 // @ts-ignore
 import CustomSelect from "../components/CustomSelect.vue";
+
+import productComponentServices from '@/services/productComponent.services';
+import componentServices from '@/services/component.services';
+import categoryServices from '@/services/category.services';
+import accountServices from '@/services/account.services';
+import productSevices from '@/services/product.sevices';
+import brandServices from '@/services/brand.services';
+import tagServices from '@/services/tag.services';
+
+
+const tags = ref([
+    {
+        tagId: 0,
+        name: '',
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+const products = ref([
+    {
+        proId: 0,
+        catId: 0,
+        brandId: 0,
+        name: '',
+        description: '',
+        unit: '',
+        unitPrice: 0,
+        quantityInStock: 0,
+        guide: '',
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+const categories = ref([
+    {
+        catId: 0,
+        name: '',
+        description: '',
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+const components = ref([
+    {
+        componentId: 0,
+        name: '',
+        description: '',
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+const brands = ref([
+    {
+        brandId: 0,
+        name: '',
+        created_at: '',
+        updated_at: '',
+        logo: ''
+    }
+])
+
+
+onMounted(async () => {
+    
+})
+
 </script>
 
 <style>

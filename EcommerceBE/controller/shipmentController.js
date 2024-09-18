@@ -1,6 +1,6 @@
-exports.getAllPX = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phieuxuat ORDER BY ngayTao DESC', (err, rows) => {
+        connection.query('SELECT * FROM shipment', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -8,7 +8,7 @@ exports.getAllPX = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    px: rows,
+                    shipment: rows,
                 },
             });
         });
@@ -19,9 +19,9 @@ exports.getAllPX = async (req, res) => {
         });
     }
 };
-exports.getOnePX = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM phieuxuat WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM shipment WHERE shipmentId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -29,7 +29,7 @@ exports.getOnePX = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    px: row,
+                    shipment: row,
                 },
             });
         });
@@ -43,16 +43,13 @@ exports.getOnePX = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.idTaiSan && req.body.idPhongBan && req.body.soLuong && req.body.ngayTao) {
+        if (req.body && req.body.name) {
 
-            const newPX = {
-                'idTaiSan': req.body.idTaiSan,
-                'idPhongBan': req.body.idPhongBan,
-                'soLuong': req.body.soLuong,
-                'ngayTao': req.body.ngayTao.toString().slice(0, 10)
+            const newshipment = {
+                'name': req.body.name
             }
 
-            connection.query('INSERT INTO phieuxuat SET ?', newPX, (err, row) => {
+            connection.query('INSERT INTO shipment SET ?', newshipment, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -62,15 +59,40 @@ exports.create = async (req, res) => {
                 } else
                     res.status(200).json({
                         status: true,
-                        title: 'Created Successfully.'
+                        title: 'Created Successfully.',
                     });
-            })
+            }
+            )
         } else {
             res.status(400).json({
                 errorMessage: 'Add proper parameter first!',
                 status: false
             });
         }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.delete = async (req, res) => {
+    try {
+        connection.query("DELETE FROM shipment WHERE shipmentId = ?", req.params.id, (err, row) => {
+            if (err) {
+                console.log(err)
+                res.status(400).json({
+                    errorMessage: err,
+                    status: false
+                });
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Delete Successfully.'
+                });
+        }
+        )
     } catch (err) {
         res.status(404).json({
             status: 'fail',

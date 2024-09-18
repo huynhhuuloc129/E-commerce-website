@@ -1,6 +1,6 @@
-exports.getAllTBTT = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM thietbithaythe', (err, rows) => {
+        connection.query('SELECT * FROM selected_product', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -8,7 +8,7 @@ exports.getAllTBTT = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    tbtt: rows,
+                    sProducts: rows,
                 },
             });
         });
@@ -19,9 +19,9 @@ exports.getAllTBTT = async (req, res) => {
         });
     }
 };
-exports.getOneTBTT = async (req, res) => {
+exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM thietbithaythe WHERE id = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM selected_product WHERE selectedProductId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -29,7 +29,7 @@ exports.getOneTBTT = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    tbtt: row,
+                    sProducts: row,
                 },
             });
         });
@@ -41,17 +41,15 @@ exports.getOneTBTT = async (req, res) => {
     }
 };
 
-
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.ten && req.body.soLuong) {
+        if (req.body && req.body.name) {
 
-            const newTBTT = {
-                'ten': req.body.ten,
-                'soLuong': req.body.soLuong,
+            const newSelectedProduct = {
+                'name': req.body.name
             }
 
-            connection.query('INSERT INTO thietbithaythe SET ?', newTBTT, (err, row) => {
+            connection.query('INSERT INTO selected_product SET ?', newSelectedProduct, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -81,7 +79,7 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        connection.query("DELETE FROM thietbithaythe WHERE id = ?", req.params.id, (err, row) => {
+        connection.query("DELETE FROM selected_product WHERE selectedProductId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
                 res.status(400).json({
