@@ -25,25 +25,25 @@ class Product_TagService {
     }
   }
 
-//   async create(data: any) {
-//     try {
-//       const resp = await this.api.post(
-//         "http://localhost:3000/api/donvibanhang",
-//         data
-//       );
-//       return resp.data;
-//     } catch (err: any) {
-//       handlingError(err);
-//     }
-//   }
+  async create(data: any) {
+    try {
+      const resp = await this.api.post(
+        "http://localhost:3000/api/product-tags",
+        data
+      );
+      return resp.data;
+    } catch (err: any) {
+      handlingError(err);
+    }
+  }
 
-//   async delete(id: number) {
-//     try {
-//       return await this.api.delete("/donvibanhang/" + id);
-//     } catch (err) {
-//       handlingError(err);
-//     }
-//   }
+  async delete(id: number) {
+    try {
+      return await this.api.delete("/product-tags/" + id);
+    } catch (err) {
+      handlingError(err);
+    }
+  }
 }
 
 export default new Product_TagService();

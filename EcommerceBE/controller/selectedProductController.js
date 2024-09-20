@@ -43,10 +43,12 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.proId  && req.body.shoppingCartId && req.body.orderId) {
 
             const newSelectedProduct = {
-                'name': req.body.name
+                'proId': req.body.proId,
+                'shoppingCartId': req.body.shoppingCartId,
+                'orderId': req.body.orderId
             }
 
             connection.query('INSERT INTO selected_product SET ?', newSelectedProduct, (err, row) => {

@@ -43,13 +43,10 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.ngayTao && req.body.idTaiSan && req.body.idPhongBan && req.body.tinhTrang) {
+        if (req.body && req.body.accountId) {
 
             const newPS = {
-                'ngayTao': req.body.ngayTao,
-                'idTaiSan': req.body.idTaiSan,
-                'idPhongBan': req.body.idPhongBan,
-                'tinhTrang': req.body.tinhTrang,
+              'accountId': req.body.accountId,
             }
 
             connection.query('INSERT INTO phieusua SET ?', newPS, (err, row) => {

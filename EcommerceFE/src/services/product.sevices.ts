@@ -25,25 +25,25 @@ class ProductService {
     }
   }
 
-//   async create(data: any) {
-//     try {
-//       const resp = await this.api.post(
-//         "http://localhost:3000/api/donvibanhang",
-//         data
-//       );
-//       return resp.data;
-//     } catch (err: any) {
-//       handlingError(err);
-//     }
-//   }
+  async create(data: any) {
+    try {
+      const resp = await this.api.post(
+        "http://localhost:3000/api/products",
+        data
+      );
+      return resp.data;
+    } catch (err: any) {
+      handlingError(err);
+    }
+  }
 
-//   async delete(id: number) {
-//     try {
-//       return await this.api.delete("/donvibanhang/" + id);
-//     } catch (err) {
-//       handlingError(err);
-//     }
-//   }
+  async delete(id: number) {
+    try {
+      return await this.api.delete("/products/" + id);
+    } catch (err) {
+      handlingError(err);
+    }
+  }
 }
 
 export default new ProductService();

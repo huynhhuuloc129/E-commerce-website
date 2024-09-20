@@ -43,10 +43,15 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.shippingAddress && req.body.shippingType && req.body.shipped && req.body.shippedDate && req.body.shipmentTracking && req.body.orderId) {
 
             const newshipment = {
-                'name': req.body.name
+                'shippingAddress': req.body.shippingAddress,
+                'shippingType': req.body.shippingType,
+                'shipped': req.body.shipped,
+                'shippedDate': req.body.shippedDate,
+                'shipmentTracking': req.body.shipmentTracking,
+                'orderId': req.body.shippingAddress
             }
 
             connection.query('INSERT INTO shipment SET ?', newshipment, (err, row) => {

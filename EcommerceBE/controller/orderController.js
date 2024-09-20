@@ -43,10 +43,15 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.accountId && req.body.shipmentId && req.body.totalPrice && req.body.shippingPrice && req.body.orderDate && req.body.paymentId) {
 
             const newOrder = {
-                'name': req.body.name
+                'accountId': req.body.accountId,
+                'shipmentId': req.body.shipmentId,
+                'totalPrice': req.body.totalPrice,
+                'shippingPrice': req.body.shippingPrice,
+                'orderDate': req.body.orderDate,
+                'paymentId': req.body.paymentId
             }
 
             connection.query('INSERT INTO order SET ?', newOrder, (err, row) => {

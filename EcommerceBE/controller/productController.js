@@ -41,13 +41,19 @@ exports.getOne = async (req, res) => {
     }
 };
 
-
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.ten) {
+        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.unitPrice && req.body.quantityInStock && req.body.guide) {
 
             const newLTS = {
-                'ten': req.body.ten,
+                'catId': req.body.catId,
+                'brandId': req.body.brandId,
+                'name': req.body.name,
+                'description': req.body.description,
+                'unit': req.body.unit,
+                'unitPrice': req.body.unitPrice,
+                'quantityInStock': req.body.quantityInStock,
+                'guide': req.body.guide
             }
 
             connection.query('INSERT INTO product SET ?', newLTS, (err, row) => {

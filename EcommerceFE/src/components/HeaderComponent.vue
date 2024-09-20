@@ -425,6 +425,7 @@
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="#">Tài khoản cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Admin</a></li>
                             <li><a class="dropdown-item" href="#">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
                         </ul>

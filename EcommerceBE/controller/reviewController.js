@@ -43,10 +43,15 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.proId  && req.body.accountId && req.body.username && req.body.content && req.body.star) {
 
             const newReview = {
-                'name': req.body.name
+                'proId': req.body.proId,
+                'accountId': req.body.accountId,
+                'username': req.body.username,
+                'content': req.body.content,
+                'star': req.body.star             
+
             }
 
             connection.query('INSERT INTO review SET ?', newReview, (err, row) => {

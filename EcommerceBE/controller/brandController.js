@@ -43,10 +43,11 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.name && req.body.logo) {
 
             const newBrand = {
-                'name': req.body.name
+                'name': req.body.name,
+                'logo': req.body.logo
             }
 
             connection.query('INSERT INTO brand SET ?', newBrand, (err, row) => {
