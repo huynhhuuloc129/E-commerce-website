@@ -53,25 +53,47 @@ exports.create = async (req, res) => {
                 'name': req.body.name
             }
 
-            connection.query('INSERT INTO tag SET ?', newTag, (err, row) => {
+            connection.query('SELECT * FROM tag WHERE name = ?', newTag.name, async (err, row) => {
                 if (err) {
-                    console.log(err)
-                    res.status(400).json({
-                        errorMessage: err,
-                        status: false
+                    res.status(500).json({
+                        status: 'fail',
+                        message: err,
                     });
-                } else
-                    res.status(200).json({
-                        status: true,
-                        title: 'Created Successfully.'
-                    });
-            })
+                };
+    
+                console.log('Data received from Db');
+
+                if (row == undefined || row.length == 0) {
+
+                    connection.query('INSERT INTO tag SET ?', newTag, (err, row) => {
+                        if (err) {
+                            console.log(err)
+                            res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        } else
+                            res.status(200).json({
+                                status: true,
+                                title: 'Created Successfully.'
+                            });
+                    })
+                    } else {
+                        // console.log(`UserName ${req.body.username} Already Exist!`);
+                        res.status(400).json({
+                            errorMessage: `Tag name ${req.body.name} already exist!`,
+                            status: false
+                        });
+                    }
+            });
         } else {
             res.status(400).json({
                 errorMessage: 'Add proper parameter first!',
                 status: false
             });
         }
+
+
     } catch (err) {
         res.status(404).json({
             status: 'fail',

@@ -420,18 +420,19 @@
                                 <div class="modal-body d-flex flex-column w-100">
                                     <div class="d-flex w-100 justify-content-between mb-3">
                                         <label for="tag-name">Tên thể loại:</label>
-                                        <input class="w-75 form-control" type="text" id="tag-name" required :v-model="newCategory.name">
+                                        <input class="w-75 form-control" type="text" id="tag-name" required
+                                            v-model="newCategory.name">
                                     </div>
 
                                     <div class="d-flex w-100 justify-content-between">
                                         <label for="tag-name">Mô tả:</label>
-                                        <input class="w-75 form-control" type="text" id="tag-name" required :v-model="newCategory.description">
+                                        <input class="w-75 form-control" type="text" id="tag-name" required
+                                            v-model="newCategory.description">
                                     </div>
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                    <button type="button" class="btn btn-primary" @click="addCategory()">Thêm</button>
                                 </div>
                             </div>
                         </div>
@@ -445,7 +446,7 @@
                                     <th style="width: 15%;" scope="col">Ngày tạo</th>
                                     <th scope="col">Tên</th>
                                     <th scope="col">Mô tả</th>
-                                    <th style="width: 10%;" scope="col"></th>
+                                    <th style="width: 15%;" scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -453,11 +454,41 @@
                                     <td>{{ cat.created_at.slice(0, 10) }}</td>
                                     <td>{{ cat.name }}</td>
                                     <td>{{ cat.description }}</td>
-                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                            href="">Chỉnh sửa</a></td>
+                                    <td class="d-flex justify-content-around"><a class="btn btn-sm"
+                                            style="background-color: #fbbfc0; color: white" href="">Chỉnh sửa</a>
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteCategory" @click="choosenCategory = cat.catId">
+                                            Xóa
+                                        </button>
+
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="deleteCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="deleteCategoryLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteCategoryLabel">Modal title
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa loại sản phẩm này?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                @click="deleteCategory()">Xóa</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -483,14 +514,15 @@
                                 <div class="modal-body text-start d-flex">
                                     <div class="d-flex w-100 justify-content-between mb-3">
                                         <label for="tag-name">Tên nhãn:</label>
-                                        <input class="w-75 form-control" type="text" id="tag-name" :v-model="newTagName" required>
+                                        <input class="w-75 form-control" type="text" id="tag-name" v-model="newTagName"
+                                            required>
                                     </div>
 
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                        @click="addTag()">Thêm</button>
                                 </div>
                             </div>
                         </div>
@@ -502,20 +534,49 @@
                                 <tr class="text-dark">
                                     <th class="fw-bold" style="width: 15%;" scope="col">Ngày tạo</th>
                                     <th class="fw-bold" scope="col">Tên</th>
-                                    <th style="width: 10%;" scope="col"></th>
+                                    <th style="width: 15%;" scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="tag in tags" :key="tag.tagId">
                                     <td>{{ tag.created_at.slice(0, 10) }}</td>
                                     <td class="text-capitalize">{{ tag.name }}</td>
-                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                            href="">Chỉnh sửa</a></td>
+                                    <td class="d-flex justify-content-around"><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chỉnh sửa</a>
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteTag" @click="choosenTag = tag.tagId">
+                                            Xóa
+                                        </button>
+
+                                    </td>
 
                                 </tr>
 
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="deleteTag" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="deleteTagLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteTagLabel">Modal title
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa loại sản phẩm này?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                @click="deleteTag()">Xóa</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -530,6 +591,7 @@ import categoryServices from '@/services/category.services';
 import tagServices from '@/services/tag.services';
 
 import { ref, onMounted } from 'vue';
+import Swal from 'sweetalert2';
 
 const tags = ref([{
     tagId: 0,
@@ -551,6 +613,104 @@ const newCategory = ref({
     name: '',
     description: ''
 })
+
+const choosenCategory = ref(0)
+
+async function deleteCategory() {
+    try {
+
+        await categoryServices.delete(choosenCategory.value);
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Xóa loại thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Xóa loại thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
+async function addCategory() {
+    try {
+        if (newCategory.value.name == '' || newCategory.value.description == '') throw "Vui lòng nhập đầy đủ thông tin!"
+
+        let resp = await categoryServices.create(newCategory.value);
+
+        if (resp == undefined) throw "Loại đã tồn tại."
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Thêm loại thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Thêm loại thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
+const choosenTag = ref(0)
+
+async function deleteTag() {
+    try {
+
+        await tagServices.delete(choosenTag.value);
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Xóa nhãn thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Xóa nhãn thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
+async function addTag() {
+    try {
+        if (newTagName.value == '') throw "Vui lòng nhập tên nhãn!"
+
+        let resp = await tagServices.create(newTagName.value);
+
+        if (resp == undefined) throw "Nhãn đã tồn tại."
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Thêm nhãn thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Thêm nhãn thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
 
 onMounted(async () => {
     try {

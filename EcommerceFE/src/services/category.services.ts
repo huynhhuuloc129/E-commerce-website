@@ -28,7 +28,7 @@ class CategoryService {
   async create(data: any) {
     try {
       const resp = await this.api.post(
-        "http://localhost:3000/api/category",
+        "http://localhost:3000/api/categories",
         data
       );
       return resp.data;
@@ -39,7 +39,7 @@ class CategoryService {
 
   async delete(id: number) {
     try {
-      return await this.api.delete("/category/" + id);
+      return await this.api.delete("/categories/" + id);
     } catch (err) {
       handlingError(err);
     }

@@ -41,6 +41,7 @@ exports.getOne = async (req, res) => {
     }
 };
 
+
 exports.create = async (req, res) => {
     try {
         if (req.body && req.body.name && req.body.description) {
@@ -50,26 +51,47 @@ exports.create = async (req, res) => {
                 'description': req.body.description
             }
 
-            connection.query('INSERT INTO category SET ?', newCategory, (err, row) => {
+            connection.query('SELECT * FROM category WHERE name = ?', newCategory.name, async (err, row) => {
                 if (err) {
-                    console.log(err)
-                    res.status(400).json({
-                        errorMessage: err,
-                        status: false
+                    res.status(500).json({
+                        status: 'fail',
+                        message: err,
                     });
-                } else
-                    res.status(200).json({
-                        status: true,
-                        title: 'Created Successfully.',
-                    });
-            }
-            )
+                };
+    
+                console.log('Data received from Db');
+
+                if (row == undefined || row.length == 0) {
+
+                    connection.query('INSERT INTO category SET ?', newCategory, (err, row) => {
+                        if (err) {
+                            console.log(err)
+                            res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        } else
+                            res.status(200).json({
+                                status: true,
+                                title: 'Created Successfully.'
+                            });
+                    })
+                    } else {
+
+                        res.status(400).json({
+                            errorMessage: `Category name ${req.body.name} already exist!`,
+                            status: false
+                        });
+                    }
+            });
         } else {
             res.status(400).json({
                 errorMessage: 'Add proper parameter first!',
                 status: false
             });
         }
+
+
     } catch (err) {
         res.status(404).json({
             status: 'fail',
