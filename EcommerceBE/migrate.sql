@@ -215,6 +215,73 @@ INSERT INTO Brand (name) VALUES ('lemonade');
 INSERT INTO Brand (name) VALUES ('judydoll');
 INSERT INTO Brand (name) VALUES ('senka');
 
+INSERT INTO Category (name, description) VALUES ('Dưỡng da', 'a');
+INSERT INTO Category (name, description) VALUES ('Trang điểm', 'a');
+INSERT INTO Category (name, description) VALUES ('chăm sóc, nhuộm tóc', 'a');
+
+
+INSERT INTO Tag (name) VALUES ('tinh chất dưỡng da');
+INSERT INTO Tag (name) VALUES ('son thỏi');
+INSERT INTO Tag (name) VALUES ('thuốc nhuộm tóc vĩnh viễn');
+INSERT INTO Tag (name) VALUES ('màu tóc sống động');
+INSERT INTO Tag (name) VALUES ('phủ bạc cho tóc');
+INSERT INTO Tag (name) VALUES ('màu nâu');
+INSERT INTO Tag (name) VALUES ('tóc màu nâu sáng');
+INSERT INTO Tag (name) VALUES ('nhuộm tóc balayage');
+INSERT INTO Tag (name) VALUES ('tóc màu nâu ash brown');
+INSERT INTO Tag (name) VALUES ('tóc nâu');
+INSERT INTO Tag (name) VALUES ('kem nền');
+INSERT INTO Tag (name) VALUES ('vẻ láng mịn');
+INSERT INTO Tag (name) VALUES ('phấn nền dạng lỏng (kem nền)');
+INSERT INTO Tag (name) VALUES ('màu be');
+INSERT INTO Tag (name) VALUES ('trung bình');
+INSERT INTO Tag (name) VALUES ('kem che khuyết điểm');
+INSERT INTO Tag (name) VALUES ('trang điểm mịn lì');
+INSERT INTO Tag (name) VALUES ('kem trang điểm');
+INSERT INTO Tag (name) VALUES ('không gây dị ứng');
+INSERT INTO Tag (name) VALUES ('trang điểm tự nhiên');
+INSERT INTO Tag (name) VALUES ('phấn nền dạng nén');
+INSERT INTO Tag (name) VALUES ('nhẹ');
+INSERT INTO Tag (name) VALUES ('kem lót');
+INSERT INTO Tag (name) VALUES ('trang điểm căng bóng');
+INSERT INTO Tag (name) VALUES ('kem dưỡng ẩm dành cho mặt');
+INSERT INTO Tag (name) VALUES ('chống lão hóa');
+INSERT INTO Tag (name) VALUES ('da xỉn màu');
+INSERT INTO Tag (name) VALUES ('gel');
+INSERT INTO Tag (name) VALUES ('da khô');
+INSERT INTO Tag (name) VALUES ('da thường');
+INSERT INTO Tag (name) VALUES ('mặt nạ mặt');
+INSERT INTO Tag (name) VALUES ('nếp nhăn sâu');
+INSERT INTO Tag (name) VALUES ('da thiếu nước');
+INSERT INTO Tag (name) VALUES ('độ săn chắc của da');
+INSERT INTO Tag (name) VALUES ('cấp ẩm cho da');
+INSERT INTO Tag (name) VALUES ('tinh chất serum');
+INSERT INTO Tag (name) VALUES ('da lão hóa');
+INSERT INTO Tag (name) VALUES ('kem dưỡng ban ngày');
+INSERT INTO Tag (name) VALUES ('nước cân bằng da');
+INSERT INTO Tag (name) VALUES ('kem dưỡng da ban đêm');
+INSERT INTO Tag (name) VALUES ('da không đều màu');
+INSERT INTO Tag (name) VALUES ('các khuyết điểm của da');
+INSERT INTO Tag (name) VALUES ('đốm nâu');
+INSERT INTO Tag (name) VALUES ('kem');
+INSERT INTO Tag (name) VALUES ('da hỗn hợp');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

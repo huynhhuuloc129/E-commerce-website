@@ -1,5 +1,6 @@
 <template>
-    <div style="height: 300px;"></div>
+    <div class="mb-5" style="height: 150px; background-color: #fbbfc0;">
+    </div>
     <div class=" bg-white d-flex p-0 mb-5" style="width: 100vw;">
         <!-- Spinner Start -->
         <!-- <div id="spinner"
@@ -12,12 +13,12 @@
 
 
         <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3 ms-5">
+        <div class="sidebar ms-5">
             <nav class="navbar bg-light navbar-light">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>DASHMIN</h3>
+                <a href="index.html" class="navbar-brand mx-4">
+                    <h3 style="color: #fbbfc0;"><i class="fa fa-hashtag me-2"></i>DASHMIN</h3>
                 </a>
-                <div class="d-flex align-items-center ms-4 mb-4">
+                <div class="d-flex align-items-center ms-4 ">
                     <div class="position-relative">
                         <img class="rounded-circle" alt="" style="width: 40px; height: 40px;">
                         <div
@@ -64,131 +65,43 @@
         <!-- Content Start -->
         <div class="content w-100 me-5">
             <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-                </a>
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">John Doe</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <!-- Navbar End -->
 
 
             <!-- Sale & Revenue Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid px-4">
                 <div class="row g-4">
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <i class="fa fa-chart-line fa-3x " style="color: #fbbfc0"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Sale</p>
+                                <p class="mb-2">Lượt bán hôm nay</p>
                                 <h6 class="mb-0">$1234</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <i class="fa fa-chart-bar fa-3x" style="color: #fbbfc0"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Sale</p>
+                                <p class="mb-2">Tổng lượt bán</p>
                                 <h6 class="mb-0">$1234</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <i class="fa fa-chart-area fa-3x" style="color: #fbbfc0"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Revenue</p>
+                                <p class="mb-2">Doanh thu hôm nay</p>
                                 <h6 class="mb-0">$1234</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <i class="fa fa-chart-pie fa-3x" style="color: #fbbfc0"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Revenue</p>
+                                <p class="mb-2">Tổng doanh thu</p>
                                 <h6 class="mb-0">$1234</h6>
                             </div>
                         </div>
@@ -204,8 +117,7 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Worldwide Sales</h6>
-                                <a href="">Show All</a>
+                                <h6 class="mb-0">Thống kê lượt bán</h6>
                             </div>
                             <canvas id="worldwide-sales"></canvas>
                         </div>
@@ -213,8 +125,7 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Salse & Revenue</h6>
-                                <a href="">Show All</a>
+                                <h6 class="mb-0">Thống kê doanh thu</h6>
                             </div>
                             <canvas id="salse-revenue"></canvas>
                         </div>
@@ -228,67 +139,65 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Recent Salse</h6>
-                        <a href="">Show All</a>
+                        <h6 class="mb-0">Lượt bán gần đây</h6>
                     </div>
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-dark">
-                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice</th>
-                                    <th scope="col">Customer</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">Ngày</th>
+                                    <th scope="col">Mã hóa đơn</th>
+                                    <th scope="col">Khách hàng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th style="width: 10%;" scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
                                     <td>01 Jan 2045</td>
                                     <td>INV-0123</td>
                                     <td>Jhon Doe</td>
                                     <td>$123</td>
                                     <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
                                 </tr>
                                 <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
                                     <td>01 Jan 2045</td>
                                     <td>INV-0123</td>
                                     <td>Jhon Doe</td>
                                     <td>$123</td>
                                     <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
                                 </tr>
                                 <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
                                     <td>01 Jan 2045</td>
                                     <td>INV-0123</td>
                                     <td>Jhon Doe</td>
                                     <td>$123</td>
                                     <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
                                 </tr>
                                 <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
                                     <td>01 Jan 2045</td>
                                     <td>INV-0123</td>
                                     <td>Jhon Doe</td>
                                     <td>$123</td>
                                     <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
                                 </tr>
                                 <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
                                     <td>01 Jan 2045</td>
                                     <td>INV-0123</td>
                                     <td>Jhon Doe</td>
                                     <td>$123</td>
                                     <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -304,7 +213,7 @@
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <h6 class="mb-0">Messages</h6>
+                                <h6 class="mb-0">Đánh giá</h6>
                                 <a href="">Show All</a>
                             </div>
                             <div class="d-flex align-items-center border-bottom py-3">
@@ -419,63 +328,246 @@
             </div>
             <!-- Widgets End -->
 
-
-            <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-light rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                            Distributed By <a class="border-bottom" href="https://themewagon.com"
-                                target="_blank">ThemeWagon</a>
-                        </div>
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Các sản phẩm gần đây</h6>
+                    </div>
+                    <button class="btn btn-dark fw-bold w-100">+</button>
+
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th scope="col">Ngày</th>
+                                    <th scope="col">Mã hóa đơn</th>
+                                    <th scope="col">Khách hàng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th style="width: 10%;" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
+                                </tr>
+                                <tr>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
+                                </tr>
+                                <tr>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
+                                </tr>
+                                <tr>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chi tiết</a></td>
+                                </tr>
+                                <tr>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm btn-primary"
+                                            style="background-color: #fbbfc0; color: white" href="">Chi tiết</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <!-- Footer End -->
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Danh sách thể loại</h6>
+                    </div>
+                    <button class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
+                        data-bs-target="#addCategoryModal">+</button>
+
+                    <!-- Modal -->
+                    <div class=" modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog-centered modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addCategoryModalLabel">Thêm thể loại</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body d-flex flex-column w-100">
+                                    <div class="d-flex w-100 justify-content-between mb-3">
+                                        <label for="tag-name">Tên thể loại:</label>
+                                        <input class="w-75 form-control" type="text" id="tag-name" required :v-model="newCategory.name">
+                                    </div>
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label for="tag-name">Mô tả:</label>
+                                        <input class="w-75 form-control" type="text" id="tag-name" required :v-model="newCategory.description">
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th style="width: 15%;" scope="col">Ngày tạo</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Mô tả</th>
+                                    <th style="width: 10%;" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="cat in categories" :key="cat.catId">
+                                    <td>{{ cat.created_at.slice(0, 10) }}</td>
+                                    <td>{{ cat.name }}</td>
+                                    <td>{{ cat.description }}</td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chỉnh sửa</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Danh sách các nhãn dán</h6>
+                    </div>
+                    <button type="button" class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
+                        data-bs-target="#addTagModal">+</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog-centered modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addTagModalLabel">Thêm nhãn</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start d-flex">
+                                    <div class="d-flex w-100 justify-content-between mb-3">
+                                        <label for="tag-name">Tên nhãn:</label>
+                                        <input class="w-75 form-control" type="text" id="tag-name" :v-model="newTagName" required>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th class="fw-bold" style="width: 15%;" scope="col">Ngày tạo</th>
+                                    <th class="fw-bold" scope="col">Tên</th>
+                                    <th style="width: 10%;" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="tag in tags" :key="tag.tagId">
+                                    <td>{{ tag.created_at.slice(0, 10) }}</td>
+                                    <td class="text-capitalize">{{ tag.name }}</td>
+                                    <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            href="">Chỉnh sửa</a></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Content End -->
 
 
-        <!-- Back to Top -->
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import categoryServices from '@/services/category.services';
+import tagServices from '@/services/tag.services';
+
+import { ref, onMounted } from 'vue';
+
+const tags = ref([{
+    tagId: 0,
+    name: '',
+    created_at: '',
+    updated_at: ''
+}])
+
+const categories = ref([{
+    catId: 0,
+    name: '',
+    description: '',
+    created_at: '',
+    updated_at: ''
+}])
+
+const newTagName = ref('')
+const newCategory = ref({
+    name: '',
+    description: ''
+})
+
+onMounted(async () => {
+    try {
+        let respTag = await tagServices.getAll()
+
+        let respCat = await categoryServices.getAll()
+
+        tags.value = respTag.data.tag
+        categories.value = respCat.data.category
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 </script>
 <style>
-#header {
-    color: black;
-    background-color: white;
-
-    #text-search-input {
-        color: black;
-        border-bottom: 1px solid black;
-    }
-
-    #text-search-input::placeholder {
-        color: black;
-    }
-
-    #search-button {
-        color: black;
-    }
-
-    .header-item {
-        color: black;
-    }
-
-    #header-title {
-        color: black;
-        text-decoration: none;
-        background-color: transparent;
-    }
-}
-.nav-item{
+.nav-item {
     margin-left: 25px;
 }
 </style>
