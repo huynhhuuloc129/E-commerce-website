@@ -425,7 +425,7 @@
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="#">Tài khoản cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Admin</a></li>
+                            <li v-if="currentUser != null && currentUser.username=='admin'"><a class="dropdown-item" href="http://localhost:5173/admin">Admin</a></li>
                             <li><a class="dropdown-item" href="#">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
                         </ul>

@@ -10,6 +10,7 @@ router
 router
   .route('/:id')
   .get(catController.getOne)
-  .delete(catController.delete);
+  .delete(catController.delete)
+  .patch(catController.update);
 
 module.exports = router;

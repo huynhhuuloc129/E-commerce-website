@@ -454,12 +454,14 @@
                                     <td>{{ cat.created_at.slice(0, 10) }}</td>
                                     <td>{{ cat.name }}</td>
                                     <td>{{ cat.description }}</td>
-                                    <td class="d-flex justify-content-around"><a class="btn btn-sm"
-                                            style="background-color: #fbbfc0; color: white" href="">Chỉnh sửa</a>
+                                    <td class="d-flex justify-content-around"><button class="btn btn-sm"
+                                            style="background-color: #fbbfc0; color: white"
+                                            @click="choosenCategory = cat" data-bs-toggle="modal"
+                                            data-bs-target="#editCategoryModal">Chỉnh sửa</button>
 
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteCategory" @click="choosenCategory = cat.catId">
+                                            data-bs-target="#deleteCategory" @click="choosenCategory = cat">
                                             Xóa
                                         </button>
 
@@ -468,6 +470,35 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- edit Modal -->
+            <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog-centered modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCategoryModalLabel">Chỉnh sửa loại sản phẩm</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start d-flex flex-column">
+                            <div class="d-flex w-100 justify-content-between mb-3">
+                                <label for="tag-name-edit">Tên loại:</label>
+                                <input class="w-75 form-control" type="text" id="tag-name-edit"
+                                    v-model="choosenCategory.name" required>
+                            </div>
+
+                            <label for="cat-description-edit">Mô tả:</label>
+
+                            <textarea class="form-control" name="" id="cat-description-edit"
+                                v-model="choosenCategory.description"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                @click="editCategory()">Cập nhật</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -541,21 +572,49 @@
                                 <tr v-for="tag in tags" :key="tag.tagId">
                                     <td>{{ tag.created_at.slice(0, 10) }}</td>
                                     <td class="text-capitalize">{{ tag.name }}</td>
-                                    <td class="d-flex justify-content-around"><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                            href="">Chỉnh sửa</a>
+                                    <td class="d-flex justify-content-around">
+                                        <button class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                            data-bs-toggle="modal" data-bs-target="#editTagModal"
+                                            @click="choosenTag = tag">
+                                            Chỉnh sửa
+                                        </button>
 
-                                        <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteTag" @click="choosenTag = tag.tagId">
+                                            data-bs-target="#deleteTag" @click="choosenTag = tag">
                                             Xóa
                                         </button>
 
                                     </td>
-
                                 </tr>
 
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- edit Modal -->
+            <div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog-centered modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editTagModalLabel">Chỉnh sửa nhãn</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start d-flex">
+                            <div class="d-flex w-100 justify-content-between mb-3">
+                                <label for="tag-name-edit">Tên nhãn:</label>
+                                <input class="w-75 form-control" type="text" id="tag-name-edit"
+                                    v-model="choosenTag.name" required>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="editTag()">Cập
+                                nhật</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -614,12 +673,18 @@ const newCategory = ref({
     description: ''
 })
 
-const choosenCategory = ref(0)
+const choosenCategory = ref({
+    catId: 0,
+    name: '',
+    description: '',
+    created_at: '',
+    updated_at: ''
+})
 
 async function deleteCategory() {
     try {
 
-        await categoryServices.delete(choosenCategory.value);
+        await categoryServices.delete(choosenCategory.value.catId);
 
         Swal.fire({
             title: "Thành công!",
@@ -663,12 +728,41 @@ async function addCategory() {
     }
 }
 
-const choosenTag = ref(0)
+
+async function editCategory() {
+    try {
+        if (choosenCategory.value.name == '' || choosenCategory.value.description == '') throw "Vui lòng nhập tên loại!"
+
+        await categoryServices.update(choosenCategory.value.catId, choosenCategory.value.name, choosenCategory.value.description);
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Cập nhật loại thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Cập nhật loại thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
+const choosenTag = ref({
+    tagId: 0,
+    name: '',
+    created_at: '',
+    updated_at: ''
+})
 
 async function deleteTag() {
     try {
 
-        await tagServices.delete(choosenTag.value);
+        await tagServices.delete(choosenTag.value.tagId);
 
         Swal.fire({
             title: "Thành công!",
@@ -706,6 +800,29 @@ async function addTag() {
         Swal.fire({
             title: "Thất bại!",
             text: "Thêm nhãn thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
+async function editTag() {
+    try {
+        if (choosenTag.value.name == '') throw "Vui lòng nhập tên nhãn!"
+
+        await tagServices.update(choosenTag.value.tagId, choosenTag.value.name);
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Cập nhật nhãn thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Cập nhật nhãn thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
         });

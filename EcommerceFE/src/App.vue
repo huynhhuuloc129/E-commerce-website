@@ -3,9 +3,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </header>
   <div id="app">
-    <HeaderComponent></HeaderComponent>
+    <HeaderComponent v-if="!$route.meta.hideNavbar"></HeaderComponent>
     <RouterView />
-    <FooterComponent></FooterComponent>
+    <FooterComponent v-if="!$route.meta.hideNavbar"></FooterComponent>
   </div>
   <footer>
   </footer>

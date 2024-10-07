@@ -17,12 +17,18 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginPage.vue')
+      component: () => import('../views/LoginPage.vue'),
+      meta: {
+        hideNavbar: true
+      }
     },
     {
       path: '/signup',
       name: 'signup',
-      component: () => import('../views/SignUpPage.vue')
+      component: () => import('../views/SignUpPage.vue'),
+      meta: {
+        hideNavbar: true
+      }
     },
     {
       path: '/cart',

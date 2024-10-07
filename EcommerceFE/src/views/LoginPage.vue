@@ -45,7 +45,7 @@
                                             <div class="form-floating mb-3">
                                                 <input type="text" v-model="inputFormLogin.username"
                                                     class="form-control border-0 border-bottom" name="email" id="email"
-                                                    placeholder="name@example.com" required>
+                                                    placeholder="name@example.com" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="email" class="form-label">Tài khoản</label>
                                             </div>
                                         </div>
@@ -53,7 +53,7 @@
                                             <div class="form-floating mb-3">
                                                 <input type="password" v-model="inputFormLogin.password"
                                                     class="form-control border-0 border-bottom" name="password"
-                                                    id="password" value="" placeholder="Password" required>
+                                                    id="password" value="" placeholder="Password" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="password" class="form-label">Mật khẩu</label>
                                             </div>
                                         </div>
@@ -187,11 +187,6 @@ onMounted(() => {
 </script>
 
 <style>
-#header,
-#footer {
-    display: none;
-}
-
 #login-section {
 
     background-image: url('../assets/loginCover1.png');

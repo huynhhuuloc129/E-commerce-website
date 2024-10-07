@@ -47,7 +47,7 @@
                                             <div class="form-floating">
                                                 <input type="text" v-model="inputFormRegister.username"
                                                     class="form-control border-0 border-bottom" name="username"
-                                                    id="username" placeholder="name@example.com" required>
+                                                    id="username" placeholder="name@example.com" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="username" class="form-label">Tài khoản</label>
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                                             <div class="form-floating">
                                                 <input type="password" v-model="inputFormRegister.password"
                                                     class="form-control border-0 border-bottom" name="password"
-                                                    id="password" placeholder="Password" required>
+                                                    id="password" placeholder="Password" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="password" class="form-label">Mật khẩu</label>
                                             </div>
                                         </div>
@@ -63,7 +63,7 @@
                                             <div class="form-floating">
                                                 <input type="text" v-model="inputFormRegister.name"
                                                     class="form-control border-0 border-bottom" name="name" id="name"
-                                                    placeholder="Họ và tên" required>
+                                                    placeholder="Họ và tên" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="name" class="form-label">Họ tên</label>
                                             </div>
                                         </div>
@@ -71,7 +71,7 @@
                                             <div class="form-floating">
                                                 <input type="email" class="form-control border-0 border-bottom"
                                                     v-model="inputFormRegister.email" name="email" id="email"
-                                                    placeholder="Email" required>
+                                                    placeholder="Email" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="email" class="form-label">Email</label>
                                             </div>
                                         </div>
@@ -81,7 +81,7 @@
                                                 <div class="form-floating">
                                                     <input type="text" v-model="inputFormRegister.phone"
                                                         class="form-control border-0 border-bottom" name="phone"
-                                                        id="phone" placeholder="Số điện thoại" required>
+                                                        id="phone" placeholder="Số điện thoại" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                     <label for="phone" class="form-label">Điện thoại</label>
                                                 </div>
                                             </div>
@@ -90,7 +90,7 @@
                                                 <div class="form-floating">
                                                     <input type="date" v-model="inputFormRegister.birthDate"
                                                         class="form-control border-0 border-bottom" name="date"
-                                                        id="date" placeholder="Số điện thoại" required>
+                                                        id="date" placeholder="Số điện thoại" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                     <label for="date" class="form-label">Ngày sinh</label>
                                                 </div>
                                             </div>
@@ -101,7 +101,7 @@
                                             <div class="form-floating">
                                                 <input type="text" v-model="inputFormRegister.billingAddress"
                                                     class="form-control border-0 border-bottom" name="address"
-                                                    id="address" placeholder="Địa chỉ nhận hàng" required>
+                                                    id="address" placeholder="Địa chỉ nhận hàng" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="address" class="form-label">Địa chỉ nhận hàng</label>
                                             </div>
                                         </div>
@@ -198,11 +198,6 @@ onMounted(() => {
 </script>
 
 <style>
-#header,
-#footer {
-    display: none;
-}
-
 #register-section {
     background-image: url('../assets/loginCover1.png');
     height: 100vh;

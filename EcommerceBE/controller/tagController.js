@@ -126,55 +126,94 @@ exports.delete = async (req, res) => {
     }
 };
 
+exports.update = async (req, res) => {
+    try {
+        if (req.body && req.body.name) {
+
+            const newTag = {
+                'tagId': req.params.id,
+                'name': req.body.name
+            }
+
+            let sql = `UPDATE tag SET 
+                name = '${newTag.name}'
+            WHERE tagId = ${newTag.tagId}`
+
+            connection.query(sql, (err, row) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                } else
+                    res.status(200).json({
+                        status: true,
+                        title: 'Update Successfully.'
+                    });
+            }
+            )
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 // exports.update = async (req, res) => {
 //     try {
 //         if (req.body) {
 //             let count = 0
 //             let sql = ''
-//             if (req.body.maNhanVien != null && req.body.maNhanVien.length > 0) {
-//                 count++;
-//                 sql += `maNhanVien = '${req.body.maNhanVien}' `
-//             }
-//             if (req.body.hoTen != null && req.body.hoTen.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `hoTen = '${req.body.hoTen}' `
-//             }
-//             if (req.body.email != null && req.body.email.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `email = '${req.body.email}' `
-//             }
-//             if (req.body.sdt != null && req.body.sdt.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `sdt = '${req.body.sdt}' `
-//             }
-//             if (req.body.ngaySinh != null && req.body.ngaySinh.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `ngaySinh = '${req.body.ngaySinh}' `
-//             }
-//             if (req.body.avatar != null && req.body.avatar.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `avatar = '${req.body.avatar}' `
-//             }
-//             if (req.body.vaiTro != null && req.body.vaiTro.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `vaiTro = '${req.body.vaiTro}' `
-//             }
-//             if (req.body.idPhongBan != null && req.body.idPhongBan.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `idPhongBan = '${req.body.idPhongBan}' `
-//             }
-//             if (req.body.chucVu != null && req.body.chucVu.length > 0) {
-//                 if (count > 0) sql += ', '
-//                 count++;
-//                 sql += `chucVu = '${req.body.chucVu}' `
-//             }
+//             // if (req.body.maNhanVien != null && req.body.maNhanVien.length > 0) {
+//             //     count++;
+//             //     sql += `maNhanVien = '${req.body.maNhanVien}' `
+//             // }
+//             // if (req.body.hoTen != null && req.body.hoTen.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `hoTen = '${req.body.hoTen}' `
+//             // }
+//             // if (req.body.email != null && req.body.email.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `email = '${req.body.email}' `
+//             // }
+//             // if (req.body.sdt != null && req.body.sdt.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `sdt = '${req.body.sdt}' `
+//             // }
+//             // if (req.body.ngaySinh != null && req.body.ngaySinh.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `ngaySinh = '${req.body.ngaySinh}' `
+//             // }
+//             // if (req.body.avatar != null && req.body.avatar.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `avatar = '${req.body.avatar}' `
+//             // }
+//             // if (req.body.vaiTro != null && req.body.vaiTro.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `vaiTro = '${req.body.vaiTro}' `
+//             // }
+//             // if (req.body.idPhongBan != null && req.body.idPhongBan.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `idPhongBan = '${req.body.idPhongBan}' `
+//             // }
+//             // if (req.body.chucVu != null && req.body.chucVu.length > 0) {
+//             //     if (count > 0) sql += ', '
+//             //     count++;
+//             //     sql += `chucVu = '${req.body.chucVu}' `
+//             // }
 
 //             sql = 'UPDATE nguoidung SET ' + sql + `WHERE id = ${req.body.id};`
 

@@ -40,6 +40,14 @@ class TagService {
       handlingError(err);
     }
   }
+
+  async update(id: number, name: string, ) {
+    return await axios.patch(`http://localhost:3000/api/tags/${id}`, {name: name}).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+}
 }
 
 export default new TagService();

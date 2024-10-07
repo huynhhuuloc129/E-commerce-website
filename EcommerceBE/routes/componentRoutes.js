@@ -10,6 +10,6 @@ router
 router
     .route('/:id')
     .get(compController.getOne)
-    .delete(compController.delete);
+    .delete(compController.delete)
 
 module.exports = router;

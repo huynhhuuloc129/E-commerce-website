@@ -10,6 +10,7 @@ router
 router
     .route('/:id')
     .get(tagController.getOne)
-    .delete(tagController.delete);
+    .delete(tagController.delete)
+    .patch(tagController.update);
 
 module.exports = router;

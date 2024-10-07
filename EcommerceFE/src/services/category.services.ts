@@ -44,6 +44,14 @@ class CategoryService {
       handlingError(err);
     }
   }
+
+  async update(id: number, name: string, description: string) {
+    return await axios.patch(`http://localhost:3000/api/categories/${id}`, {name: name, description: description}).then((res) => {
+    return res.data;
+      }).catch((err) => {
+          handlingError(err);
+      })
+  }
 }
 
 export default new CategoryService();
