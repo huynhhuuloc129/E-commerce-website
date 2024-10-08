@@ -51,7 +51,7 @@ const router = createRouter({
       component: () => import('../views/SearchPage.vue')
     },
     {
-      path: '/tag/:content',
+      path: '/tag/:id',
       name: 'tag',
       component: () => import('../views/TagsPage.vue')
     }

@@ -1,9 +1,6 @@
-const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
-
 exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM tag', (err, rows) => {
+        connection.query('SELECT * FROM type', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -11,7 +8,29 @@ exports.getAll = async (req, res) => {
                 status: 'success',
                 total: rows.length,
                 data: {
-                    tag: rows,
+                    type: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.getAllByProductId = async (req, res) => {
+    try {
+        connection.query('SELECT * FROM type WHERE productId = ?', req.params.id, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    type: rows,
                 },
             });
         });
@@ -25,7 +44,7 @@ exports.getAll = async (req, res) => {
 
 exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM tag WHERE tagId = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM type WHERE typeId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -33,7 +52,7 @@ exports.getOne = async (req, res) => {
                 status: 'success',
                 total: row.length,
                 data: {
-                    tag: row,
+                    type: row,
                 },
             });
         });
@@ -47,13 +66,16 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.name && req.body.productId && req.body.unitPrice && req.body.quantityInStock) {
 
-            const newTag = {
-                'name': req.body.name
+            const newType = {
+                'name': req.body.name,
+                'productId': req.body.productId,
+                'unitPrice': req.body.unitPrice,
+                'quantityInStock': req.body.quantityInStock
             }
 
-            connection.query('SELECT * FROM tag WHERE name = ?', newTag.name, async (err, row) => {
+            connection.query('SELECT * FROM type WHERE name = ?', newType.name, async (err, row) => {
                 if (err) {
                     res.status(500).json({
                         status: 'fail',
@@ -65,7 +87,7 @@ exports.create = async (req, res) => {
 
                 if (row == undefined || row.length == 0) {
 
-                    connection.query('INSERT INTO tag SET ?', newTag, (err, row) => {
+                    connection.query('INSERT INTO type SET ?', newType, (err, row) => {
                         if (err) {
                             console.log(err)
                             res.status(400).json({
@@ -81,7 +103,7 @@ exports.create = async (req, res) => {
                     } else {
                         // console.log(`UserName ${req.body.username} Already Exist!`);
                         res.status(400).json({
-                            errorMessage: `Tag name ${req.body.name} already exist!`,
+                            errorMessage: `Type ${req.body.name} already exist!`,
                             status: false
                         });
                     }
@@ -104,7 +126,7 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        connection.query("DELETE FROM tag WHERE tagId = ?", req.params.id, (err, row) => {
+        connection.query("DELETE FROM type WHERE typeId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
                 res.status(400).json({
@@ -130,14 +152,16 @@ exports.update = async (req, res) => {
     try {
         if (req.body && req.body.name) {
 
-            const newTag = {
-                'tagId': req.params.id,
-                'name': req.body.name
+            const newType = {
+                'typeId': req.body.id,
+                'name': req.body.name,
+                'unitPrice': req.body.unitPrice
             }
 
-            let sql = `UPDATE tag SET 
-                name = '${newTag.name}'
-            WHERE tagId = ${newTag.tagId}`
+            let sql = `UPDATE type SET 
+                name = '${newType.name}',
+                unitPrice = '${newType.unitPrice}'
+            WHERE typeId = ${newType.typeId}`
 
             connection.query(sql, (err, row) => {
                 if (err) {

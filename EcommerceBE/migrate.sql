@@ -1,4 +1,6 @@
 USE sunny_cosmetic;
+ALTER TABLE product AUTO_INCREMENT = 1
+ALTER TABLE type AUTO_INCREMENT = 1
 
 CREATE TABLE IF NOT EXISTS Brand (
     brandId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -48,23 +50,25 @@ CREATE TABLE IF NOT EXISTS Product (
       ON UPDATE CASCADE
       ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS Type (
     typeId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
     productId int NOT NULL,
     unitPrice int NOT NULL,
     quantityInStock int NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (productId)
-      REFERENCES Product (productId)
+      REFERENCES Product (proId)
       ON UPDATE CASCADE
       ON DELETE CASCADE
-
 );
 
 CREATE TABLE IF NOT EXISTS Product_Tag (
     productTagId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    name varchar(255) NOT NULL,
     tagId int NOT NULL,
     productId int NOT NULL,
     FOREIGN KEY (tagId)
@@ -558,6 +562,39 @@ Không sử dụng son quá lâu, thay đổi
 Không sử dụng son giả, son đã hết hạn
 Thường xuyên tẩy tế bào chết cho môi để màu son lên chuẩn nhất');
 
+INSERT INTO Product (catId, brandId, name, description, unit, guide, maintain, note) VALUES (2, 25,'FOIF Daily Velvet Tint', 'Son Kem Lì Hàn Quốc Thuần Chay, Mịn Mượt Lâu Trôi FOIF Daily Velvet Tint là son kem lì thuộc dòng 
+Velvet Tint của thương hiệu FOIF - tân binh khủng long của nhà Merzy. Sản phẩm nổi bật với chất son 
+mịn môi, lên màu chuẩn cùng bảng màu đa dạng thời thượng, giúp đôi môi bạn luôn xinh đẹp suốt 
+cả ngày, hứa hẹn sẽ khuấy đảo giới trẻ làm đẹp. ','Thỏi', 'Bước 1: Bạn nên dưỡng ẩm và làm mềm môi trước khi thoa son
+Bước 2: Sử dụng đầu cọ thoa son lên môi theo hình dáng và khuôn môi của bạn. Bắt đầu từ giữa mô
+i và thoa ra hai bên. Nếu muốn màu sắc tươi sáng hơn, bạn có thể dặm thêm một lớp son nữa.
+Bước 3: Dùng đầu ngón tay hoặc cọ nhỏ nhẹ nhàng tán đều son trên môi để tạo hiệu ứng mờ và đều 
+màu.
+Bước 4: Nếu cảm thấy môi khô hoặc cần thêm độ bóng, bạn có thể dặm thêm một lớp son mỏng phủ lên
+ trên.', 'Tránh để sản phẩm tiếp xúc trực tiếp 
+với ánh sáng, những nơi có nhiệt độ 
+quá thấp, hoặc nhiệt độ quá cao', 'Chọn màu son hợp với tông da
+Không sử dụng son giả, son đã hết hạn
+Thường xuyên tẩy tế bào chết cho môi để màu son lên chuẩn nhất');
+
+INSERT INTO Product (catId, brandId, name, description, unit, guide, maintain, note) VALUES (2, 24,'Merzy Dreamy Late Night Mellow Tint', 'Son Kem Lì Merzy Dreamy Late Night Mellow Tint 4g là son kem lì thuộc dòng Mellow tint của thương 
+hiệu Merzy trở lại với một "vỏ ngoài" mới mẻ mang đậm cá tính của riêng bạn, chất son mịn mượt nhẹ 
+tênh cùng độ bền màu cao và bảng màu mang sắc màu của màn đêm êm dịu, tạo hiệu ứng giúp đôi 
+môi bạn luôn rạng rỡ căng đầy và bền màu kể cả giữa màn đêm mơ màng ','Thỏi', 'Bước 1: Bạn nên dưỡng ẩm và làm mềm môi trước khi thoa son
+Bước 2: Sử dụng đầu cọ thoa son lên môi theo hình dáng và khuôn môi của bạn. Bắt đầu từ giữa mô
+i và thoa ra hai bên. Nếu muốn màu sắc tươi sáng hơn, bạn có thể dặm thêm một lớp son nữa.
+Bước 3: Dùng đầu ngón tay hoặc cọ nhỏ nhẹ nhàng tán đều son trên môi để tạo hiệu ứng mờ và đều 
+màu.
+Bước 4: Nếu cảm thấy môi khô hoặc cần thêm độ bóng, bạn có thể dặm thêm một lớp son mỏng phủ lên
+ trên.', 'Đậy nắp kín sau khi sử dụng để 
+tránh bụi bẩn và khô son.
+Để son ở nơi khô ráo, thoáng mát,
+ tránh ánh nắng trực tiếp và nhiệt độ cao.
+Không sử dụng son quá lâu, thay đổi
+ son mới sau hạn sử dụng.', 'Chọn màu son hợp với tông da
+Không sử dụng son giả, son đã hết hạn
+Thường xuyên tẩy tế bào chết cho môi để màu son lên chuẩn nhất');
+
 INSERT INTO Product (catId, brandId, name, description, unit, guide, maintain, note) VALUES (2, 29,'Lilybyred Glassy Layer Fixing Tint', 'Son Tint Lì, Dưỡng Ẩm Cho Đôi Môi Lilybyred Glassy Layer Fixing Tint là son tint đến từ thương hiệu 
 Lilybyred giúp tạo hiệu ứng đôi môi căng bóng rạng rỡ những vẫn trong trẻo cùng độ bám màu tốt và 
 bảng màu thời thượng mang đến cho bạn cảm giác đôi môi luôn căng mọng tràn đầy sức sống và tươi 
@@ -725,27 +762,442 @@ quá thấp, hoặc nhiệt độ quá cao', 'Chọn màu son hợp với tông 
 Không sử dụng son giả, son đã hết hạn
 Thường xuyên tẩy tế bào chết cho môi để màu son lên chuẩn nhất');
 
-INSERT INTO Product (catId, brandId, name, description, unit, guide, maintain, note) VALUES (2, 27,'Merzy Bite The Beat Mellow Tint', 'Son Kem Lì, Siêu Mịn Merzy Bite The Beat Mellow Tint 4g là son kem lì thuộc thương hiệu Merzy với chất
- son được cải tiến rõ rệt so với dòng cũ khi kết cấu có dạng kem xốp mịn, lướt nhẹ trên môi, cảm giác 
-môi sẽ mịn mượt ngay khi chạm son. Khả năng lên màu cực kỳ chuẩn, cho bạn đôi môi xinh xắn và 
-quyến rũ, thu hút.','Thỏi', 'Bước 1: Bạn nên dưỡng ẩm và làm mềm môi trước khi thoa son
-Bước 2: Sử dụng đầu cọ thoa son lên môi theo hình dáng và khuôn môi của bạn. Bắt đầu từ giữa mô
-i và thoa ra hai bên. Nếu muốn màu sắc tươi sáng hơn, bạn có thể dặm thêm một lớp son nữa.
-Bước 3: Dùng đầu ngón tay hoặc cọ nhỏ nhẹ nhàng tán đều son trên môi để tạo hiệu ứng mờ và đều 
-màu.
-Bước 4: Nếu cảm thấy môi khô hoặc cần thêm độ bóng, bạn có thể dặm thêm một lớp son mỏng phủ lên
- trên.', 'Tránh để sản phẩm tiếp xúc trực tiếp 
-với ánh sáng, những nơi có nhiệt độ 
-quá thấp, hoặc nhiệt độ quá cao', 'Chọn màu son hợp với tông da
-Không sử dụng son giả, son đã hết hạn
-Thường xuyên tẩy tế bào chết cho môi để màu son lên chuẩn nhất');
 
 
+-- 1
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('Nude Pink - Hồng tự nhiên', 1, 202000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('Jelly - Cam sữa ngọt ngào', 1, 202000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('Amber - Hồng trà hổ phách', 1, 202000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('Hawthorn - Đỏ ánh cam trẻ trung', 1, 202000, 100);
+
+-- 2
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NUCADAMIA', 2, 169000, 100);
+
+-- 3
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('FIG FIG', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JUJUBE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('APPLE BROWN', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LITCHI', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NUDY PEANUT', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PINK PUMKIN', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CHERRY BOMB', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('EAT DOTORI', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BERRY SHOT', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('FUNKY MELON', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CORNI SODA', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PLUME COKE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MULLED PEACH', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ALMOND ROSE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DARK COCONUT', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DEEP SANGRIA', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('POMELO SKIN', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NUCADAMIA', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PEELING ANGDOO', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BARE GRAPE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VERY BERRY PINK', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PINK POPSICLE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BARE FIG', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PAPAYA CHAM', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BARE APRICOT', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BARE BERRY SMOOTHIE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BARE VINE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MELLOW PEAR', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BREEZE FIG', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ODD GRAPE', 3, 144000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PEACH HONEY B', 3, 144000, 100);
+
+-- 4
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('V6 GREEN', 4, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('V6 GREEN HOLIDAY', 4, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('V6 SIREN', 4, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('V6 SIREN HOLIDAY', 4, 149000, 100);
+
+-- 5
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M2', 5, 142000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M4', 5, 142000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M11', 5, 142000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M13', 5, 142000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M17', 5, 142000, 100);
+
+-- 6
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ĐỎ THẪM', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ĐỎ GẠCH', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ĐỎ NÂU', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CÁNH HỒNG KHÔ', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('HỒNG NÂU TRẦM', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('HỒNG MAUVE', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CAM NUDE', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('HỒNG ROSE', 6, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NÂU ĐỎ ĐẤT', 6, 169000, 100);
+
+-- 7
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('01', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('02', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('03', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('04', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('05', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('06', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('07', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('08', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('09', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('10', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('11', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('12', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('13', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('14', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('15', 7, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('16', 7, 174000, 100);
+
+-- 8
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL1', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL2', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL3', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL5', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL6', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL7', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL8', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL9', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL10', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL11', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL12', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL4', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL13', 8, 249000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SL14', 8, 249000, 100);
+
+-- 9
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CM1', 9, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CM2', 9, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CM3', 9, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CM4', 9, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CM5', 9, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CM6', 9, 159000, 100);
+
+-- 10
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GT0', 10, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GT1', 10, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GT2', 10, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GT3', 10, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GT4', 10, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GT5', 10, 169000, 100);
+
+-- 11
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT1', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT2', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT3', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT4', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT5', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT6', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT7', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT8', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT9', 11, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JT10', 11, 119000, 100);
+
+-- 12
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('COCO NUDE', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LOVEY PINK', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SORBET BALM', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('HIPPIE BERRY', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NOUGAT SAND', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('KAYA FIG', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MAUVE WHIP', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CORALIA', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PEONIES', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NU BEIGE', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BUFFY CORAL', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VEILED ROSE', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SCOTCH NUDE', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DEAR APPLE', 12, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PECAN BREW', 12, 189000, 100);
+
+-- 13
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('01', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('02', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('03', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('04', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('05', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('07', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('08', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('12', 13, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('13', 13, 174000, 100);
+
+-- 14
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AM1', 14, 139000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AM2', 14, 139000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AM3', 14, 139000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AM4', 14, 139000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AM5', 14, 139000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AM6', 14, 139000, 100);
+
+-- 15
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VT1', 15, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VT2', 15, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VT3', 15, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VT4', 15, 119000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VT5', 15, 119000, 100);
+
+-- 16
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M11', 16, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M12', 16, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M13', 16, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M14', 16, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M15', 16, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M17', 16, 159000, 100);
 
 
+-- 17
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('01', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('02', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('04', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('07', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('08', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('09', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('12', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('13', 17, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('16', 17, 129000, 100);
+
+-- 18
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('METEOR TRACK - KHÔNG MÀU', 18, 169000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SANHO CRUSH - HỒNG SAN HÔ', 18, 169000, 100);
+
+-- 19
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LB1', 19, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LB2', 19, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LB3', 19, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LB4', 19, 189000, 100);
+
+-- 20
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NU BEIGE', 20, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BUFFY CORAL', 20, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VEILED ROSE', 20, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SCOTCH NUDE', 20, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DEAR APPLE', 20, 189000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PECAN BREW', 20, 189000, 100);
+
+-- 21
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('TENDERLY PEACH', 21, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DOVEY PINK', 21, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('KAYA BEIGE', 21, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('FIG BREEZE', 21, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('TAUPEY SHADE', 21, 174000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('UNDER CHIL', 21, 174000, 100);
+
+-- 22
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JOYFUL', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PECAN TARTE', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BURNT HEART', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('WITTY', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DEEPSOUL', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('FIZZ', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ICY', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ANNE SHIRLEY', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('RUSK RUSK', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BURNY NUDE', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('TOAST NUDE', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PETAL TASSEL', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('EARL GREY SHAWL', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BERRY KNIT', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VILLAIN VEST', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('GRAIN NUDE', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VINTAGE TAUPE', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('FADE RED', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('NERD PINK', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PEPPER CHERRY', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('OAK WOOD', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SPICY NUT', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MAUVE NOIR', 22, 149000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DEEP PORT', 22, 149000, 100);
+
+-- 23
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('VANILLA TEA', 23, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('JASMINE TEA', 23, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ROSE TEA', 23, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('EARL GREY TEA', 23, 129000, 100);
+
+-- 24
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DUSTY PINK', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ALL THAT JAZZ', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SIHOUETTE', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BEFORE SUNSET', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('EVENING', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AWESOME (NUDE)', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ENVY ME (NUDE)', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SUNLIGHT', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SOMETHING', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('RED CARPET', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('RED HEAT', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('TANNING RED', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('RED SURFER', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('RED DIVE', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ADORABLE (NUDE)', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SHELL NUDE (NUDE)', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('PINK SAND (NUDE)', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SWEET P', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MIDNIGHT', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DAZZLE RED', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SMOKED BEIGE', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MAUVE BEANS', 24, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('RUDDY NUDE', 24, 129000, 100);
+
+-- 25
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('DUSTY PINK', 25, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ALL THAT JAZZ', 25, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SIHOUETTE', 25, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BEFORE SUNSET', 25, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('EVENING', 25, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('AWESOME (NUDE)', 25, 129000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('ENVY ME (NUDE)', 25, 129000, 100);
+
+-- 26
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('LIME', 26, 57000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('BERRY', 26, 57000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('POMEGRANATE', 26, 57000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('APRICOT', 26, 57000, 100);
+
+-- 27
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('FRENCH NUDE', 27, 199000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('HEY WOODY', 27, 199000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('SO RED', 27, 199000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('CALMING CORAL', 27, 199000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('MAUVE MOVE', 27, 199000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('WE ARE NUSE', 27, 199000, 100);
+
+-- 28
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M1', 28, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M2', 28, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M3', 28, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M4', 28, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M5', 28, 159000, 100);
+INSERT INTO Type (name, productId, unitPrice, quantityInStock) VALUES ('M6', 28, 159000, 100);
 
 
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 1);
+INSERT INTO Product_Tag (tagId, productId) VALUES (53, 1);
+INSERT INTO Product_Tag (tagId, productId) VALUES (54, 1);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 2);
+INSERT INTO Product_Tag (tagId, productId) VALUES (55, 2);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 3);
+INSERT INTO Product_Tag (tagId, productId) VALUES (55, 3);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 4);
+INSERT INTO Product_Tag (tagId, productId) VALUES (56, 4);
+INSERT INTO Product_Tag (tagId, productId) VALUES (57, 4);
+INSERT INTO Product_Tag (tagId, productId) VALUES (58, 4);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 5);
+INSERT INTO Product_Tag (tagId, productId) VALUES (59, 5);
+INSERT INTO Product_Tag (tagId, productId) VALUES (60, 5);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 6);
+INSERT INTO Product_Tag (tagId, productId) VALUES (61, 6);
+INSERT INTO Product_Tag (tagId, productId) VALUES (62, 6);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 7);
+INSERT INTO Product_Tag (tagId, productId) VALUES (56, 7);
+INSERT INTO Product_Tag (tagId, productId) VALUES (63, 7);
+INSERT INTO Product_Tag (tagId, productId) VALUES (60, 7);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 8);
+INSERT INTO Product_Tag (tagId, productId) VALUES (56, 8);
+INSERT INTO Product_Tag (tagId, productId) VALUES (60, 8);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 9);
+INSERT INTO Product_Tag (tagId, productId) VALUES (56, 9);
+INSERT INTO Product_Tag (tagId, productId) VALUES (65, 9);
+INSERT INTO Product_Tag (tagId, productId) VALUES (57, 9);
 
 
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 10);
+INSERT INTO Product_Tag (tagId, productId) VALUES (66, 10);
+INSERT INTO Product_Tag (tagId, productId) VALUES (57, 10);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 11);
+INSERT INTO Product_Tag (tagId, productId) VALUES (67, 11);
+INSERT INTO Product_Tag (tagId, productId) VALUES (68, 11);
+INSERT INTO Product_Tag (tagId, productId) VALUES (57, 11);
+INSERT INTO Product_Tag (tagId, productId) VALUES (70, 11);
 
 
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 12);
+INSERT INTO Product_Tag (tagId, productId) VALUES (69, 12);
+INSERT INTO Product_Tag (tagId, productId) VALUES (70, 12);
+INSERT INTO Product_Tag (tagId, productId) VALUES (71, 12);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 13);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 13);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 13);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 13);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 14);
+INSERT INTO Product_Tag (tagId, productId) VALUES (55, 14);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 15);
+INSERT INTO Product_Tag (tagId, productId) VALUES (56, 15);
+INSERT INTO Product_Tag (tagId, productId) VALUES (60, 15);
+INSERT INTO Product_Tag (tagId, productId) VALUES (58, 15);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 16);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 16);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 16);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 16);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 17);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 17);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 17);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 17);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 18);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 18);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 18);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 18);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 19);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 19);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 19);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 19);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 20);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 20);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 20);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 20);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 21);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 21);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 21);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 21);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 22);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 22);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 22);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 22);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 23);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 23);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 23);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 23);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 24);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 24);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 24);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 24);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 25);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 25);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 25);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 25);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 26);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 26);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 26);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 26);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 27);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 27);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 27);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 27);
+
+INSERT INTO Product_Tag (tagId, productId) VALUES (52, 28);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 28);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 28);
+INSERT INTO Product_Tag (tagId, productId) VALUES (, 28);

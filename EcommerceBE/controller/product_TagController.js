@@ -19,6 +19,51 @@ exports.getAll = async (req, res) => {
     });
     }
 };
+
+exports.getAllByProductId = async (req, res) => {
+    try {
+        connection.query('SELECT * FROM product_tag WHERE productId = ?', req.params.id , (err,rows) => {
+            if(err) throw err;
+            
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    product_tag: rows,
+                },
+            });
+        });
+    }  catch (err) {
+    res.status(404).json({
+        status: 'fail',
+        message: err,
+    });
+    }
+};
+
+exports.getAllByTagId = async (req, res) => {
+    try {
+        connection.query('SELECT * FROM product_tag WHERE tagId = ?', req.params.id , (err,rows) => {
+            if(err) throw err;
+            
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    product_tag: rows,
+                },
+            });
+        });
+    }  catch (err) {
+    res.status(404).json({
+        status: 'fail',
+        message: err,
+    });
+    }
+};
+
 exports.getOne = async (req, res) => {
     try {
         connection.query('SELECT * FROM product_tag WHERE productTagId = ?', req.params.id, (err,row) => {

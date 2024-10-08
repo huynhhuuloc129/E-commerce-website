@@ -9,8 +9,26 @@ class Product_TagService {
   }
   async getAll() {
     try {
-      const chts = await this.api.get("/product-tags");
-      return chts.data;
+      const productTags = await this.api.get("/product-tags");
+      return productTags.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getAllByProductId(id: number) {
+    try {
+      const product_tags = await this.api.get("/product-tags/product/" + id);
+      return product_tags.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getAllByTagId(id: number) {
+    try {
+      const product_tags = await this.api.get("/product-tags/tag/" + id);
+      return product_tags.data;
     } catch (err) {
       handlingError(err);
     }
@@ -18,8 +36,8 @@ class Product_TagService {
 
   async getOne(id: number) {
     try {
-      const chts = await this.api.get("/product-tags/" + id);
-      return chts.data;
+      const productTags = await this.api.get("/product-tags/" + id);
+      return productTags.data;
     } catch (err) {
       handlingError(err);
     }

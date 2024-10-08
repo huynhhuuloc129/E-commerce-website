@@ -1,12 +1,14 @@
 <template>
     <div id="header" class="w-100 text-center">
-        <form action="" id="search-input">
-            <input type="text" id="text-search-input" placeholder="Tìm sản phẩm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="search-button"
-                class="bi bi-search ms-2" viewBox="0 0 16 16">
-                <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-            </svg>
+        <form @submit="pushToSearchPage($event, searchContent)" id="search-input">
+            <input type="text" v-model="searchContent" id="text-search-input" placeholder="Tìm sản phẩm">
+            <button type="submit" style="background-color: transparent; border: 0px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="search-button"
+                    class="bi bi-search ms-2" viewBox="0 0 16 16">
+                    <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                </svg>
+            </button>
         </form>
         <h1 class="text-center fw-bold mb-4 text-uppercase"><a id="header-title" href="http://localhost:5173">Sunny
                 Cosmetic</a>
@@ -425,7 +427,8 @@
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="#">Tài khoản cá nhân</a></li>
-                            <li v-if="currentUser != null && currentUser.username=='admin'"><a class="dropdown-item" href="http://localhost:5173/admin">Admin</a></li>
+                            <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
+                                    href="http://localhost:5173/admin">Admin</a></li>
                             <li><a class="dropdown-item" href="#">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
                         </ul>
@@ -469,7 +472,8 @@
                             <div class="d-flex">
 
                                 <img src="https://placehold.co/90x50" class="me-2" alt="">
-                                <div class="text-wrap">Tên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩm</div>
+                                <div class="text-wrap">Tên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩm
+                                </div>
                             </div>
                             <div class="price">
                                 100.000 VND
@@ -503,6 +507,8 @@ const brands2 = ref([] as string[]);
 const brands3 = ref([] as string[]);
 const brands4 = ref([] as string[]);
 
+const searchContent = ref('')
+
 const currentUser = ref({
     accountId: 0,
     username: "",
@@ -531,7 +537,10 @@ function pushToSignUp(e: any) {
     router.push({ name: "signup" });
 }
 
-
+function pushToSearchPage(e: any, content: string) {
+    e.preventDefault();
+    router.push({ name: "search", params: { content: content } });
+}
 function pushToLogin(e: any) {
     e.preventDefault();
     router.push({ name: "login" });

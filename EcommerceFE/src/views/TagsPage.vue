@@ -9,14 +9,15 @@
 
             <h1 class="mb-5">
                 Các sản phẩm có nhãn
-                <span style="color: brown;" class="fw-bold">
-                    #ASDFASDFSAF
+                <span style="color: brown;" class="fw-bold text-uppercase">
+                    #{{ tag.name }}
                 </span>
             </h1>
 
             <div class="text-center w-100 justify-content-center">
 
-                <div class="example-2 card card-tag mb-5 me-5 ms-5">
+                <div v-for="(product, index) in products" :key="product.proId"
+                    class="example-2 card card-tag mb-5 me-5">
                     <div class="wrapper">
                         <div class="header">
                             <div class="date">
@@ -34,146 +35,10 @@
                         </div>
                         <div class="data">
                             <div class="content text-white">
-                                <span class="author">Jane Doe</span>
-                                <h1 class="title"><a href="#">Stranger Things: The sound of the Upside Down</a></h1>
-                                <p class="text">The antsy bingers of Netflix will eagerly anticipate the digital release
-                                    of the Survive soundtrack, out today.</p>
-                                <a href="#" class="button">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper">
-                        <div class="header">
-                            <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="data">
-                            <div class="content text-white">
-                                <span class="author">Jane Doe</span>
-                                <h1 class="title"><a href="#">Stranger Things: The sound of the Upside Down</a></h1>
-                                <p class="text">The antsy bingers of Netflix will eagerly anticipate the digital release
-                                    of the Survive soundtrack, out today.</p>
-                                <a href="#" class="button">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper">
-                        <div class="header">
-                            <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="data">
-                            <div class="content text-white">
-                                <span class="author">Jane Doe</span>
-                                <h1 class="title"><a href="#">Stranger Things: The sound of the Upside Down</a></h1>
-                                <p class="text">The antsy bingers of Netflix will eagerly anticipate the digital release
-                                    of the Survive soundtrack, out today.</p>
-                                <a href="#" class="button">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper">
-                        <div class="header">
-                            <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="data">
-                            <div class="content text-white">
-                                <span class="author">Jane Doe</span>
-                                <h1 class="title"><a href="#">Stranger Things: The sound of the Upside Down</a></h1>
-                                <p class="text">The antsy bingers of Netflix will eagerly anticipate the digital release
-                                    of the Survive soundtrack, out today.</p>
-                                <a href="#" class="button">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="example-2 card card-tag mb-5 me-5 ms-5">
-                    <div class="wrapper">
-                        <div class="header">
-                            <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="data">
-                            <div class="content text-white">
-                                <span class="author">Jane Doe</span>
-                                <h1 class="title"><a href="#">Stranger Things: The sound of the Upside Down</a></h1>
-                                <p class="text">The antsy bingers of Netflix will eagerly anticipate the digital release
-                                    of the Survive soundtrack, out today.</p>
-                                <a href="#" class="button">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper">
-                        <div class="header">
-                            <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="data">
-                            <div class="content text-white">
-                                <span class="author">Jane Doe</span>
-                                <h1 class="title"><a href="#">Stranger Things: The sound of the Upside Down</a></h1>
-                                <p class="text">The antsy bingers of Netflix will eagerly anticipate the digital release
-                                    of the Survive soundtrack, out today.</p>
-                                <a href="#" class="button">Read more</a>
+                                <span class="author text-uppercase">{{ brands[index].name }}</span>
+                                <h1 class="title"><a href="#">{{ product.name }}</a></h1>
+                                <p class="text" style="overflow: hidden;">{{ product.description }}</p>
+                                <a :href="'http://localhost:5173/products/' + product.proId"  class="button">Read more</a>
                             </div>
                         </div>
                     </div>
@@ -183,8 +48,102 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import product_tagServices from '@/services/product_tag.services';
+import tagServices from '@/services/tag.services';
+
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue';
+import productSevices from '@/services/product.sevices';
+import brandServices from '@/services/brand.services';
+
+
+const route = useRoute();
+const router = useRouter()
+
+const id = ref(0)
+
+const tag = ref({
+    tagId: 0,
+    name: '',
+    created_at: '',
+    updated_at: ''
+})
+
+const product_tags = ref([
+    {
+        productTagId: 0,
+        tagId: 0,
+        productId: 0,
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+const brands = ref([{
+    brandId: 0,
+    name: '',
+    created_at: '',
+    updated_at: '',
+    logo: ''
+}])
+
+const products = ref([{
+    proId: 0,
+    catId: 0,
+    brandId: 0,
+    name: '',
+    description: '',
+    unit: '',
+    guide: '',
+    created_at: '',
+    updated_at: '',
+    maintain: '',
+    note: ''
+}])
+
+function pushToWithId(name: string, id: number) {
+    router.push({
+        name: name,
+        params: { id: id }
+    })
+}
+
+
+onMounted(async () => {
+    try {
+        id.value = Number(route.params.id);
+        let respTag = await tagServices.getOne(id.value);
+
+        tag.value = respTag.data.tag[0];
+
+        let respProductTags = await product_tagServices.getAllByTagId(tag.value.tagId);
+        product_tags.value = respProductTags.data.product_tag;
+
+        let respProducts = []
+        for (let i = 0; i < product_tags.value.length; i++) {
+            let respProduct = await productSevices.getOne(product_tags.value[i].productId)
+
+            respProducts.push(respProduct.data.products[0])
+        }
+        products.value = respProducts;
+
+        let respBrands = []
+        for (let i = 0; i < products.value.length; i++) {
+            let respBrand = await brandServices.getOne(products.value[i].brandId)
+
+            respBrands.push(respBrand.data.brand[0])
+        }
+
+        brands.value = respBrands;
+
+        console.log(brands.value)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');

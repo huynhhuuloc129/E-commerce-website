@@ -22,5 +22,10 @@ router
   .route('/:id')
   .get(product_TagController.getOne)
   // .patch(product_TagController.update)
-
+router
+  .route('/product/:id')
+  .get(product_TagController.getAllByProductId)
+router
+  .route('/tag/:id')
+  .get(product_TagController.getAllByTagId)
 module.exports = router;

@@ -12,6 +12,7 @@ const prodCompRoutes = require('./routes/productComponentRoutes');
 const prodRoutes = require('./routes/productRoutes');
 const shopCartRoutes = require('./routes/shoppingCartRoutes');
 const tagRoutes = require('./routes/tagRoutes');
+const typeRoutes = require('./routes/typeRoutes');
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -24,6 +25,6 @@ app.use('/api/product-components', prodCompRoutes);
 app.use('/api/products', prodRoutes);
 app.use('/api/shopping-carts', shopCartRoutes);
 app.use('/api/tags', tagRoutes);
-
+app.use('/api/types', typeRoutes)
 
 module.exports = app;

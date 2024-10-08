@@ -3,9 +3,9 @@
         <div class="d-flex justify-content-center m-auto align-items-center"
             style="height: 550px; background-color: #EEEEEE;">
             <div>
-                Color Riche
+                {{ brand.name }}
                 <h1>
-                    Son lì Matte Son Mịn lì Cao cấp 129 I Lead
+                    {{ product.name }}
                 </h1>
             </div>
         </div>
@@ -57,10 +57,10 @@
             <hr class="w-100">
 
             <div class="w-100 d-flex align-items-center">
-                <CustomSelect :options="['go', 'python', 'rust', 'javascript']" :default="'go'" class="select me-5 " />
+                <CustomSelect :options="types" :default="types[0]" class="select me-5 " />
                 <div class="d-flex w-50 align-items-center">
                     <h5 class="me-3">Số lượng: </h5>
-                    <input class="form-control w-50" type="number">
+                    <input class="form-control w-50" type="number" min="0" max="100">
                 </div>
             </div>
             <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
@@ -73,8 +73,7 @@
 
             <div class="collapse" id="collapseExample">
                 <div>
-                    Some placeholder content for the collapse component. This panel is hidden by default but revealed
-                    when the user activates the relevant trigger.
+                    {{ product.description }}
                 </div>
             </div>
 
@@ -105,8 +104,9 @@
             </div>
             <div class="collapse" id="collapse2">
                 <div>
-                    Some placeholder content for the collapse component. This panel is hidden by default but revealed
-                    when the user activates the relevant trigger.
+                    <div v-for="guide in productGuide" :key="guide">
+                        {{ guide }}
+                    </div>
                 </div>
             </div>
 
@@ -118,21 +118,9 @@
         </div>
 
         <div class="container mb-5" style="width: 50vw; margin-top: 100px;">
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-            <button class="text-uppercase tag-button me-3 mt-2">Son môi</button>
-
+            <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2" @click="pushToWithId('tag', tag.tagId)">
+                {{ tag.name }}
+            </button>
         </div>
         <hr class="w-100">
 
@@ -411,6 +399,7 @@ import { onMounted, ref } from 'vue';
 import CustomSelect from "../components/CustomSelect.vue";
 
 import productComponentServices from '@/services/productComponent.services';
+import product_tagServices from '@/services/product_tag.services';
 import componentServices from '@/services/component.services';
 import categoryServices from '@/services/category.services';
 import accountServices from '@/services/account.services';
@@ -418,8 +407,57 @@ import productSevices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
 import tagServices from '@/services/tag.services';
 
+import { useRoute, useRouter } from 'vue-router'
+import typeServices from '@/services/type.services';
 
-const tags = ref([
+const id = ref(0);
+
+const route = useRoute();
+const router = useRouter()
+
+const product = ref({
+    proId: 0,
+    catId: 0,
+    brandId: 0,
+    name: '',
+    description: '',
+    unit: '',
+    guide: '',
+    created_at: '',
+    updated_at: '',
+    maintain: '',
+    note: ''
+})
+const productGuide = ref([] as string[])
+const brand = ref({
+    brandId: 0,
+    name: '',
+    created_at: '',
+    updated_at: '',
+    logo: ''
+})
+
+const types = ref([{
+    typeId: 0,
+    name: '',
+    productId: 0,
+    unitPrice: 0,
+    quantityInStock: 0,
+    created_at: '',
+    updated_at: ''
+}])
+
+const product_tags = ref([
+    {
+        productTagId: 0,
+        tagId: 0,
+        productId: 0,
+        created_at: '',
+        updated_at: ''
+    }
+])
+
+const tagsBelong = ref([
     {
         tagId: 0,
         name: '',
@@ -474,9 +512,47 @@ const brands = ref([
     }
 ])
 
+function pushToWithId(name: string, id: number) {
+    router.push({
+        name: name,
+        params: { id: id}
+    }) 
+}
 
 onMounted(async () => {
-    
+    try {
+        id.value = Number(route.params.id);
+
+        let respProduct = await productSevices.getOne(id.value)
+        product.value = respProduct.data.products[0]
+
+        productGuide.value = product.value.guide.split('\nBước ')
+        productGuide.value[0] = productGuide.value[0].replace('Bước 1', '1')
+
+        if (product.value.proId != 0) {
+            let respBrand = await brandServices.getOne(product.value.brandId)
+            brand.value = respBrand.data.brand[0]
+
+            let respType = await typeServices.getAllByProductId(product.value.proId);
+            types.value = respType.data.type
+
+            let respProductTags = await product_tagServices.getAllByProductId(product.value.proId);
+            product_tags.value = respProductTags.data.product_tag;
+
+            let respTags = []
+            for (let i=0; i< product_tags.value.length; i++) {
+                let respTag = await tagServices.getOne(product_tags.value[i].tagId)
+
+                respTags.push(respTag.data.tag[0])
+            }
+
+            tagsBelong.value = respTags;
+            console.log(tagsBelong.value)
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 </script>

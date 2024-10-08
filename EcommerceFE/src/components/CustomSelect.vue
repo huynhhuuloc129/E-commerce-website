@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between align-items-center me-3"
                 style="border-bottom: 3px solid black;">
 
-                {{ selected }}
+                {{ selected.name }}
 
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                     width="15" height="15" viewBox="0 0 256 256" xml:space="preserve">
@@ -25,12 +25,11 @@
             </div>
         </div>
         <div class="items" :class="{ selectHide: !open }">
-            <div v-for="(option, i) of options" :key="i" @click="
-                selected = option;
+            <div v-for="(option, i) of options" :key="i" @click="selected = option;
             open = false;
             $emit('input', option);
             ">
-                {{ option }}
+                {{ option.name }}
             </div>
         </div>
     </div>

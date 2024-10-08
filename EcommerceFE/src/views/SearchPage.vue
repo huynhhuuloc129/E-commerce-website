@@ -19,15 +19,30 @@
             <h1>
                 Không có kết quả
                 <span style="color: brown;" class="fw-bold">
-                    ASDFASDFSAF
+                    {{ content }}
                 </span>
             </h1>
         </div>
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+
+const content = ref('')
+onMounted(async () => {
+    try {
+        content.value =  route.params.content.toString();
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+</script>
 
 <style>
 .search-container-main {
