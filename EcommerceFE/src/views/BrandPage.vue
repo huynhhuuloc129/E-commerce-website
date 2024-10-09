@@ -9,20 +9,19 @@
 
             <h1 class="mb-5">
                 <span v-if="products.length != 0">
-                    Các sản phẩm có nhãn
+                    Các sản phẩm của nhãn hàng
                 </span>
                 <span v-else>
-                    Không có sản phẩm nào có nhãn
+                    Không có sản phẩm nào của nhãn hàng
                 </span>
                 <span style="color: brown;" class="fw-bold text-uppercase">
-                    #{{ tag.name }}
+                    {{ brand.name }}
                 </span>
             </h1>
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center">
 
-                <div v-for="(product, index) in products" :key="product.proId"
-                    class="example-2 card card-tag mb-5 me-5">
+                <div v-for="product in products" :key="product.proId" class="example-2 card card-tag mb-5 me-5">
                     <div class="wrapper">
                         <div class="header">
                             <div class="date">
@@ -40,7 +39,7 @@
                         </div>
                         <div class="data">
                             <div class="content text-white">
-                                <span class="author text-uppercase">{{ brands[index].name }}</span>
+                                <span class="author text-uppercase">{{ brand.name }}</span>
                                 <h1 class="title"><a href="#">{{ product.name }}</a></h1>
                                 <p class="text" style="overflow: hidden;">{{ product.description }}</p>
                                 <a :href="'http://localhost:5173/products/' + product.proId" class="button">Xem thêm</a>
@@ -51,12 +50,13 @@
             </div>
 
 
-            <h2 class="mt-5">Các nhãn phổ biến nhất</h2>
-
-            <div class="d-flex justify-content-center align-items-center flex-wrap mb-5">
-                <button v-for="tag in tags" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
-                    @click="pushToWithId('tag', tag.tagId)">
-                    {{ tag.name }}
+            <h2 class="mt-5">Các nhãn hàng phổ biến</h2>
+            <div class="container mt-2 d-flex justify-content-center flex-wrap align-items-center" >
+                <button v-for="brand in brands" :key="brand.brandId" class="fw-bold btn btn-light text-uppercase me-3 mt-2 mb-2"
+                    @click="pushToWithId('brand', brand.brandId)" style="color: #fbbfc0;">
+                    <h5 class="fw-bold ">
+                        {{ brand.name }}
+                    </h5>
                 </button>
             </div>
         </div>
@@ -85,13 +85,6 @@ const tag = ref({
     updated_at: ''
 })
 
-const tags = ref([{
-    tagId: 0,
-    name: '',
-    created_at: '',
-    updated_at: ''
-}])
-
 const product_tags = ref([
     {
         productTagId: 0,
@@ -101,6 +94,14 @@ const product_tags = ref([
         updated_at: ''
     }
 ])
+
+const brand = ref({
+    brandId: 0,
+    name: '',
+    created_at: '',
+    updated_at: '',
+    logo: ''
+})
 
 const brands = ref([{
     brandId: 0,
@@ -135,35 +136,17 @@ function pushToWithId(name: string, id: number) {
 onMounted(async () => {
     try {
         id.value = Number(route.params.id);
-        let respTag = await tagServices.getOne(id.value);
+        let respBrand = await brandServices.getOne(id.value);
 
-        tag.value = respTag.data.tag[0];
+        brand.value = respBrand.data.brand[0];
 
-        let respProductTags = await product_tagServices.getAllByTagId(tag.value.tagId);
-        product_tags.value = respProductTags.data.product_tag;
+        let respProducts = await productSevices.getAllByBrandId(brand.value.brandId);
+        products.value = respProducts.data.products;
 
-        let respProducts = []
-        for (let i = 0; i < product_tags.value.length; i++) {
-            let respProduct = await productSevices.getOne(product_tags.value[i].productId)
+        let respBrands = await brandServices.getTop10();
+        brands.value = respBrands.data.brand;
 
-            respProducts.push(respProduct.data.products[0])
-        }
-        products.value = respProducts;
-
-        let respBrands = []
-        for (let i = 0; i < products.value.length; i++) {
-            let respBrand = await brandServices.getOne(products.value[i].brandId)
-
-            respBrands.push(respBrand.data.brand[0])
-        }
-
-        brands.value = respBrands;
-
-        // get top 25 tag
-        let respTags = await tagServices.getTop();
-        tags.value = respTags.data.tag;
-
-        console.log(tags.value)
+        console.log(brands.value)
     } catch (error) {
         console.log(error)
     }
@@ -374,18 +357,5 @@ a {
         text-decoration: none;
         background-color: transparent;
     }
-}
-
-.tag-button {
-    font-size: small;
-    font-weight: bold;
-    border: 0px;
-    padding: 11px;
-    background-color: rgb(237, 237, 237);
-}
-
-.tag-button:hover {
-    background-color: black;
-    color: white;
 }
 </style>

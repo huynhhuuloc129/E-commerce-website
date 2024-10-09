@@ -11,5 +11,7 @@ router
     .route('/:id')
     .get(brandController.getOne)
     .delete(brandController.delete);
-
+router
+    .route('/top/10')
+    .get(brandController.getTop10);
 module.exports = router;

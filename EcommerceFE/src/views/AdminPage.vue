@@ -13,7 +13,7 @@
 
 
         <!-- Sidebar Start -->
-        <div class="sidebar ms-5">
+        <!-- <div class="sidebar ms-5">
             <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4">
                     <h3 style="color: #fbbfc0;"><i class="fa fa-hashtag me-2"></i>DASHMIN</h3>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </nav>
-        </div>
+        </div> -->
         <!-- Sidebar End -->
 
 

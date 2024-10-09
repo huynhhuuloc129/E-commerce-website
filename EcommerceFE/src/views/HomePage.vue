@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="archivo-medium">
         <img id="cover" src="../assets/Cover.png">
-        <div class="container d-flex justify-content-between mt-5">
+        <div class="container d-flex justify-content-between mt-5 ">
             <div class="width25 mt-3">
-                <h5>Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm L'Oreal Paris</h5>
-                <h1>Dưỡng da chuẩn khoa học Pháp</h1>
+                <h5>Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm Romand</h5>
+                <h1>Dưỡng da chuẩn khoa học</h1>
             </div>
 
             <ul class="d-flex  ">
@@ -88,7 +88,7 @@
 
         </div>
         <div class="container mb-5 text-uppercase fw-bold">
-            Khám phá dưỡng da từ L'Oreal Paris
+            Khám phá dưỡng da từ Romand
         </div>
 
         <img id="cover2" src="../assets/Cover2.png">
@@ -179,7 +179,7 @@
 
         </div>
         <div class="container mb-5 text-uppercase fw-bold">
-            Khám phá sản phẩm trang điểm từ L'Oreal Paris
+            Khám phá sản phẩm trang điểm từ Merzy
         </div>
 
         <img id="cover3" src="../assets/Cover3.png">

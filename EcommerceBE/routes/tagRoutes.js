@@ -12,5 +12,7 @@ router
     .get(tagController.getOne)
     .delete(tagController.delete)
     .patch(tagController.update);
-
+router
+    .route('/top/25')
+    .get(tagController.getTop);
 module.exports = router;

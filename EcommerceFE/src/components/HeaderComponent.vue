@@ -1,5 +1,5 @@
 <template>
-    <div id="header" class="w-100 text-center">
+    <div id="header" class="w-100 text-center archivo-bold">
         <form @submit="pushToSearchPage($event, searchContent)" id="search-input">
             <input type="text" v-model="searchContent" id="text-search-input" placeholder="Tìm sản phẩm">
             <button type="submit" style="background-color: transparent; border: 0px;">
@@ -384,23 +384,23 @@
                     <h6 class=" ms-5 mt-3">Các thương hiệu</h6>
                     <li class="row">
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands1" class="mt-1 text-uppercase" :key="brand">
-                                <a href="" class="link">{{ brand }}</a>
+                            <div v-for="brand in brands1" class="mt-1 text-uppercase" :key="brand.brandId">
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands2" class="mt-1 text-uppercase" :key="brand">
-                                <a href="" class="link">{{ brand }}</a>
+                            <div v-for="brand in brands2" class="mt-1 text-uppercase" :key="brand.brandId">
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands3" class="mt-1 text-uppercase" :key="brand">
-                                <a href="" class="link">{{ brand }}</a>
+                            <div v-for="brand in brands3" class="mt-1 text-uppercase" :key="brand.brandId">
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
-                            <div v-for="brand in brands4" class="mt-1 text-uppercase" :key="brand">
-                                <a href="" class="link">{{ brand }}</a>
+                            <div v-for="brand in brands4" class="mt-1 text-uppercase" :key="brand.brandId">
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
                             </div>
                         </div>
                     </li>
@@ -426,7 +426,7 @@
 
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Tài khoản cá nhân</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:5173/personal">Tài khoản cá nhân</a></li>
                             <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
                                     href="http://localhost:5173/admin">Admin</a></li>
                             <li><a class="dropdown-item" href="#">Đơn mua</a></li>
@@ -502,10 +502,17 @@ const router = useRouter();
 const cookies = useCookies();
 const token = cookies.cookies.get("Token");
 
-const brands1 = ref([] as string[]);
-const brands2 = ref([] as string[]);
-const brands3 = ref([] as string[]);
-const brands4 = ref([] as string[]);
+type brandType = {
+    brandId: number,
+    name: string,
+    created_at: string,
+    updated_at: string
+}
+
+const brands1 = ref([] as brandType[]);
+const brands2 = ref([] as brandType[]);
+const brands3 = ref([] as brandType[]);
+const brands4 = ref([] as brandType[]);
 
 const searchContent = ref('')
 
@@ -565,35 +572,35 @@ onMounted(async () => {
     console.log(arrLen, arrLenMod)
 
     for (let i = 0; i < arrLen; i++) {
-        brands1.value.push(brands.value[i].name)
+        brands1.value.push(brands.value[i])
         if (arrLenMod == 1) {
-            brands2.value.push(brands.value[i + arrLen + 1].name)
-            brands3.value.push(brands.value[i + arrLen * 2].name)
-            brands4.value.push(brands.value[i + arrLen * 3].name)
+            brands2.value.push(brands.value[i + arrLen + 1])
+            brands3.value.push(brands.value[i + arrLen * 2])
+            brands4.value.push(brands.value[i + arrLen * 3])
         } else if (arrLenMod == 2) {
-            brands2.value.push(brands.value[i + arrLen + 1].name)
-            brands3.value.push(brands.value[i + arrLen * 2 + 1].name)
-            brands4.value.push(brands.value[i + arrLen * 3].name)
+            brands2.value.push(brands.value[i + arrLen + 1])
+            brands3.value.push(brands.value[i + arrLen * 2 + 1])
+            brands4.value.push(brands.value[i + arrLen * 3])
         } else if (arrLenMod == 3) {
-            brands2.value.push(brands.value[i + arrLen + 1].name)
-            brands3.value.push(brands.value[i + arrLen * 2 + 1].name)
-            brands4.value.push(brands.value[i + arrLen * 3 + 1].name)
+            brands2.value.push(brands.value[i + arrLen + 1])
+            brands3.value.push(brands.value[i + arrLen * 2 + 1])
+            brands4.value.push(brands.value[i + arrLen * 3 + 1])
         } else {
-            brands2.value.push(brands.value[i + arrLen].name)
-            brands3.value.push(brands.value[i + arrLen * 2].name)
-            brands4.value.push(brands.value[i + arrLen * 3].name)
+            brands2.value.push(brands.value[i + arrLen])
+            brands3.value.push(brands.value[i + arrLen * 2])
+            brands4.value.push(brands.value[i + arrLen * 3])
         }
     }
 
     if (arrLenMod == 1) {
-        brands1.value.push(brands.value[arrLen].name)
+        brands1.value.push(brands.value[arrLen])
     } else if (arrLenMod == 2) {
-        brands1.value.push(brands.value[arrLen].name)
-        brands2.value.push(brands.value[arrLen * 2 + 1].name)
+        brands1.value.push(brands.value[arrLen])
+        brands2.value.push(brands.value[arrLen * 2 + 1])
     } else {
-        brands1.value.push(brands.value[arrLen].name)
-        brands2.value.push(brands.value[arrLen * 2 + 1].name)
-        brands3.value.push(brands.value[arrLen * 3 + 2].name)
+        brands1.value.push(brands.value[arrLen])
+        brands2.value.push(brands.value[arrLen * 2 + 1])
+        brands3.value.push(brands.value[arrLen * 3 + 2])
     }
 
     try {
@@ -663,6 +670,9 @@ onMounted(async () => {
         color: black;
         background-color: none;
     }
+    #search-button{
+        color: black;
+    }
 }
 
 .dropdown-menu {
@@ -703,7 +713,9 @@ onMounted(async () => {
 #text-search-input:focus {
     outline: none;
 }
-
+#search-button{
+    color: white;
+}
 #search-button:hover {
     cursor: pointer;
 }

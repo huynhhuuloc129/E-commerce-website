@@ -1,5 +1,5 @@
 <template>
-    <div id="footer" class="w-100 ">
+    <div id="footer" class="w-100 archivo-medium">
         <div id="footer-content">
             <div class="fw-bold mb-3">Khám phá thêm</div>
             <div class="mb-3">Về chúng tôi</div>

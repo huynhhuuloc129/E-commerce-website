@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100vw;">
+    <div style="width: 100vw;" class="archivo-medium">
         <div class="d-flex justify-content-center m-auto align-items-center"
             style="height: 550px; background-color: #EEEEEE;">
             <div>
@@ -291,7 +291,6 @@
                                         </div>
                                         <div data-mdb-input-init class="form-outline">
                                             <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
-                                            <label class="form-label" for="textAreaExample">What is your view?</label>
                                         </div>
                                         <div class="d-flex justify-content-between mt-3">
                                             <button type="button" data-mdb-button-init data-mdb-ripple-init
@@ -668,7 +667,6 @@ onMounted(async () => {
 .tag-button:hover {
     background-color: black;
     color: white;
-
 }
 
 .buy-button {

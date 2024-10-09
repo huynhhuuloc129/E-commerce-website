@@ -16,6 +16,15 @@ class BrandService {
     }
   }
 
+  async getTop10() {
+    try {
+      const brands = await this.api.get("/brands/top/10");
+      return brands.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
   async getOne(id: number) {
     try {
       const brands = await this.api.get("/brands/" + id);

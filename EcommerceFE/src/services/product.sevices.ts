@@ -9,8 +9,17 @@ class ProductService {
   }
   async getAll() {
     try {
-      const chts = await this.api.get("/products");
-      return chts.data;
+      const products = await this.api.get("/products");
+      return products.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getAllByBrandId(id: number) {
+    try {
+      const products = await this.api.get("/products/brand/"+ id);
+      return products.data;
     } catch (err) {
       handlingError(err);
     }
@@ -18,8 +27,8 @@ class ProductService {
 
   async getOne(id: number) {
     try {
-      const chts = await this.api.get("/products/" + id);
-      return chts.data;
+      const products = await this.api.get("/products/" + id);
+      return products.data;
     } catch (err) {
       handlingError(err);
     }

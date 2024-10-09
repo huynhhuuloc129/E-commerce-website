@@ -19,6 +19,34 @@ exports.getAll = async (req, res) => {
         });
     }
 };
+
+exports.getTop10 = async (req, res) => {
+    try {
+        connection.query(`SELECT b.brandId, b.name, COUNT(p.proId) AS productCount
+                        FROM brand b
+                        JOIN product p ON b.brandId = p.brandId
+                        GROUP BY b.brandId, b.name
+                        ORDER BY productCount DESC
+                        LIMIT 10;`, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    brand: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.getOne = async (req, res) => {
     try {
         connection.query('SELECT * FROM brand WHERE brandId = ?', req.params.id, (err, row) => {

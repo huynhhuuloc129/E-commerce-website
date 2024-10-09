@@ -19,6 +19,29 @@ exports.getAll = async (req, res) => {
         });
     }
 };
+
+exports.getAllByBrandId = async (req, res) => {
+    try {
+        connection.query('SELECT * FROM product WHERE brandId = ?', req.params.id, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    products: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.getOne = async (req, res) => {
     try {
         connection.query('SELECT * FROM product WHERE proId = ?', req.params.id, (err, row) => {

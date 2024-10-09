@@ -16,6 +16,15 @@ class TagService {
     }
   }
 
+  async getTop() {
+    try {
+      const tags = await this.api.get("/tags/top/25");
+      return tags.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
   async getOne(id: number) {
     try {
       const tags = await this.api.get("/tags/" + id);
@@ -24,6 +33,8 @@ class TagService {
       handlingError(err);
     }
   }
+
+
 
   async create(name: string) {
     return await axios.post(`http://localhost:3000/api/tags`, {name}).then((res) => {

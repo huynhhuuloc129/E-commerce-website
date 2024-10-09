@@ -23,6 +23,34 @@ exports.getAll = async (req, res) => {
     }
 };
 
+exports.getTop = async (req, res) => {
+    try {
+        connection.query(`SELECT t.tagId, t.name, COUNT(pt.productTagId) AS productCount
+                        FROM tag t
+                        JOIN product_tag pt ON t.tagId = pt.tagId
+                        JOIN product p ON pt.productId = p.proId
+                        GROUP BY t.tagId, t.name
+                        ORDER BY productCount DESC
+                        LIMIT 25;`, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    tag: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.getOne = async (req, res) => {
     try {
         connection.query('SELECT * FROM tag WHERE tagId = ?', req.params.id, (err, row) => {

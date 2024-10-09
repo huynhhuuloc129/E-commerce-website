@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Login 11 - Bootstrap Brain Component -->
-        <section id="register-section" class="py-3 py-md-5 py-xl-8 d-flex justify-content-center"
+        <section id="register-section" class="py-3 py-md-5 py-xl-8 d-flex justify-content-center archivo-medium"
             style="width: 100vw; ">
             <div id="register-container" class="container" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
                 <button class="btn btn-primary fw-bold" style="background-color: #fbbfc0;" @click="pushToHome($event)">

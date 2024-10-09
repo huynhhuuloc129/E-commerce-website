@@ -11,5 +11,8 @@ router
     .route('/:id')
     .get(prodController.getOne)
     .delete(prodController.delete);
+router
+    .route('/brand/:id')
+    .get(prodController.getAllByBrandId)
 
 module.exports = router;
