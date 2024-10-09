@@ -1,6 +1,6 @@
 exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM Order', (err, rows) => {
+        connection.query('SELECT * FROM Orders', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -21,7 +21,7 @@ exports.getAll = async (req, res) => {
 };
 exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM Order WHERE orderId = ?', req.params.id, (err, row) => {
+        connection.query('SELECT * FROM Orders WHERE orderId = ?', req.params.id, (err, row) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -43,18 +43,16 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.accountId && req.body.shipmentId && req.body.totalPrice && req.body.shippingPrice && req.body.orderDate && req.body.paymentId) {
+        if (req.body && req.body.accountId &&  req.body.totalPrice && req.body.shippingPrice && req.body.orderDate) {
 
             const newOrder = {
                 'accountId': req.body.accountId,
-                'shipmentId': req.body.shipmentId,
                 'totalPrice': req.body.totalPrice,
                 'shippingPrice': req.body.shippingPrice,
                 'orderDate': req.body.orderDate,
-                'paymentId': req.body.paymentId
             }
 
-            connection.query('INSERT INTO order SET ?', newOrder, (err, row) => {
+            connection.query('INSERT INTO orders SET ?', newOrder, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -84,7 +82,7 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        connection.query("DELETE FROM order WHERE orderId = ?", req.params.id, (err, row) => {
+        connection.query("DELETE FROM orders WHERE orderId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
                 res.status(400).json({

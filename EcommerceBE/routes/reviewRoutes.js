@@ -10,6 +10,12 @@ router
 router
   .route('/:id')
   .get(reviewController.getOne)
+  .patch(reviewController.update)
   .delete(reviewController.delete);
-
+router
+  .route('/product/:id')
+  .get(reviewController.getAllByProductId);
+router
+  .route('/product/:productId/account/:accountId')
+  .get(reviewController.getAllByProductIdAndAccountId);
 module.exports = router;

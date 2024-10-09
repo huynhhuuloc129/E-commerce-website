@@ -68,7 +68,15 @@ class AccountService {
         // if (err.respon == '404') throw new Error("Chưa đăng nhập" + err);
         throw new Error("Lỗi hệ thống "+  err)
     })
-}
+  }
+
+  async update(id: number, data: any, ) {
+    return await axios.patch(`http://localhost:3000/api/accounts/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
 }
 
 export default new AccountService();

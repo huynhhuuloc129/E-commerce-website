@@ -33,45 +33,41 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active mt-4" id="personal" role="tabpanel" aria-labelledby="personal-tab"
                     style="width: 80vw">
-                    <div class="container mt-5">
-                        <h2>Hồ Sơ Của Tôi</h2>
-                        <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+                    <div class="container mt-5 d-flex justify-content-center">
+                        <div class="w-100">
+                            <h2>Hồ Sơ Của Tôi</h2>
+                            <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
 
-                        <form class="d-flex w-100 justify-content-between mb-5" @submit.prevent="">
-                            <div class="w-50">
+                            <form @submit="updateUser" class="d-flex w-100 justify-content-between mb-5">
+                                <div class="w-50">
 
-                                <!-- Username -->
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Tên đăng nhập: {{ currentUser.username
-                                        }}</label>
-                                </div>
-
-                                <!-- Name -->
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Tên</label>
-                                    <input type="text" class="form-control" id="name" v-model="currentUser.name" />
-                                </div>
-
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <div class="d-flex align-items-center">
-                                        <input type="email" class="form-control" id="email" readonly
-                                            v-model="currentUser.email" />
+                                    <!-- Username -->
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Tên đăng nhập: {{ currentUser.username
+                                            }}</label>
                                     </div>
-                                </div>
 
-                                <!-- Phone -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Số điện thoại</label>
-                                    <div class="d-flex align-items-center">
-                                        <input type="tel" class="form-control" id="phone" readonly
-                                            v-model="currentUser.phone" />
+                                    <!-- Name -->
+                                    <div class="mb-3">
+                                        <label for="name" class="fw-bold form-label">Tên:</label>
+                                        <input type="text" class="form-control" id="name" v-model="currentUser.name"
+                                            required>
                                     </div>
-                                </div>
 
-                                <!-- Gender -->
-                                <!-- <div class="mb-3">
+                                    <!-- Email -->
+                                    <div class="mb-3">
+                                        <label for="email" class="fw-bold form-label">Email:</label>
+                                        <div class="d-flex align-items-center">
+                                            <input type="email" class="form-control" id="email" readonly
+                                                v-model="currentUser.email" required />
+                                        </div>
+                                    </div>
+
+                                    <!-- Phone -->
+
+
+                                    <!-- Gender -->
+                                    <!-- <div class="mb-3">
                                     <label class="form-label">Giới tính</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault"
@@ -88,35 +84,51 @@
                                         </label>
                                     </div>
                                 </div> -->
-
-                                <!-- Date of Birth -->
-                                <div class="mb-3">
-                                    <label for="dob" class="form-label">Ngày sinh</label>
-                                    <input type="date" id="dob" class="form-control">
-                                </div>
-                                <button type="submit" class="btn btn-danger">Lưu</button>
-
-                            </div>
-                            <!-- Profile Picture -->
-                            <div class="mb-3 d-flex flex-column text-center">
-                                <div class="d-flex flex-column">
-
-                                    <label for="profileImage" class="form-label">Ảnh đại diện</label>
-                                    <div class="d-flex align-items-center flex-column mt-3">
-                                        <img class="rounded-circle me-3 mb-5" style="width: 60px; height: 60px;"
-                                            alt="Profile Image" />
-                                        <input type="file" class="form-control" id="profileImage" />
+                                    <div class="d-flex">
+                                        <div class="mb-3 w-75">
+                                            <label for="phone" class="fw-bold form-label">Số điện thoại:</label>
+                                            <div class="d-flex align-items-center">
+                                                <input type="tel" class="form-control" id="phone" readonly
+                                                    v-model="currentUser.phone" required />
+                                            </div>
+                                        </div>
+                                        <!-- Date of Birth -->
+                                        <div class="mb-3 w-25">
+                                            <label for="dob" class="fw-bold form-label">Ngày sinh:</label>
+                                            <input type="date" id="dob" class="form-control" required>
+                                        </div>
                                     </div>
+
+
+                                    <div class="mb-3">
+                                        <label for="address" class="fw-bold form-label">Địa chỉ:</label>
+                                        <input v-model="currentUser.billingAddress" type="text" id="address"
+                                            class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Lưu</button>
+
                                 </div>
-                                <small class="form-text text-muted">
-                                    Dung lượng file tối đa 1 MB, Định dạng: JPEG, PNG
-                                </small>
+                                <!-- Profile Picture -->
+                            </form>
+                        </div>
+                        <div class="mb-3 d-flex flex-column text-center">
+                            <div class="d-flex flex-column">
+
+                                <label for="profileImage" class="form-label">Ảnh đại diện</label>
+                                <div class="d-flex align-items-center flex-column mt-3">
+                                    <img class="rounded-circle me-3 mb-5" style="width: 60px; height: 60px;"
+                                        alt="Profile Image" />
+                                    <input type="file" class="form-control" id="profileImage" />
+                                </div>
                             </div>
+                            <small class="form-text text-muted">
+                                Dung lượng file tối đa 1 MB, Định dạng: JPEG, PNG
+                            </small>
+                        </div>
 
 
-                            <!-- Save Button -->
+                        <!-- Save Button -->
 
-                        </form>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab"
@@ -251,7 +263,7 @@ import Swal from 'sweetalert2';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCookies } from 'vue3-cookies';
-import checkLogin from "@/utilities/utilities";
+import { checkLogin } from "@/utilities/utilities";
 
 import accountServices from '@/services/account.services';
 
@@ -273,6 +285,36 @@ const currentUser = ref({
     created_at: '',
     updated_at: ''
 })
+
+var updateUser = async (e: any) => {
+    e.preventDefault();
+    try {
+        await accountServices.update(currentUser.value.accountId, {
+            accountId: currentUser.value.accountId,
+            name: currentUser.value.name,
+            email: currentUser.value.email,
+            phone: currentUser.value.phone,
+            birthDate: currentUser.value.birthDate.slice(0, 10),
+            billingAddress: currentUser.value.billingAddress
+        })
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Cập nhật tài khoản thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Cập nhật tài khoản thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+
+}
 
 onMounted(async () => {
     try {

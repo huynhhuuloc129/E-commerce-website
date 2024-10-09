@@ -23,6 +23,54 @@ exports.getAll = async (req, res) => {
     }
 };
 
+
+exports.update = async (req, res) => {
+    try {
+        if (req.body  && req.body.name && req.body.email && req.body.phone && req.body.birthDate && req.body.billingAddress) {
+
+            const account = {
+                accountId: req.params.id,
+                name: req.body.name,
+                email: req.body.email,
+                phone: req.body.phone,
+                birthDate: req.body.birthDate,
+                billingAddress: req.body.billingAddress
+            }
+
+            let sql = `UPDATE account SET
+                name = '${account.name}',
+                email = '${account.email}',
+                phone = '${account.phone}',
+                birthDate = '${account.birthDate}',
+                billingAddress = '${account.billingAddress}'
+            WHERE accountId = ${account.accountId}`
+
+            connection.query(sql, (err, row) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                } else
+                    res.status(200).json({
+                        status: true,
+                        title: 'Update Successfully.'
+                    });
+            }
+            )
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 // exports.getAllByPsId = async (req, res) => {
 //     try {
 //         connection.query('SELECT * FROM account WHERE accountId = ?', req.params.id, (err, rows) => {

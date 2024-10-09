@@ -140,70 +140,62 @@ CREATE TABLE IF NOT EXISTS Review (
       ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS SelectedProduct (
-    selectedProductId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    proId int NOT NULL,
-    shoppingCartId int NOT NULL,
-    orderId int NOT NULL,
-    FOREIGN KEY (proId)
-      REFERENCES Product (proId)
-      ON UPDATE CASCADE
-      ON DELETE CASCADE,
-    FOREIGN KEY (shoppingCartId) 
-      REFERENCES shoppingCart (shoppingCartId) 
-      ON UPDATE CASCADE 
-      ON DELETE CASCADE,
-    FOREIGN KEY (orderId) 
-      REFERENCES order (orderId) 
-      ON UPDATE CASCADE 
-      ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Payment (
-    paymentId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    shipmentType int NOT NULL,
-    total int NOT NULL,
-    details varchar(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Order (
+CREATE TABLE IF NOT EXISTS Orders (
     orderId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     accountId int NOT NULL,
-    shipmentId int NOT NULL,
     totalPrice int NOT NULL,
     shippingPrice int NOT NULL,
-    orderDate DATETIME NOT NULL,
-    paymentId int NOT NULL,
-    FOREIGN KEY (accountId)
-      REFERENCES Account (accountId)
-      ON UPDATE CASCADE
-      ON DELETE CASCADE,
-    FOREIGN KEY (shipmentId) 
-      REFERENCES Shipment (shipmentId) 
-      ON UPDATE CASCADE 
-      ON DELETE CASCADE,
-    FOREIGN KEY (paymentId)
-      REFERENCES Payment (paymentId) 
-      ON UPDATE CASCADE 
-      ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Shipment (
-    shipmentId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     shippingAddress varchar(255) NOT NULL,
     shippingType varchar(255) NOT NULL,
     shipped BOOLEAN NOT NULL,
     shippedDate DATETIME NOT NULL,
     shipmentTracking varchar(255) NOT NULL,
+    paid boolean not null,
+    FOREIGN KEY (accountId)
+      REFERENCES Account (accountId)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS SelectedProduct (
+    selectedProductId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    quantitySelected int NOT NULL,
+    sellingPrice int not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    proId int NOT NULL,
     orderId int NOT NULL,
+    accountId int not null,
+    FOREIGN KEY (proId)
+      REFERENCES Product (proId)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE,
+    FOREIGN KEY (accountId) 
+      REFERENCES Account (accountId) 
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE,
     FOREIGN KEY (orderId) 
-      REFERENCES Order (orderId) 
+      REFERENCES orders (orderId) 
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Review (
+    reviewId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    productId int NOT NULL,
+    accountId int NOT NULL,
+    content TEXT NOT NULL,
+    star int not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (productId) 
+      REFERENCES Product (proId) 
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE,
+    FOREIGN KEY (accountId) 
+      REFERENCES Account (accountId) 
       ON UPDATE CASCADE 
       ON DELETE CASCADE
 );
@@ -1201,3 +1193,10 @@ INSERT INTO Product_Tag (tagId, productId) VALUES (52, 28);
 INSERT INTO Product_Tag (tagId, productId) VALUES (, 28);
 INSERT INTO Product_Tag (tagId, productId) VALUES (, 28);
 INSERT INTO Product_Tag (tagId, productId) VALUES (, 28);
+
+INSERT INTO Review (productId, accountId, content, star) VALUES (2, 1, '"Sản phẩm son môi này thật sự tuyệt vời! Chất son mềm mượt, lên màu chuẩn ngay từ lần thoa đầu tiên và không gây khô môi. Đặc biệt, son giữ màu lâu, giúp tôi tự tin suốt cả ngày mà không cần dặm lại. Mùi hương dịu nhẹ cũng là một điểm cộng lớn, khiến tôi cảm thấy dễ chịu mỗi khi sử dụng. Thiết kế sang trọng và tiện dụng, rất phù hợp để mang theo bên mình. Đây chắc chắn sẽ là lựa chọn yêu thích của tôi trong thời gian dài!', 5);
+
+
+INSERT INTO Review (productId, accountId, content, star) VALUES (2, 2, '"Sản phẩm son môi này thật sự tuyệt vời! Chất son mềm mượt, lên màu chuẩn ngay từ lần thoa đầu tiên và không gây khô môi. Đặc biệt, son giữ màu lâu, giúp tôi tự tin suốt cả ngày mà không cần dặm lại. Mùi hương dịu nhẹ cũng là một điểm cộng lớn, khiến tôi cảm thấy dễ chịu mỗi khi sử dụng. Thiết kế sang trọng và tiện dụng, rất phù hợp để mang theo bên mình. Đây chắc chắn sẽ là lựa chọn yêu thích của tôi trong thời gian dài!', 4);
+
+INSERT INTO ShoppingCart

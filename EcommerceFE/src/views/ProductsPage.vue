@@ -118,7 +118,8 @@
         </div>
 
         <div class="container mb-5" style="width: 50vw; margin-top: 100px;">
-            <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2" @click="pushToWithId('tag', tag.tagId)">
+            <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
+                @click="pushToWithId('tag', tag.tagId)">
                 {{ tag.name }}
             </button>
         </div>
@@ -242,6 +243,7 @@
                                         width="65" height="65" />
                                     <div class="w-100">
                                         <h5>Thêm bình luận</h5>
+                                        <h6>{{ currentUser.name }}</h6>
                                         <div class="container-wrapper">
                                             <div class="container d-flex align-items-center justify-content-start ">
                                                 <div class="row justify-content-center">
@@ -250,36 +252,36 @@
                                                     <div class="rating-wrapper">
 
                                                         <!-- star 5 -->
-                                                        <input class="rating-input" type="radio" id="5-star-rating"
-                                                            name="star-rating" value="5">
+                                                        <input v-model="starNum" class="rating-input" type="radio"
+                                                            id="5-star-rating" name="star-rating" value="5">
                                                         <label for="5-star-rating" class="star-rating">
                                                             <i class="fas fa-star d-inline-block"></i>
                                                         </label>
 
                                                         <!-- star 4 -->
-                                                        <input class="rating-input" type="radio" id="4-star-rating"
-                                                            name="star-rating" value="4">
+                                                        <input v-model="starNum" class="rating-input" type="radio"
+                                                            id="4-star-rating" name="star-rating" value="4">
                                                         <label for="4-star-rating" class="star-rating star">
                                                             <i class="fas fa-star d-inline-block"></i>
                                                         </label>
 
                                                         <!-- star 3 -->
-                                                        <input class="rating-input" type="radio" id="3-star-rating"
-                                                            name="star-rating" value="3">
+                                                        <input v-model="starNum" class="rating-input" type="radio"
+                                                            id="3-star-rating" name="star-rating" value="3">
                                                         <label for="3-star-rating" class="star-rating star">
                                                             <i class="fas fa-star d-inline-block"></i>
                                                         </label>
 
                                                         <!-- star 2 -->
-                                                        <input class="rating-input" type="radio" id="2-star-rating"
-                                                            name="star-rating" value="2">
+                                                        <input v-model="starNum" class="rating-input" type="radio"
+                                                            id="2-star-rating" name="star-rating" value="2">
                                                         <label for="2-star-rating" class="star-rating star">
                                                             <i class="fas fa-star d-inline-block"></i>
                                                         </label>
 
                                                         <!-- star 1 -->
-                                                        <input class="rating-input" type="radio" id="1-star-rating"
-                                                            name="star-rating" value="1">
+                                                        <input v-model="starNum" class="rating-input" type="radio"
+                                                            id="1-star-rating" name="star-rating" value="1">
                                                         <label for="1-star-rating" class="star-rating star">
                                                             <i class="fas fa-star d-inline-block"></i>
                                                         </label>
@@ -290,14 +292,23 @@
                                             </div>
                                         </div>
                                         <div data-mdb-input-init class="form-outline">
-                                            <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+                                            <textarea v-model="review.content" class="form-control" id="textAreaExample"
+                                                rows="4"></textarea>
                                         </div>
                                         <div class="d-flex justify-content-between mt-3">
                                             <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-dark">Xóa</button>
-                                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn"
-                                                style="background-color: #fbbfc0; color: white;">
-                                                Gửi <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                                                class="btn btn-dark" @click="review.content = ''">Xóa</button>
+                                            <button :disabled="review.content.length == 0" type="button"
+                                                data-mdb-button-init data-mdb-ripple-init class="btn"
+                                                style="background-color: #fbbfc0; color: white;"
+                                                @click="modifyReview($event)">
+                                                <span v-if="review.accountId == 0">
+                                                    Gửi
+                                                </span>
+                                                <span v-else>
+                                                    Cập nhật
+                                                </span>
+                                                <i class="fas fa-long-arrow-alt-right ms-1"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -313,78 +324,29 @@
             <div class=" py-5 text-body">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-11 col-lg-9 col-xl-7">
-                        <div class="d-flex flex-start mb-4">
-                            <img class="rounded-circle shadow-1-strong me-3"
+
+                        <div v-for="review in reviews" :key="review.reviewId" class="d-flex flex-start mb-4">
+                            <img v-if="reviews[0].reviewId != 0" class="rounded-circle shadow-1-strong me-3"
                                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar"
                                 width="65" height="65" />
-                            <div class="card w-100">
+                            <div v-if="reviews[0].reviewId != 0" class="card w-100">
                                 <div class="card-body p-4">
                                     <div class="">
 
-                                        <h5>Johny Cash</h5>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                        <h5>{{ review.name }}</h5>
+                                        <i v-for="index in review.star" :key="index" class="fas fa-star d-inline-block"
+                                            style="color: #fbbfc0"></i>
 
-                                        <p class="small">3 hours ago</p>
+                                        <p class="small">{{ calculateTimeElapse(review.created_at) }}</p>
                                         <p>
-                                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque
-                                            ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus
-                                            viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
-                                            Donec lacinia congue felis in faucibus ras purus odio, vestibulum in
-                                            vulputate at, tempus viverra turpis.
+                                            {{ review.content }}
                                         </p>
-
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="d-flex align-items-center">
-                                                <a href="#!" class="link-muted me-2"><i
-                                                        class="fas fa-thumbs-up me-1"></i>132</a>
-                                                <a href="#!" class="link-muted"><i
-                                                        class="fas fa-thumbs-down me-1"></i>15</a>
-                                            </div>
-                                            <a href="#!" class="link-muted"><i class="fas fa-reply me-1"></i>
-                                                Reply</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-start">
-                            <img class="rounded-circle shadow-1-strong me-3"
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp" alt="avatar"
-                                width="65" height="65" />
-                            <div class="card w-100">
-                                <div class="card-body p-4">
-                                    <div class="">
-                                        <h5>Mindy Campbell</h5>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <i class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
-                                        <p class="small">5 hours ago</p>
-                                        <p>
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-                                            cumque doloribus dolorum dolor repellat nemo animi at iure autem fuga
-                                            cupiditate architecto ut quam provident neque, inventore nisi eos quas?
-                                        </p>
 
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="d-flex align-items-center">
-                                                <a href="#!" class="link-muted me-2"><i
-                                                        class="fas fa-thumbs-up me-1"></i>158</a>
-                                                <a href="#!" class="link-muted"><i
-                                                        class="fas fa-thumbs-down me-1"></i>13</a>
-                                            </div>
-                                            <a href="#!" class="link-muted"><i class="fas fa-reply me-1"></i>
-                                                Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -394,25 +356,46 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-// @ts-ignore
-import CustomSelect from "../components/CustomSelect.vue";
-
+import accountServices from '@/services/account.services';
 import productComponentServices from '@/services/productComponent.services';
+import { checkLogin, calculateTimeElapse } from '@/utilities/utilities';
 import product_tagServices from '@/services/product_tag.services';
 import componentServices from '@/services/component.services';
 import categoryServices from '@/services/category.services';
-import accountServices from '@/services/account.services';
+
+// @ts-ignore
+import CustomSelect from "@/components/CustomSelect.vue";
 import productSevices from '@/services/product.sevices';
+import reviewServices from '@/services/review.services';
 import brandServices from '@/services/brand.services';
+import typeServices from '@/services/type.services';
 import tagServices from '@/services/tag.services';
 
 import { useRoute, useRouter } from 'vue-router'
-import typeServices from '@/services/type.services';
+import { useCookies } from 'vue3-cookies';
+import Swal from 'sweetalert2';
 
 const id = ref(0);
 
+const cookies = useCookies();
+const token = cookies.cookies.get("Token");
+
 const route = useRoute();
 const router = useRouter()
+
+const currentUser = ref({
+    accountId: 0,
+    username: "",
+    password: "",
+    email: "",
+    name: "",
+    phone: "",
+    birthDate: null,
+    avatar: "",
+    billingAddress: "",
+    created_at: null,
+    updated_at: null,
+});
 
 const product = ref({
     proId: 0,
@@ -465,6 +448,33 @@ const tagsBelong = ref([
     }
 ])
 
+const starNum = ref(0)
+const review = ref({
+    reviewId: 0,
+    productId: 0,
+    accountId: 0,
+    content: '',
+    star: 0,
+    created_at: '',
+    updated_at: '',
+    name: '',
+    email: '',
+    avatar: ''
+})
+
+const reviews = ref([{
+    reviewId: 0,
+    productId: 0,
+    accountId: 0,
+    content: '',
+    star: 0,
+    created_at: '',
+    updated_at: '',
+    name: '',
+    email: '',
+    avatar: ''
+}])
+
 const products = ref([
     {
         proId: 0,
@@ -514,12 +524,58 @@ const brands = ref([
 function pushToWithId(name: string, id: number) {
     router.push({
         name: name,
-        params: { id: id}
-    }) 
+        params: { id: id }
+    })
+}
+
+async function modifyReview(e: any) {
+    // e.preventDefault();
+
+    try {
+        if (starNum.value == 0) {
+            throw ("Vui lòng chọn số sao")
+        }
+        // add new review
+        if (review.value.accountId == 0) {
+
+            await reviewServices.create({
+                productId: product.value.proId,
+                accountId: currentUser.value.accountId,
+                content: review.value.content,
+                star: starNum.value
+            })
+        } else { //update existed review
+            await reviewServices.update(review.value.reviewId, {
+                content: review.value.content,
+                star: starNum.value
+            })
+        }
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Chỉnh sửa nhận xét thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+
+        // window.location.reload();
+    } catch (error) {
+        Swal.fire({
+            title: "Lỗi!",
+            text: "Đã có lỗi xảy ra! " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+        console.log(error)
+    }
 }
 
 onMounted(async () => {
     try {
+        // get current user
+        let resp = await accountServices.getMe(token);
+        currentUser.value = resp.data.account[0];
+
         id.value = Number(route.params.id);
 
         let respProduct = await productSevices.getOne(id.value)
@@ -529,24 +585,47 @@ onMounted(async () => {
         productGuide.value[0] = productGuide.value[0].replace('Bước 1', '1')
 
         if (product.value.proId != 0) {
+            // get brand
             let respBrand = await brandServices.getOne(product.value.brandId)
             brand.value = respBrand.data.brand[0]
 
+            // get type
             let respType = await typeServices.getAllByProductId(product.value.proId);
             types.value = respType.data.type
 
+            // get all tags
             let respProductTags = await product_tagServices.getAllByProductId(product.value.proId);
             product_tags.value = respProductTags.data.product_tag;
 
             let respTags = []
-            for (let i=0; i< product_tags.value.length; i++) {
+            for (let i = 0; i < product_tags.value.length; i++) {
                 let respTag = await tagServices.getOne(product_tags.value[i].tagId)
 
                 respTags.push(respTag.data.tag[0])
             }
 
             tagsBelong.value = respTags;
-            console.log(tagsBelong.value)
+
+            // get review
+            let respReviews = await reviewServices.getAllByProductId(product.value.proId)
+            reviews.value = respReviews.data.review;
+
+            let respReview = await reviewServices.getAllByProductIdAndAccountId(product.value.proId, currentUser.value.accountId)
+            review.value = respReview.data.review[0];
+            if (review.value == undefined) {
+                review.value = {
+                    reviewId: 0,
+                    productId: 0,
+                    accountId: 0,
+                    content: '',
+                    star: 0,
+                    created_at: '',
+                    updated_at: '',
+                    name: '',
+                    email: '',
+                    avatar: ''
+                }
+            }
         }
 
     } catch (error) {

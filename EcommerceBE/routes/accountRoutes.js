@@ -18,6 +18,7 @@ router
 router
   .route('/:id')
   .get(accController.getOne)
+  .patch(accController.update)
   .delete(accController.delete);
 
 module.exports = router;
