@@ -1,4 +1,13 @@
 <template>
+    <div style="overflow: hidden;">
+
+        <video autoplay muted loop id="wallpaperVideo">
+            <source src="@/assets/videoWallpaper.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div style="height: 100vh;"></div>
+
     <div class="archivo-medium">
         <img id="cover" src="../assets/Cover.png">
         <div class="container d-flex justify-content-between mt-5 ">
@@ -311,6 +320,14 @@ const router = useRouter();
 </script>
 
 <style scoped>
+#wallpaperVideo {
+    overflow: hidden;
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: auto;
+}
+
 #card-type {
     padding: 40px 80px;
     display: flex;
