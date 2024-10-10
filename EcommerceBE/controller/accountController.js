@@ -71,6 +71,46 @@ exports.update = async (req, res) => {
     }
 };
 
+
+exports.updateAvatar = async (req, res) => {
+    try {
+        if (req.body && req.body.avatar) {
+
+            const account = {
+                accountId: req.params.id,
+                avatar: req.body.avatar,
+            }
+
+            let sql = `UPDATE account SET
+                avatar = '${account.avatar}'
+            WHERE accountId = ${account.accountId}`
+
+            connection.query(sql, (err, row) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                } else
+                    res.status(200).json({
+                        status: true,
+                        title: 'Update Successfully.'
+                    });
+            }
+            )
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 // exports.getAllByPsId = async (req, res) => {
 //     try {
 //         connection.query('SELECT * FROM account WHERE accountId = ?', req.params.id, (err, rows) => {

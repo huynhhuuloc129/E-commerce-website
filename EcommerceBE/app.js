@@ -8,12 +8,13 @@ const brandRoutes = require('./routes/brandRoutes');
 const cateRoutes = require('./routes/categoryRoutes');
 const compRoutes = require('./routes/componentRoutes');
 const prodTagRoutes = require('./routes/product_TagRoutes');
-const prodCompRoutes = require('./routes/productComponentRoutes');
 const prodRoutes = require('./routes/productRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const typeRoutes = require('./routes/typeRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const imageRoutes = require('./routes/imageRoutes');
+const prodCompRoutes = require('./routes/productComponentRoutes');
 const selectedProductRoutes = require('./routes/selectedProductRoutes');
 
 app.use(cors());
@@ -30,5 +31,6 @@ app.use('/api/types', typeRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/selected-products', selectedProductRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/images', imageRoutes)
 
 module.exports = app;

@@ -1,6 +1,9 @@
 exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM Review', (err, rows) => {
+        connection.query(`SELECT r.*, a.name, a.email, a.avatar, p.name productName
+FROM review r
+JOIN account a ON r.accountId = a.accountId
+JOIN product p ON r.productId = p.proId`, (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');

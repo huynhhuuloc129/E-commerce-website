@@ -130,10 +130,11 @@
                 </div>
             </div>
 
-            <h6 class="text-end w-100 mt-5" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{ types[typeSelection].unitPrice.toLocaleString("it-IT", {
-                style: "currency",
-                currency: "VND",
-            }) }}</h6>
+            <h6 class="text-end w-100 mt-5" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{
+                types[typeSelection].unitPrice.toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                }) }}</h6>
 
 
             <div class="d-flex justify-content-end w-100 mt-3">
@@ -266,8 +267,10 @@
                             <div class="card-body p-4">
                                 <div class="d-flex flex-start w-100">
                                     <img class="rounded-circle shadow-1-strong me-3"
-                                        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar"
-                                        width="65" height="65" />
+                                        v-if="currentUser.avatar != null && currentUser.avatar != ''"
+                                        :src="currentUser.avatar" alt="avatar" width="65" height="65" />
+                                    <img v-else src="https://placehold.co/65x65" alt=""
+                                        class="rounded-circle shadow-1-strong me-3" width="65" height="65">
                                     <div class="w-100">
                                         <h5>Thêm bình luận</h5>
                                         <h6>{{ currentUser.name }}</h6>
@@ -353,9 +356,11 @@
                     <div class="col-md-11 col-lg-9 col-xl-7">
 
                         <div v-for="review in reviews" :key="review.reviewId" class="d-flex flex-start mb-4">
-                            <img v-if="reviews[0].reviewId != 0" class="rounded-circle shadow-1-strong me-3"
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar"
-                                width="65" height="65" />
+                            <img v-if="review.avatar != null && review.avatar != ''"
+                                class="rounded-circle shadow-1-strong me-3" :src="review.avatar" alt="avatar" width="65"
+                                height="65" />
+                            <img v-else src="https://placehold.co/65x65" alt=""
+                                class="rounded-circle shadow-1-strong me-3" width="65" height="65">
                             <div v-if="reviews[0].reviewId != 0" class="card w-100">
                                 <div class="card-body p-4">
                                     <div class="">
@@ -602,10 +607,11 @@ async function modifyReview(e: any) {
     }
 }
 
-async function addToCart(e: any) {
+async function addToCart() {
     // e.preventDefault();
     try {
         if (numberSelection.value <= 0) throw ('Số lượng sản phẩm phải lớn hơn 0!')
+        if (numberSelection.value >= types.value[typeSelection.value].quantityInStock) throw ('Số lượng sản phẩm vượt số lượng đang có.')
 
         let resp = await selectedProductServices.create({
             quantitySelected: numberSelection.value,

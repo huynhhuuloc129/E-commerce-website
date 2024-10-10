@@ -426,7 +426,9 @@
                         <button data-mdb-button-init data-mdb-ripple-init data-mdb-dropdown-init
                             class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
                             data-mdb-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-user" style="color: #fbbfc0; "></i>
+                            
+                            <img v-if="currentUser.avatar != null && currentUser.avatar != ''" :src="currentUser.avatar" height="25px" width="25px" alt="">
+                            <i v-else class="fa-solid fa-user" style="color: #fbbfc0; "></i>
 
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
@@ -461,7 +463,9 @@
                                 <img src="https://placehold.co/90x50" class="me-2" alt="">
                                 <div class="d-flex flex-column">
 
-                                    <a class="text-wrap cart-items" :href="'http://localhost:5173/products/' + sProduct.proId">{{ sProduct.name }}</a>
+                                    <a class="text-wrap cart-items"
+                                        :href="'http://localhost:5173/products/' + sProduct.proId">{{ sProduct.name
+                                        }}</a>
                                     <div>
                                         Số lượng: {{ sProduct.quantitySelected }}
                                     </div>
@@ -555,6 +559,14 @@ const brands = ref([
     }
 ])
 
+const categories = ref([{
+    catId: 0,
+    name: '',
+    description: '',
+    created_at: '',
+    updated_at: ''
+}])
+
 function pushToSignUp(e: any) {
     e.preventDefault();
     router.push({ name: "signup" });
@@ -590,7 +602,7 @@ async function getAllSProducts() {
 
 async function removeSelectedProduct(index: number) {
     try {
-        
+
         sProducts.value.splice(index, 1)
 
         await selectedProductServices.delete(sProducts.value[index].selectedProductId)
@@ -668,17 +680,20 @@ onMounted(async () => {
     border-radius: 0px;
 
 }
-.cart-items{
+
+.cart-items {
     color: black;
     text-decoration: none;
 }
-.cart-items:hover{
+
+.cart-items:hover {
     text-decoration: underline;
 }
 
-.cart-product:hover{
+.cart-product:hover {
     background-color: rgb(245, 241, 241);
 }
+
 .header-item:hover {
     cursor: pointer;
     text-decoration: underline;

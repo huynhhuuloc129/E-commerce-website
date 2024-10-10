@@ -1,85 +1,79 @@
 exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM product', (err, rows) => {
-            if (err) throw err;
-
+        connection.query('SELECT * FROM image', (err,rows) => {
+            if(err) throw err;
+            
             console.log('Data received from Db:');
             res.status(200).json({
                 status: 'success',
                 total: rows.length,
                 data: {
-                    products: rows,
+                    image: rows,
                 },
             });
         });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            message: err,
-        });
+    }  catch (err) {
+    res.status(404).json({
+        status: 'fail',
+        message: err,
+    });
     }
 };
 
-exports.getAllByBrandId = async (req, res) => {
+exports.getAllByBelongId = async (req, res) => {
     try {
-        connection.query('SELECT * FROM product WHERE brandId = ?', req.params.id, (err, rows) => {
-            if (err) throw err;
-
+        connection.query('SELECT * FROM image WHERE belongId = ?', req.params.id , (err,rows) => {
+            if(err) throw err;
+            
             console.log('Data received from Db:');
             res.status(200).json({
                 status: 'success',
                 total: rows.length,
                 data: {
-                    products: rows,
+                    image: rows,
                 },
             });
         });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            message: err,
-        });
+    }  catch (err) {
+    res.status(404).json({
+        status: 'fail',
+        message: err,
+    });
     }
 };
 
 exports.getOne = async (req, res) => {
     try {
-        connection.query('SELECT * FROM product WHERE proId = ?', req.params.id, (err, row) => {
-            if (err) throw err;
-
+        connection.query('SELECT * FROM image WHERE imageId = ?', req.params.id, (err,row) => {
+            if(err) throw err;
+            
             console.log('Data received from Db:');
             res.status(200).json({
                 status: 'success',
                 total: row.length,
                 data: {
-                    products: row,
+                    image: row,
                 },
             });
         });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            message: err,
-        });
+    }  catch (err) {
+    res.status(404).json({
+        status: 'fail',
+        message: err,
+    });
     }
 };
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note) {
+        if (req.body && req.body.base64 && req.body.belongId) {
 
-            const newLTS = {
-                catId: req.body.catId,
-                brandId: req.body.brandId,
-                name: req.body.name,
-                description: req.body.description,
-                unit: req.body.unit,
-                guide: req.body.guide,
-                maintain: req.body.maintain,
-                note: req.body.note
+            const newImage = {
+                'base64': req.body.base64,
+                'belongId': req.body.belongId
             }
 
-            connection.query('INSERT INTO product SET ?', newLTS, (err, row) => {
+            connection.query('INSERT INTO image SET ?', newImage, (err, row) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({
@@ -107,9 +101,33 @@ exports.create = async (req, res) => {
     }
 };
 
+exports.deleteByBelongId = async (req, res) => {
+    try {
+        connection.query("DELETE FROM image WHERE belongId = ?", req.params.id, (err, row) => {
+            if (err) {
+                console.log(err)
+                res.status(400).json({
+                    errorMessage: err,
+                    status: false
+                });
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Delete Successfully.'
+                });
+        }
+        )
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.delete = async (req, res) => {
     try {
-        connection.query("DELETE FROM product WHERE id = ?", req.params.id, (err, row) => {
+        connection.query("DELETE FROM image WHERE imageId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
                 res.status(400).json({

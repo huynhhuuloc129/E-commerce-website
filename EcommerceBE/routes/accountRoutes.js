@@ -20,5 +20,8 @@ router
   .get(accController.getOne)
   .patch(accController.update)
   .delete(accController.delete);
+router
+  .route('/avatar/:id')
+  .patch(accController.updateAvatar)
 
 module.exports = router;

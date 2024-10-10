@@ -1,8 +1,10 @@
 <template>
-    <div style="width: 100vw;">
+    <div class="mb-5" style="height: 150px; background-color: #fbbfc0;">
+    </div>
 
-        <div style="height: 150px; background-color: #fbbfc0;">
-        </div>
+    <div style="width: 100vw;" class="mb-5">
+
+
 
         <div class="d-flex" style="margin: 0; background-color: white;">
             <nav id="sidebarMenu" style="z-index: 0" class="bg-white sticky-top">
@@ -31,10 +33,11 @@
             </nav>
 
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active mt-4" id="personal" role="tabpanel" aria-labelledby="personal-tab"
+                
+                <div class="bg-light rounded tab-pane fade show active mt-4" id="personal" role="tabpanel" aria-labelledby="personal-tab"
                     style="width: 80vw">
-                    <div class="container mt-5 d-flex justify-content-center">
-                        <div class="w-100">
+                    <div class="container d-flex justify-content-center">
+                        <div class="w-100 mt-3">
                             <h2>Hồ Sơ Của Tôi</h2>
                             <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
 
@@ -58,7 +61,7 @@
                                     <div class="mb-3">
                                         <label for="email" class="fw-bold form-label">Email:</label>
                                         <div class="d-flex align-items-center">
-                                            <input type="email" class="form-control" id="email" readonly
+                                            <input type="email" class="form-control" id="email" 
                                                 v-model="currentUser.email" required />
                                         </div>
                                     </div>
@@ -88,7 +91,7 @@
                                         <div class="mb-3 w-75">
                                             <label for="phone" class="fw-bold form-label">Số điện thoại:</label>
                                             <div class="d-flex align-items-center">
-                                                <input type="tel" class="form-control" id="phone" readonly
+                                                <input type="tel" class="form-control" id="phone"
                                                     v-model="currentUser.phone" required />
                                             </div>
                                         </div>
@@ -111,14 +114,16 @@
                                 <!-- Profile Picture -->
                             </form>
                         </div>
-                        <div class="mb-3 d-flex flex-column text-center">
+                        <div class="mb-3 d-flex flex-column text-center mt-3 me-5">
                             <div class="d-flex flex-column">
 
-                                <label for="profileImage" class="form-label">Ảnh đại diện</label>
+                                <h4>Ảnh đại diện</h4>
                                 <div class="d-flex align-items-center flex-column mt-3">
-                                    <img class="rounded-circle me-3 mb-5" style="width: 60px; height: 60px;"
-                                        alt="Profile Image" />
-                                    <input type="file" class="form-control" id="profileImage" />
+                                    <img v-if="currentUser.avatar != null && currentUser.avatar != ''"
+                                        :src="currentUser.avatar" class="rounded-circle me-3 mb-5"
+                                        style="width: 150px; height: 150px;" alt="Profile Image" />
+                                    <input type="file" @change="uploadAvatar($event)" class="form-control"
+                                        id="profileImage" />
                                 </div>
                             </div>
                             <small class="form-text text-muted">
@@ -316,6 +321,29 @@ var updateUser = async (e: any) => {
 
 }
 
+const toBase64 = (file: any) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
+
+
+async function uploadAvatar(event: any) {
+    try {
+        let code = await toBase64(event.target.files[0]);
+
+        currentUser.value.avatar = String(code);
+
+        let resp = await accountServices.updateAvatar(currentUser.value.accountId, { avatar: currentUser.value.avatar })
+
+        window.location.reload();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 onMounted(async () => {
     try {
         if (!checkLogin()) {
@@ -338,4 +366,9 @@ onMounted(async () => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.list-group-item.active {
+    border: 0px;
+    background-color: #fbbfc0;
+}
+</style>

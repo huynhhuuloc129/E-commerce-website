@@ -77,6 +77,14 @@ class AccountService {
         handlingError(err);
     })
   }
+
+  async updateAvatar(id: number, data: any, ) {
+    return await axios.patch(`http://localhost:3000/api/accounts/avatar/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
 }
 
 export default new AccountService();
