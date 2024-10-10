@@ -9,8 +9,17 @@ class OrderService {
   }
   async getAll() {
     try {
-      const chts = await this.api.get("/orders");
-      return chts.data;
+      const sp = await this.api.get("/seclted-products");
+      return sp.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getAllByAccountIdInCart(id: number) {
+    try {
+      const sp = await this.api.get("/selected-products/account/"+ id);
+      return sp.data;
     } catch (err) {
       handlingError(err);
     }
@@ -18,32 +27,32 @@ class OrderService {
 
   async getOne(id: number) {
     try {
-      const chts = await this.api.get("/orders/" + id);
-      return chts.data;
+      const sp = await this.api.get("/selected-products/" + id);
+      return sp.data;
     } catch (err) {
       handlingError(err);
     }
   }
 
-//   async create(data: any) {
-//     try {
-//       const resp = await this.api.post(
-//         "http://localhost:3000/api/donvibanhang",
-//         data
-//       );
-//       return resp.data;
-//     } catch (err: any) {
-//       handlingError(err);
-//     }
-//   }
+  async create(data: any) {
+    try {
+      const resp = await this.api.post(
+        "http://localhost:3000/api/selected-products",
+        data
+      );
+      return resp.data;
+    } catch (err: any) {
+      handlingError(err);
+    }
+  }
 
-//   async delete(id: number) {
-//     try {
-//       return await this.api.delete("/donvibanhang/" + id);
-//     } catch (err) {
-//       handlingError(err);
-//     }
-//   }
+  async delete(id: number) {
+    try {
+      return await this.api.delete("/selected-products/" + id);
+    } catch (err) {
+      handlingError(err);
+    }
+  }
 }
 
 export default new OrderService();

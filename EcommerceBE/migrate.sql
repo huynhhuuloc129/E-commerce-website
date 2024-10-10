@@ -166,8 +166,10 @@ CREATE TABLE IF NOT EXISTS SelectedProduct (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     proId int NOT NULL,
-    orderId int NOT NULL,
+    orderId int,
     accountId int not null,
+    typeId int NOT NULL,
+    block Boolean not null,
     FOREIGN KEY (proId)
       REFERENCES Product (proId)
       ON UPDATE CASCADE
@@ -1199,4 +1201,4 @@ INSERT INTO Review (productId, accountId, content, star) VALUES (2, 1, '"Sản p
 
 INSERT INTO Review (productId, accountId, content, star) VALUES (2, 2, '"Sản phẩm son môi này thật sự tuyệt vời! Chất son mềm mượt, lên màu chuẩn ngay từ lần thoa đầu tiên và không gây khô môi. Đặc biệt, son giữ màu lâu, giúp tôi tự tin suốt cả ngày mà không cần dặm lại. Mùi hương dịu nhẹ cũng là một điểm cộng lớn, khiến tôi cảm thấy dễ chịu mỗi khi sử dụng. Thiết kế sang trọng và tiện dụng, rất phù hợp để mang theo bên mình. Đây chắc chắn sẽ là lựa chọn yêu thích của tôi trong thời gian dài!', 4);
 
-INSERT INTO ShoppingCart
+INSERT INTO SelectedProduct() VALUES() ;

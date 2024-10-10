@@ -45,7 +45,8 @@
                                             <div class="form-floating mb-3">
                                                 <input type="text" v-model="inputFormLogin.username"
                                                     class="form-control border-0 border-bottom" name="email" id="email"
-                                                    placeholder="name@example.com" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                                                    placeholder="name@example.com" required
+                                                    style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="email" class="form-label">Tài khoản</label>
                                             </div>
                                         </div>
@@ -53,7 +54,8 @@
                                             <div class="form-floating mb-3">
                                                 <input type="password" v-model="inputFormLogin.password"
                                                     class="form-control border-0 border-bottom" name="password"
-                                                    id="password" value="" placeholder="Password" required style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                                                    id="password" value="" placeholder="Password" required
+                                                    style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                                                 <label for="password" class="form-label">Mật khẩu</label>
                                             </div>
                                         </div>
@@ -113,7 +115,7 @@
 
 <script setup lang="ts">
 import accountServices from "@/services/account.services";
-import checkLogin from "@/utilities/utilities";
+import { checkLogin } from "@/utilities/utilities";
 
 import { decodeCredential } from "vue3-google-login";
 import { useCookies } from "vue3-cookies";
@@ -146,7 +148,7 @@ function pushToHome(e: any) {
 
 const callback = (response: any) => {
 
-  console.log("Handle the response", decodeCredential(response.credential))
+    console.log("Handle the response", decodeCredential(response.credential))
 }
 
 async function onLogin(e: any) {

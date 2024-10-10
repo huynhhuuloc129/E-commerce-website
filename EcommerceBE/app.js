@@ -28,7 +28,7 @@ app.use('/api/products', prodRoutes);
 app.use('/api/tags', tagRoutes);
 app.use('/api/types', typeRoutes);
 app.use('/api/reviews', reviewRoutes);
-app.use('/api/selected-product', selectedProductRoutes)
+app.use('/api/selected-products', selectedProductRoutes)
 app.use('/api/orders', orderRoutes)
 
 module.exports = app;

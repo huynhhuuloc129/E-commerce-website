@@ -385,22 +385,26 @@
                     <li class="row">
                         <div class="col ms-5 mb-3">
                             <div v-for="brand in brands1" class="mt-1 text-uppercase" :key="brand.brandId">
-                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name
+                                    }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
                             <div v-for="brand in brands2" class="mt-1 text-uppercase" :key="brand.brandId">
-                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name
+                                    }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
                             <div v-for="brand in brands3" class="mt-1 text-uppercase" :key="brand.brandId">
-                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name
+                                    }}</a>
                             </div>
                         </div>
                         <div class="col ms-5 mb-3">
                             <div v-for="brand in brands4" class="mt-1 text-uppercase" :key="brand.brandId">
-                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name }}</a>
+                                <a :href="'http://localhost:5173/brand/' + brand.brandId" class="link">{{ brand.name
+                                    }}</a>
                             </div>
                         </div>
                     </li>
@@ -426,7 +430,8 @@
 
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="http://localhost:5173/personal">Tài khoản cá nhân</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:5173/personal">Tài khoản cá nhân</a>
+                            </li>
                             <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
                                     href="http://localhost:5173/admin">Admin</a></li>
                             <li><a class="dropdown-item" href="#">Đơn mua</a></li>
@@ -436,49 +441,45 @@
 
 
                     <button type="button" class="btn btn-light me-5 dropdown-toggle" id="dropdownMenuButtonCart"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" aria-expanded="false" @click="getAllSProducts">
 
                         <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
                     </button>
 
                     <div class="dropdown-menu w-25 rounded" aria-labelledby="dropdownMenuButtonCart">
-                        <span class="ms-3">
+                        <span v-if="sProducts.length > 0" class="ms-3">
                             Sản phẩm mới thêm
                         </span>
+                        <span v-else class="ms-3">
+                            Chưa có sản phẩm nào
+                        </span>
 
-                        <a class="dropdown-item d-flex justify-content-between" href="#">
+                        <div v-for="(sProduct, index) in sProducts" :key="sProduct.selectedProductId"
+                            class="cart-product ps-3 d-flex justify-content-between">
+
                             <div class="d-flex">
-
                                 <img src="https://placehold.co/90x50" class="me-2" alt="">
-                                <div class="text-wrap">Tên sản phẩm</div>
-                            </div>
-                            <div class="price">
-                                100.000 VND
-                            </div>
-                        </a>
+                                <div class="d-flex flex-column">
 
-                        <a class="dropdown-item d-flex justify-content-between" href="#">
-                            <div class="d-flex">
-
-                                <img src="https://placehold.co/90x50" class="me-2" alt="">
-                                <div class="text-wrap">Tên sản phẩm</div>
-                            </div>
-                            <div class="price">
-                                100.000 VND
-                            </div>
-                        </a>
-
-                        <a class="dropdown-item d-flex justify-content-between" href="#">
-                            <div class="d-flex">
-
-                                <img src="https://placehold.co/90x50" class="me-2" alt="">
-                                <div class="text-wrap">Tên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩmTên sản phẩm
+                                    <a class="text-wrap cart-items" :href="'http://localhost:5173/products/' + sProduct.proId">{{ sProduct.name }}</a>
+                                    <div>
+                                        Số lượng: {{ sProduct.quantitySelected }}
+                                    </div>
+                                    <div class="price" v-if="sProduct.sellingPrice != null">
+                                        Đơn Giá:
+                                        {{ sProduct.sellingPrice.toLocaleString("it-IT", {
+                                            style: "currency",
+                                            currency: "VND",
+                                        }) }}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="price">
-                                100.000 VND
-                            </div>
-                        </a>
+
+                            <button @click="removeSelectedProduct(index)" class="btn btn-light"><i
+                                    class="fa-solid fa-x"></i></button>
+
+
+                        </div>
 
                         <button class="btn cart-btn ms-3 mt-2">Xem giỏ hàng</button>
                     </div>
@@ -489,6 +490,7 @@
 </template>
 
 <script setup lang="ts">
+import selectedProductServices from '@/services/selectedProduct.services';
 import accountServices from '@/services/account.services';
 import brandServices from '@/services/brand.services';
 
@@ -530,6 +532,20 @@ const currentUser = ref({
     updated_at: null,
 });
 
+const sProducts = ref([{
+    selectedProductId: 0,
+    quantitySelected: 0,
+    sellingPrice: 0,
+    created_at: '',
+    updated_at: '',
+    proId: 0,
+    orderId: 0,
+    accountId: 0,
+    typeId: 0,
+    block: 0,
+    name: ''
+}])
+
 const brands = ref([
     {
         brandId: 0,
@@ -558,7 +574,35 @@ function signOut() {
     window.location.reload();
 }
 
+async function getAllSProducts() {
+    try {
+        // get selected product
+
+        let respSProducts = await selectedProductServices.getAllByAccountIdInCart(currentUser.value.accountId);
+        sProducts.value = respSProducts.data.sProducts
+
+        console.log(sProducts.value)
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+async function removeSelectedProduct(index: number) {
+    try {
+        
+        sProducts.value.splice(index, 1)
+
+        await selectedProductServices.delete(sProducts.value[index].selectedProductId)
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 onMounted(async () => {
+
+    // get all brand and divide it by 4
     let resp = await brandServices.getAll();
     brands.value = resp.data.brand
 
@@ -603,9 +647,13 @@ onMounted(async () => {
         brands3.value.push(brands.value[arrLen * 3 + 2])
     }
 
+
     try {
+        // get current User
+
         let resp = await accountServices.getMe(token);
         currentUser.value = resp.data.account[0];
+
     } catch (error) {
         console.log(error);
     }
@@ -620,7 +668,17 @@ onMounted(async () => {
     border-radius: 0px;
 
 }
+.cart-items{
+    color: black;
+    text-decoration: none;
+}
+.cart-items:hover{
+    text-decoration: underline;
+}
 
+.cart-product:hover{
+    background-color: rgb(245, 241, 241);
+}
 .header-item:hover {
     cursor: pointer;
     text-decoration: underline;
@@ -670,7 +728,8 @@ onMounted(async () => {
         color: black;
         background-color: none;
     }
-    #search-button{
+
+    #search-button {
         color: black;
     }
 }
@@ -713,9 +772,11 @@ onMounted(async () => {
 #text-search-input:focus {
     outline: none;
 }
-#search-button{
+
+#search-button {
     color: white;
 }
+
 #search-button:hover {
     cursor: pointer;
 }

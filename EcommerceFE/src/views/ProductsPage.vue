@@ -56,13 +56,31 @@
             </div>
             <hr class="w-100">
 
-            <div class="w-100 d-flex align-items-center">
-                <CustomSelect :options="types" :default="types[0]" class="select me-5 " />
-                <div class="d-flex w-50 align-items-center">
-                    <h5 class="me-3">Số lượng: </h5>
-                    <input class="form-control w-50" type="number" min="0" max="100">
+            <div class="w-100 d-flex align-items-center justify-content-between">
+
+                <div class="d-flex align-items-center">
+                    <h6 for="selectType">Loại:</h6>
+
+                    <select v-model="typeSelection" id="selectType" class="form-select ms-3"
+                        aria-label="Default select example">
+                        <option v-for="(type, index) in types" :key="type.typeId" :value="index">{{ type.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="d-flex flex-column w-50 align-items-center">
+                    <div class="d-flex w-100 align-items-center">
+                        <h6 class="me-3">Số lượng: </h6>
+                        <input v-model="numberSelection" class="form-control w-50" type="number" min="0" max="100">
+                    </div>
+                    <div class="d-flex w-100 align-items-center">
+                        <h6 class="me-3 mt-2">Số lượng trong kho: {{ quantityInStock }}</h6>
+                    </div>
                 </div>
             </div>
+            <hr class="w-100">
+
+
             <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
                 <a class="collapse-btn " data-bs-toggle="collapse" href="#collapseExample" role="button"
                     aria-expanded="false" aria-controls="collapseExample">
@@ -86,6 +104,8 @@
 
                 <i class="fa-solid fa-plus"></i>
             </div>
+
+
             <div class="collapse" id="collapse1">
                 <div>
                     Some placeholder content for the collapse component. This panel is hidden by default but revealed
@@ -110,8 +130,15 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end w-100">
-                <button class="cart-button me-3"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng</button>
+            <h6 class="text-end w-100 mt-5" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{ types[typeSelection].unitPrice.toLocaleString("it-IT", {
+                style: "currency",
+                currency: "VND",
+            }) }}</h6>
+
+
+            <div class="d-flex justify-content-end w-100 mt-3">
+                <button class="cart-button me-3" @click="addToCart"><i class="fa-solid fa-cart-shopping"></i> Thêm vào
+                    giỏ hàng</button>
                 <button class="buy-button">Mua ngay</button>
 
             </div>
@@ -374,6 +401,7 @@ import tagServices from '@/services/tag.services';
 import { useRoute, useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies';
 import Swal from 'sweetalert2';
+import selectedProductServices from '@/services/selectedProduct.services';
 
 const id = ref(0);
 
@@ -418,6 +446,10 @@ const brand = ref({
     updated_at: '',
     logo: ''
 })
+
+const typeSelection = ref(0)
+const numberSelection = ref(0)
+const quantityInStock = ref(0)
 
 const types = ref([{
     typeId: 0,
@@ -570,6 +602,37 @@ async function modifyReview(e: any) {
     }
 }
 
+async function addToCart(e: any) {
+    // e.preventDefault();
+    try {
+        if (numberSelection.value <= 0) throw ('Số lượng sản phẩm phải lớn hơn 0!')
+
+        let resp = await selectedProductServices.create({
+            quantitySelected: numberSelection.value,
+            sellingPrice: types.value[typeSelection.value].unitPrice,
+            typeId: types.value[typeSelection.value].typeId,
+            proId: types.value[typeSelection.value].productId,
+            accountId: currentUser.value.accountId
+        })
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Thêm vào giỏ hàng thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+
+    } catch (error) {
+        Swal.fire({
+            title: "Lỗi!",
+            text: "Đã có lỗi xảy ra! " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+        console.log(error)
+    }
+}
+
 onMounted(async () => {
     try {
         // get current user
@@ -592,6 +655,8 @@ onMounted(async () => {
             // get type
             let respType = await typeServices.getAllByProductId(product.value.proId);
             types.value = respType.data.type
+
+            if (types.value[0] != undefined) quantityInStock.value = types.value[0].quantityInStock
 
             // get all tags
             let respProductTags = await product_tagServices.getAllByProductId(product.value.proId);

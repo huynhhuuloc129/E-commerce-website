@@ -11,5 +11,8 @@ router
   .route('/:id')
   .get(selectedProductController.getOne)
   .delete(selectedProductController.delete);
+router
+  .route('/account/:id')
+  .get(selectedProductController.getAllByAccountIdInCart)
 
 module.exports = router;

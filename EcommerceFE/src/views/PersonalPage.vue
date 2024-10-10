@@ -1,7 +1,7 @@
 <template>
     <div style="width: 100vw;">
 
-        <div style="height: 200px; background-color: #fbbfc0;">
+        <div style="height: 150px; background-color: #fbbfc0;">
         </div>
 
         <div class="d-flex" style="margin: 0; background-color: white;">

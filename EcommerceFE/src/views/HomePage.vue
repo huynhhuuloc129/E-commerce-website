@@ -472,7 +472,10 @@ const router = useRouter();
 .card-hover-content {
     font-size: 16px;
 }
-
+#cover{
+    
+    border-top: 1px solid black;
+}
 #cover,
 #cover1,
 #cover2 {
