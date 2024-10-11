@@ -4,7 +4,6 @@
     <div class=" bg-white d-flex p-0 mb-5" style="width: 100vw;">
         <nav id="sidebarMenu" style="z-index: 0" class="bg-white sticky-top">
             <div class="position-sticky">
-                <PrintPage ref="frame" />
                 <div ref="fragment" class="list-group list-group-flush mx-3 mt-4">
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true"
                         data-bs-toggle="tab" data-bs-target="#metric">
@@ -277,7 +276,7 @@
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">Các sản phẩm gần đây</h6>
                             </div>
-                            <button class="btn btn-dark fw-bold w-100">+</button>
+                            <button class="btn btn-dark fw-bold w-100"><i class="fa-solid fa-plus"></i></button>
 
                             <div class="table-responsive">
                                 <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -350,7 +349,7 @@
                                 <h6 class="mb-0">Danh sách thể loại</h6>
                             </div>
                             <button class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
-                                data-bs-target="#addCategoryModal">+</button>
+                                data-bs-target="#addCategoryModal"><i class="fa-solid fa-plus"></i></button>
 
                             <!-- Modal -->
                             <div class=" modal fade" id="addCategoryModal" tabindex="-1"
@@ -478,7 +477,7 @@
                                 <h6 class="mb-0">Danh sách các nhãn dán</h6>
                             </div>
                             <button type="button" class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
-                                data-bs-target="#addTagModal">+</button>
+                                data-bs-target="#addTagModal"><i class="fa-solid fa-plus"></i></button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel"
@@ -677,29 +676,40 @@
                                 <div class="mb-3 d-flex">
                                     <div class="d-flex flex-column w-50">
 
-                                        <div class="d-flex w-100">
+                                        <div class="d-flex w-100 mt-1" v-for="(type, index) in newProduct.types"
+                                            :key="'type'+index">
 
                                             <div class="w-50">
-                                                <label for="type" class="fw-bold form-label">Loại (Ví dụ 50ml,
+                                                <label v-if="index == 0" for="type" class="fw-bold form-label">Loại (Ví
+                                                    dụ 50ml,
                                                     100ml):</label>
-                                                <input v-model="newProduct.types[0].name" type="text" id="type"
+                                                <input v-model="newProduct.types[index].name" type="text" id="type"
                                                     class="form-control" required>
                                             </div>
 
                                             <div class="w-25">
-                                                <label for="count" class="fw-bold form-label">Số lượng:</label>
-                                                <input v-model="newProduct.types[0].quantityInStock" type="number"
+                                                <label v-if="index == 0" for="count" class="fw-bold form-label">Số
+                                                    lượng:</label>
+                                                <input v-model="newProduct.types[index].quantityInStock" type="number"
                                                     id="count" min="0" class="form-control" required>
                                             </div>
 
                                             <div class="w-25">
-                                                <label for="price" class="fw-bold form-label">Giá loại:</label>
-                                                <input v-model="newProduct.types[0].unitPrice" type="number" id="price"
-                                                    min="0" class="form-control" required>
+                                                <label v-if="index == 0" for="price" class="fw-bold form-label">Giá
+                                                    loại:</label>
+                                                <input v-model="newProduct.types[index].unitPrice" type="number"
+                                                    id="price" min="0" class="form-control" required>
                                             </div>
+
+                                            <button v-if="index > 0" type="button" class="btn btn-dark"
+                                                @click="removeInput(index)">
+                                                <i class="fa-solid fa-x"></i>
+                                            </button>
                                         </div>
 
-                                        <button class="w-100 btn-dark btn mt-2" style="border-radius: 0px;">+</button>
+                                        <button type="button" id="addInputBtn" class="w-100 btn-dark btn mt-2"
+                                            style="border-radius: 0px;" @click="addMoreInput"><i
+                                                class="fa-solid fa-plus"></i></button>
                                     </div>
 
                                     <div class="d-flex flex-column w-50 ms-3">
@@ -710,7 +720,7 @@
                                         <div class="d-flex flex-wrap" id="tag-wrap">
                                             <div class="me-2 mb-2" v-for="tag in tags" :key="tag.tagId">
                                                 <input type="checkbox" class="btn-check" :id="'tag' + tag.tagId"
-                                                    autocomplete="off">
+                                                    v-model="newProduct.tagIds" autocomplete="off" :value="tag.tagId">
                                                 <label class="btn btn-outline-dark" :for="'tag' + tag.tagId"
                                                     style="border-radius: 0px;">{{ tag.name
                                                     }}</label>
@@ -729,7 +739,8 @@
                                         id="formFileMultiple" multiple>
                                 </div>
 
-                                <button type="submit" class="btn btn-danger p-3" style="border-radius: 0px;" @click="addProduct">Tạo sản phẩm</button>
+                                <button type="submit" class="btn btn-danger p-3" style="border-radius: 0px;"
+                                    @click="addProduct($event)">Tạo sản phẩm</button>
 
                             </div>
                             <!-- Profile Picture -->
@@ -752,6 +763,7 @@ import Swal from 'sweetalert2';
 import reviewServices from '@/services/review.services';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
+import productSevices from '@/services/product.sevices';
 
 const reviews = ref([{
     reviewId: 0,
@@ -798,12 +810,12 @@ const newProduct = ref({
     guide: '',
     note: '',
     types: [{
-        name: '',
+        name: "",
         unitPrice: 0,
         quantityInStock: 0
     }],
     images: [] as string[],
-    tags: [{ tagId: 0 }]
+    tagIds: [] as number[]
 })
 
 const choosenCategory = ref({
@@ -982,12 +994,12 @@ const toBase64 = (file: any) =>
 const base64s = ref([] as string[])
 
 async function uploadImageProducts(event: any) {
-    base64s.value = []
+    newProduct.value.images = []
     try {
         for (let i = 0; i < event.target.files.length; i++) {
 
             let code = await toBase64(event.target.files[i]);
-            base64s.value.push(String(code))
+            newProduct.value.images.push(String(code))
         }
     } catch (err) {
         console.log(err);
@@ -995,33 +1007,50 @@ async function uploadImageProducts(event: any) {
 }
 
 
-async function addProduct() {
+async function addProduct(e: any) {
+    e.preventDefault();
     try {
-        if (newCategory.value.name == '' || newCategory.value.description == '') throw "Vui lòng nhập đầy đủ thông tin!"
 
-        let resp = await categoryServices.create(newCategory.value);
+        console.log(newProduct.value)
 
-        if (resp == undefined) throw "Loại đã tồn tại."
-
+        await productSevices.create(newProduct.value)
+        
         Swal.fire({
             title: "Thành công!",
-            text: "Thêm loại thành công!",
+            text: "Thêm sản phẩm thành công!",
             icon: "success",
             confirmButtonText: "OK",
         });
+
+        
     } catch (error) {
 
         Swal.fire({
             title: "Thất bại!",
-            text: "Thêm loại thất bại! Error: " + error,
+            text: "Thêm sản phẩm thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
         });
     }
 }
 
+function addMoreInput() {
+    newProduct.value.types.push({
+        name: '',
+        quantityInStock: 0,
+        unitPrice: 0,
+    });
+}
+
+// Function to remove input by index
+function removeInput(index: number) {
+    newProduct.value.types.splice(index, 1);
+}
+
+
 onMounted(async () => {
     try {
+
         // get all reviews
         let respReviews = await reviewServices.getAll()
         reviews.value = respReviews.data.review;

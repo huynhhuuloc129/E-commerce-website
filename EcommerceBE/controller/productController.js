@@ -66,9 +66,9 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note) {
+        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images) {
 
-            const newLTS = {
+            const newProduct = {
                 catId: req.body.catId,
                 brandId: req.body.brandId,
                 name: req.body.name,
@@ -79,20 +79,78 @@ exports.create = async (req, res) => {
                 note: req.body.note
             }
 
-            connection.query('INSERT INTO product SET ?', newLTS, (err, row) => {
+            connection.query('INSERT INTO product SET ?', newProduct, (err, row) => {
                 if (err) {
-                    console.log(err)
-                    res.status(400).json({
+                    console.log(err);
+                    return res.status(400).json({
                         errorMessage: err,
                         status: false
                     });
-                } else
+                } else {
+                    // Loop through the images array
+                    for (let i = 0; i < req.body.images.length; i++) {
+                        let newImage = {
+                            base64: req.body.images[i], 
+                            belongId: "product" + row.insertId // Using row.insertId from product insert
+                        };
+            
+                        // Insert each image into the image table
+                        connection.query('INSERT INTO image SET ?', newImage, (err, result) => { // Use newImage instead of newProduct
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+            
+                    for (let i = 0; i < req.body.types.length; i++) {
+                        let newType = {
+                            name: req.body.types[i].name, 
+                            productId: row.insertId, 
+                            unitPrice: req.body.types[i].unitPrice, // Using row.insertId from product insert
+                            quantityInStock: req.body.types[i].quantityInStock
+                        };
+            
+                        connection.query('INSERT INTO type SET ?', newType, (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+
+                    for (let i = 0; i < req.body.tagIds.length; i++) {
+                        let newProductTag = {
+                            productId: row.insertId, 
+                            tagId: req.body.tagIds[i]
+                        };
+            
+                        connection.query('INSERT INTO product_tag SET ?', newProductTag, (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+
+                    // Send success response after inserting product
                     res.status(200).json({
-                        status: true,
-                        title: 'Created Successfully.',
+                        message: "Product and images inserted successfully",
+                        status: true
                     });
-            }
-            )
+                }
+            });
+            
+     
         } else {
             res.status(400).json({
                 errorMessage: 'Add proper parameter first!',
