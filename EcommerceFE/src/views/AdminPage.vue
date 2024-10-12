@@ -537,8 +537,7 @@
                                 <div class="w-100 d-flex justify-content-center align-items-center text-center mt-2">
 
                                     <button @click="tagVisibles += steps" v-if="tagVisibles < tags.length"
-                                        class="btn moreUser w-50"
-                                        style="border-radius: 50px; border: 2px solid black;">
+                                        class="btn moreUser w-50" style="border-radius: 50px; border: 2px solid black;">
                                         Xem thêm >>
                                     </button>
                                 </div>
@@ -707,7 +706,7 @@
                                             </div>
 
                                             <button v-if="index > 0" type="button" class="btn btn-dark"
-                                                @click="removeInput(index)">
+                                                style="border-radius: 0" @click="removeInput(index)">
                                                 <i class="fa-solid fa-x"></i>
                                             </button>
                                         </div>

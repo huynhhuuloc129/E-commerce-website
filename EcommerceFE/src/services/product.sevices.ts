@@ -34,6 +34,15 @@ class ProductService {
     }
   }
 
+  async getOneDetail(id: number) {
+    try {
+      const products = await this.api.get("/products/detail/" + id);
+      return products.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
   async create(data: any) {
     try {
       const resp = await this.api.post(
@@ -52,6 +61,14 @@ class ProductService {
     } catch (err) {
       handlingError(err);
     }
+  }
+
+  async update(id: number, data: any, ) {
+    return await axios.patch(`http://localhost:3000/api/products/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
   }
 }
 

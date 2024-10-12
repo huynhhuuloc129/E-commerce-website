@@ -10,9 +10,13 @@ router
 router
     .route('/:id')
     .get(prodController.getOne)
+    .patch(prodController.update)
     .delete(prodController.delete);
 router
+    .route('/detail/:id')
+    .get(prodController.getOneDetails);
+router
     .route('/brand/:id')
-    .get(prodController.getAllByBrandId)
+    .get(prodController.getAllByBrandId);
 
 module.exports = router;

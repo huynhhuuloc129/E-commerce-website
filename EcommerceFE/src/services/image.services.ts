@@ -16,7 +16,7 @@ class ImageService {
     }
   }
 
-  async getAllByBelongId(id: number) {
+  async getAllByBelongId(id: string) {
     try {
       const images = await this.api.get("/images/belong/" + id);
       return images.data;

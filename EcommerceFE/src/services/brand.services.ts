@@ -53,6 +53,14 @@ class BrandService {
       handlingError(err);
     }
   }
+
+  async update(id: number, data: any, ) {
+    return await axios.patch(`http://localhost:3000/api/brands/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
 }
 
 export default new BrandService();

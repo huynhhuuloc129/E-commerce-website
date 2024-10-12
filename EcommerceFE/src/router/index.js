@@ -46,6 +46,11 @@ const router = createRouter({
       component: () => import('../views/ProductsPage.vue')
     },
     {
+      path: '/edit/:id',
+      name: 'editProduct',
+      component: () => import('../views/EditProductPage.vue')
+    },
+    {
       path: '/search/:content',
       name: 'search',
       component: () => import('../views/SearchPage.vue')
@@ -60,7 +65,16 @@ const router = createRouter({
       name: 'brand',
       component: () => import('../views/BrandPage.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      // Scroll to the saved position if navigating back
+      return savedPosition;
+    } else {
+      // Scroll to top when navigating to a new route
+      return { top: 0 };
+    }
+  },
 })
 
 export default router

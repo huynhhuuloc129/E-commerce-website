@@ -64,6 +64,202 @@ exports.getOne = async (req, res) => {
     }
 };
 
+exports.getOneDetails = async (req, res) => {
+    try {
+        let sql = `    
+            SELECT 
+                p.*, 
+                typeData.typeNames,
+                typeData.unitPrices,
+                typeData.quantitiesInStock,
+                typeData.typeIds,
+                GROUP_CONCAT(DISTINCT t.tagId) AS tagIds,  -- You can keep DISTINCT here if you want unique tagIds
+                GROUP_CONCAT(DISTINCT i.imageId) AS imageIds, -- Use DISTINCT if you want unique imageIds
+                 GROUP_CONCAT(DISTINCT i.base64) AS base64s 
+            FROM product p
+            -- Subquery to aggregate types
+            LEFT JOIN (
+                SELECT 
+                    ty.productId,
+                    GROUP_CONCAT(ty.name) AS typeNames,
+                    GROUP_CONCAT(ty.unitPrice) AS unitPrices,
+                    GROUP_CONCAT(ty.quantityInStock) AS quantitiesInStock,
+                    GROUP_CONCAT(ty.typeId) AS typeIds
+                FROM type ty
+                GROUP BY ty.productId
+            ) typeData ON p.proId = typeData.productId
+            -- Join with product_tags and tags tables
+            LEFT JOIN product_tag pt ON p.proId = pt.productId
+            LEFT JOIN tag t ON pt.tagId = t.tagId
+            -- Join with images table
+            LEFT JOIN image i ON i.belongId = CONCAT('product', p.proId)
+            WHERE p.proId =  ${req.params.id}
+            GROUP BY p.proId
+        `
+
+        connection.query(sql, (err, row) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: row.length,
+                data: {
+                    products: row,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+
+exports.update = async (req, res) => {
+    try {
+        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images) {
+
+            const newProduct = {
+                proId: req.params.id,
+                catId: req.body.catId,
+                brandId: req.body.brandId,
+                name: req.body.name,
+                description: req.body.description,
+                unit: req.body.unit,
+                guide: req.body.guide,
+                maintain: req.body.maintain,
+                note: req.body.note
+            }
+
+            let sql = `UPDATE product SET 
+                catId = '${newProduct.catId}',
+                brandId = '${newProduct.brandId}',
+                name = '${newProduct.name}',
+                description = '${newProduct.description}',
+                unit = '${newProduct.unit}',
+                guide = '${newProduct.guide}',
+                maintain = '${newProduct.maintain}',
+                note = '${newProduct.note}'
+            WHERE proId = ${newProduct.proId}`
+
+            connection.query(sql, (err, row) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).json({
+                        errorMessage: err,
+                        status: false
+                    });
+                } else {
+                    // delete all image and product_tags and types
+                    connection.query('DELETE FROM product_tag WHERE productId = ?', req.params.id, (err, result) => { 
+                        if (err) {
+                            console.log(err);
+                            return res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        }
+                    });
+                    const queryDelete = `DELETE FROM image WHERE belongId = CONCAT("product", ${req.params.id})`;
+                    connection.query(queryDelete, req.params.id, (err, result) => { 
+                        if (err) {
+                            console.log(err);
+                            return res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        }
+                    });
+                    connection.query('DELETE FROM type WHERE productId = ?', req.params.id, (err, result) => { 
+                        if (err) {
+                            console.log(err);
+                            return res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        }
+                    });
+                    // Loop through the images array
+                    for (let i = 0; i < req.body.images.length; i++) {
+                        let newImage = {
+                            base64: req.body.images[i], 
+                            belongId: "product" + req.params.id // Using row.insertId from product insert
+                        };
+            
+                        // Insert each image into the image table
+                        connection.query('INSERT INTO image SET ?', newImage, (err, result) => { // Use newImage instead of newProduct
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+            
+                    for (let i = 0; i < req.body.types.length; i++) {
+                        let newType = {
+                            name: req.body.types[i].name, 
+                            productId: req.params.id, 
+                            unitPrice: req.body.types[i].unitPrice,
+                            quantityInStock: req.body.types[i].quantityInStock
+                        };
+            
+                        connection.query('INSERT INTO type SET ?', newType, (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+
+                    for (let i = 0; i < req.body.tagIds.length; i++) {
+                        let newProductTag = {
+                            productId: req.params.id, 
+                            tagId: req.body.tagIds[i]
+                        };
+            
+                        connection.query('INSERT INTO product_tag SET ?', newProductTag, (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+
+                    // Send success response after inserting product
+                    res.status(200).json({
+                        message: "Product and images inserted successfully",
+                        status: true
+                    });
+                }
+            });
+            
+     
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.create = async (req, res) => {
     try {
         if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images) {

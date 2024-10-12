@@ -1,12 +1,23 @@
 <template>
     <div style="width: 100vw;" class="archivo-medium">
-        <div class="d-flex justify-content-center m-auto align-items-center"
+        <div class="d-flex flex-column justify-content-between m-auto align-items-center"
             style="height: 550px; background-color: #EEEEEE;">
+            <div style="height: 15vh;"></div>
             <div>
-                {{ brand.name }}
+                <div class="text-uppercase">
+                    {{ brand.name }}
+                </div>
                 <h1>
                     {{ product.name }}
                 </h1>
+            </div>
+
+            <div v-if="currentUser.username == 'admin'" class="w-100  text-end mb-3 me-5">
+
+                <button class="btn btn-light " @click="pushToWithId('editProduct', product.proId)">Chỉnh sửa</button>
+            </div>
+            <div v-else>
+
             </div>
         </div>
         <div class="container align-items-center d-flex flex-column  justify-content-center mt-5 mb-3"
@@ -21,25 +32,21 @@
                         aria-label="Slide 3"></button>
                 </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
-                        <img src="@/assets/loginCover1.png" class="d-block w-100" alt="...">
+                    <div class="carousel-item image-carousel active"
+                        data-bs-interval="10000">
+                        <img :src="singleImage.base64" class="d-block image-product" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
+                            <!-- <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p> -->
                         </div>
                     </div>
-                    <div class="carousel-item" data-bs-interval="2000">
-                        <img src="@/assets/loginCover1.png" class="d-block w-100" alt="...">
+
+                    <div v-for="(image) in images" :key="image.imageId" class="carousel-item image-carousel"
+                        data-bs-interval="10000">
+                        <img :src="image.base64" class="d-block image-product" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>Second slide label</h5>
-                            <p>Some representative placeholder content for the second slide.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="@/assets/loginCover1.png" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Third slide label</h5>
-                            <p>Some representative placeholder content for the third slide.</p>
+                            <!-- <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p> -->
                         </div>
                     </div>
                 </div>
@@ -407,6 +414,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies';
 import Swal from 'sweetalert2';
 import selectedProductServices from '@/services/selectedProduct.services';
+import imageServices from '@/services/image.services';
 
 const id = ref(0);
 
@@ -443,6 +451,20 @@ const product = ref({
     maintain: '',
     note: ''
 })
+const singleImage = ref({
+    imageId: 0,
+    created_at: '',
+    updated_at: '',
+    base64: '',
+    belongId: ''
+})
+const images = ref([{
+    imageId: 0,
+    created_at: '',
+    updated_at: '',
+    base64: '',
+    belongId: ''
+}])
 const productGuide = ref([] as string[])
 const brand = ref({
     brandId: 0,
@@ -697,6 +719,14 @@ onMounted(async () => {
                     avatar: ''
                 }
             }
+
+            // get images
+            let respImages = await imageServices.getAllByBelongId('product' + product.value.proId)
+            images.value = respImages.data.image;
+            singleImage.value = images.value[0];
+
+            images.value.splice(0, 1)
+            console.log(images.value)
         }
 
     } catch (error) {
@@ -833,5 +863,12 @@ onMounted(async () => {
 
 .cart-button:hover {
     background-color: rgb(181, 181, 181);
+}
+.image-carousel{
+    width: 830px;
+}
+.image-product{
+    width: 830px;
+    height: 500px;
 }
 </style>
