@@ -16,12 +16,6 @@
                         <span>Tạo sản phẩm mới</span>
                     </a>
 
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="false"
-                        data-bs-toggle="tab" data-bs-target="#favorite" aria-controls="favorite">
-                        <i class="fa-solid fa-users fa-fw me-3"></i>
-                        <span>Danh sách yêu thích</span>
-                    </a>
-
                 </div>
             </div>
         </nav>
@@ -183,8 +177,11 @@
                                     </div>
                                     <div v-for="review in reviews" :key="review.reviewId"
                                         class="d-flex align-items-center border-bottom py-3">
-                                        <img class="rounded-circle flex-shrink-0" alt=""
+                                        <img v-if="review.avatar != '' && review.avatar != null"
+                                            class="rounded-circle flex-shrink-0" alt="" :src="review.avatar"
                                             style="width: 40px; height: 40px;">
+                                        <img v-else src="https://placehold.co/40x40"
+                                            class="rounded-circle flex-shrink-0" alt="">
                                         <div class="ms-3" style="width: 90%;">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h6 class="mb-0 w-75">{{ review.name }} đã đánh giá
@@ -515,8 +512,8 @@
                                             <th style="width: 15%;" scope="col"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr v-for="tag in tags" :key="tag.tagId">
+                                    <tbody class="w-100">
+                                        <tr v-for="tag in VisibleTags()" :key="tag.tagId">
                                             <td>{{ tag.created_at.slice(0, 10) }}</td>
                                             <td class="text-capitalize">{{ tag.name }}</td>
                                             <td class="d-flex justify-content-around">
@@ -537,6 +534,14 @@
 
                                     </tbody>
                                 </table>
+                                <div class="w-100 d-flex justify-content-center align-items-center text-center mt-2">
+
+                                    <button @click="tagVisibles += steps" v-if="tagVisibles < tags.length"
+                                        class="btn moreUser w-50"
+                                        style="border-radius: 50px; border: 2px solid black;">
+                                        Xem thêm >>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -677,7 +682,7 @@
                                     <div class="d-flex flex-column w-50">
 
                                         <div class="d-flex w-100 mt-1" v-for="(type, index) in newProduct.types"
-                                            :key="'type'+index">
+                                            :key="'type' + index">
 
                                             <div class="w-50">
                                                 <label v-if="index == 0" for="type" class="fw-bold form-label">Loại (Ví
@@ -834,6 +839,13 @@ const brands = ref([
         updated_at: ''
     }
 ])
+
+const tagVisibles = ref(5);
+const steps = ref(5)
+
+function VisibleTags() {
+    return tags.value.slice(0, tagVisibles.value)
+}
 
 async function deleteCategory() {
     try {
@@ -1014,7 +1026,7 @@ async function addProduct(e: any) {
         console.log(newProduct.value)
 
         await productSevices.create(newProduct.value)
-        
+
         Swal.fire({
             title: "Thành công!",
             text: "Thêm sản phẩm thành công!",
@@ -1022,7 +1034,7 @@ async function addProduct(e: any) {
             confirmButtonText: "OK",
         });
 
-        
+
     } catch (error) {
 
         Swal.fire({

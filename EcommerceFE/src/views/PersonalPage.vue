@@ -21,21 +21,14 @@
                             <i class="fa-solid fa-newspaper fa-fw me-3"></i>
                             <span>Đơn hàng của tôi</span>
                         </a>
-
-                        <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="false"
-                            data-bs-toggle="tab" data-bs-target="#favorite" aria-controls="favorite">
-                            <i class="fa-solid fa-users fa-fw me-3"></i>
-                            <span>Danh sách yêu thích</span>
-                        </a>
-
                     </div>
                 </div>
             </nav>
 
             <div class="tab-content" id="v-pills-tabContent">
-                
-                <div class="bg-light rounded tab-pane fade show active mt-4" id="personal" role="tabpanel" aria-labelledby="personal-tab"
-                    style="width: 80vw">
+
+                <div class="bg-light rounded tab-pane fade show active mt-4" id="personal" role="tabpanel"
+                    aria-labelledby="personal-tab" style="width: 80vw">
                     <div class="container d-flex justify-content-center">
                         <div class="w-100 mt-3">
                             <h2>Hồ Sơ Của Tôi</h2>
@@ -61,7 +54,7 @@
                                     <div class="mb-3">
                                         <label for="email" class="fw-bold form-label">Email:</label>
                                         <div class="d-flex align-items-center">
-                                            <input type="email" class="form-control" id="email" 
+                                            <input type="email" class="form-control" id="email"
                                                 v-model="currentUser.email" required />
                                         </div>
                                     </div>

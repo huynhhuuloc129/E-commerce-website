@@ -12,269 +12,107 @@
         <img id="cover" src="../assets/Cover.png">
         <div class="container d-flex justify-content-between mt-5 ">
             <div class="width25 mt-3">
-                <h5>Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm Romand</h5>
+                <h5>Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm <span class="fw-bold text-capitalize">{{
+                    brands[0].name }}</span></h5>
                 <h1>Dưỡng da chuẩn khoa học</h1>
             </div>
 
             <ul class="d-flex  ">
-                <li class="ul-item card">
-                    <div class="card-body text-center">
+                <li v-for="index in 5" :key="'firstPro' + index" class="ul-item card"
+                    @click="pushToProduct($event, firstProducts[index].proId)">
+                    <div class="card-body text-center" v-if="firstProducts[index] != null">
 
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
+                        <div class="mb-3">{{ firstProducts[index].name }}</div>
+                        <div class="text-truncate text-wrap" style="height: 150px;">
+                            {{ firstProducts[index].description }}
                         </div>
-                        <div class="mt-2">
+                        <!-- <div class="mt-2">
                             VND 429,000đ
-                        </div>
+                        </div> -->
                         <div class="mt-5">
-                            View Product
+                            Xem chi tiết
                         </div>
                     </div>
 
                 </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
 
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
             </ul>
 
         </div>
-        <div class="container mb-5 text-uppercase fw-bold">
-            Khám phá dưỡng da từ Romand
+        <div class="container mb-5" v-if="brands[0] != null">
+
+            <a :href="'http://localhost:5173/brand/' + brands[0].brandId"
+                class="container  text-uppercase fw-bold linkToBrand">
+                Khám phá tất cả sản phẩm từ <span class="fw-bold">{{ brands[0].name }}</span>
+            </a>
         </div>
 
         <img id="cover2" src="../assets/Cover2.png">
         <div class="container d-flex justify-content-between mt-5">
             <div class="width25 mt-3">
                 <h5>Giàu thành phần dưỡng da, tạo cảm giác dễ chịu trên da</h5>
-                <h1>Trang điểm phong cách Paris</h1>
+                <h1>Trang điểm phong cách <span class="fw-bold text-capitalize" v-if="brands[1] != null">{{
+                    brands[1].name }}</span></h1>
             </div>
 
             <ul class="d-flex  ">
-                <li class="ul-item card">
-                    <div class="card-body text-center">
+                <li v-for="index in 5" :key="'secondPro' + index" class="ul-item card"
+                    @click="pushToProduct($event, secondProducts[index].proId)">
+                    <div class="card-body text-center" v-if="secondProducts[index] != null">
 
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
+                        <div class="mb-3">{{ secondProducts[index].name }}</div>
+                        <div class="text-truncate text-wrap" style="height: 150px;">
+                            {{ secondProducts[index].description }}
                         </div>
-                        <div class="mt-2">
+                        <!-- <div class="mt-2">
                             VND 429,000đ
-                        </div>
+                        </div> -->
                         <div class="mt-5">
-                            View Product
+                            Xem chi tiết
                         </div>
                     </div>
 
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
                 </li>
             </ul>
 
         </div>
-        <div class="container mb-5 text-uppercase fw-bold">
-            Khám phá sản phẩm trang điểm từ Merzy
+        <div class="container mb-5" v-if="brands[1] != null">
+            <a :href="'http://localhost:5173/brand/' + brands[1].brandId"
+                class="container  text-uppercase fw-bold linkToBrand">
+                Khám phá tất cả sản phẩm từ <span class="fw-bold">{{ brands[1].name }}</span>
+
+            </a>
         </div>
 
         <img id="cover3" src="../assets/Cover3.png">
         <div class="container mt-5">
 
-            <ul class="d-flex  justify-content-between">
-                <li class="ul-item card">
-                    <div class="card-body text-center">
+            <ul class="d-flex  justify-content-between align-items-center">
+                <li v-for="index in 5" :key="'thirdPro' + index" class="ul-item card"
+                    @click="pushToProduct($event, thirdProducts[index].proId)">
+                    <div class="card-body text-center" v-if="thirdProducts[index] != null">
 
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
+                        <div class="mb-3">{{ thirdProducts[index].name }}</div>
+                        <div class="text-truncate text-wrap" style="height: 150px;">
+                            {{ thirdProducts[index].description }}
                         </div>
-                        <div class="mt-2">
+                        <!-- <div class="mt-2">
                             VND 429,000đ
-                        </div>
+                        </div> -->
                         <div class="mt-5">
-                            View Product
+                            Xem chi tiết
                         </div>
                     </div>
 
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
-                </li>
-                <li class="ul-item card">
-                    <div class="card-body text-center">
-
-                        <div class="mb-3">Glycolic Bright</div>
-                        <div>
-                            Serum dưỡng sáng mờ thâm sám L'Oreal Paris Glycolic Bright 1.0
-                        </div>
-                        <div class="mt-2">
-                            VND 429,000đ
-                        </div>
-                        <div class="mt-5">
-                            View Product
-                        </div>
-                    </div>
                 </li>
             </ul>
 
-            <div class="text-center mt-2 mb-3 text-uppercase fw-bold">
-                Khám phá sản phẩm tóc từ L'Oreal Paris
+            <div class="container justify-content-center text-center mb-5" v-if="brands[2] != null">
+                <a :href="'http://localhost:5173/brand/' + brands[2].brandId"
+                    class="container  text-uppercase fw-bold linkToBrand">
+                    Khám phá tất cả sản phẩm từ <span class="fw-bold">{{ brands[2].name }}</span>
+
+                </a>
             </div>
         </div>
 
@@ -314,9 +152,59 @@ import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
 import { ref, onMounted, computed } from 'vue';
 import Swal from "sweetalert2";
+import brandServices from "@/services/brand.services";
+import productSevices from "@/services/product.sevices";
 
 const router = useRouter();
+const brands = ref([{
+    brandId: 0,
+    name: '',
+    created_at: '',
+    updated_at: '',
+    logo: ''
+}])
 
+type productType = {
+    proId: number,
+    catId: number,
+    brandId: number,
+    name: string,
+    description: string,
+    unit: string,
+    guide: string,
+    created_at: string,
+    updated_at: string,
+    maintain: string,
+    note: string
+}
+
+const firstProducts = ref([] as productType[])
+const secondProducts = ref([] as productType[])
+const thirdProducts = ref([] as productType[])
+
+function pushToProduct(e: any, id: number) {
+    e.preventDefault();
+    router.push({ name: "products", params: { id: id } });
+}
+
+onMounted(async () => {
+    try {
+
+        let respBrands = await brandServices.getTop10();
+        brands.value = respBrands.data.brand;
+
+        let respPro1 = await productSevices.getAllByBrandId(brands.value[0].brandId)
+        let respPro2 = await productSevices.getAllByBrandId(brands.value[1].brandId)
+        let respPro3 = await productSevices.getAllByBrandId(brands.value[2].brandId)
+
+        firstProducts.value = respPro1.data.products
+        secondProducts.value = respPro2.data.products
+        thirdProducts.value = respPro3.data.products
+
+    } catch (error) {
+        console.log(error)
+    }
+})
 </script>
 
 <style scoped>
@@ -472,10 +360,12 @@ const router = useRouter();
 .card-hover-content {
     font-size: 16px;
 }
-#cover{
-    
+
+#cover {
+
     border-top: 1px solid black;
 }
+
 #cover,
 #cover1,
 #cover2 {
@@ -501,5 +391,14 @@ const router = useRouter();
 .ul-item:hover {
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.linkToBrand {
+    text-decoration: none;
+    color: black;
+}
+
+.linkToBrand:hover {
+    text-decoration: underline;
 }
 </style>
