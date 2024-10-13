@@ -25,11 +25,10 @@
             <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
+                        aria-current="true" aria-label="Slide 0"></button>
+                    <button type="button" v-for="(image, index) in images" :key="image.imageId"  data-bs-target="#carouselExampleDark" :data-bs-slide-to="index+1"
+                        :aria-label="'Slide ' + index+1"></button>
+
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item image-carousel active"
@@ -403,8 +402,7 @@ import componentServices from '@/services/component.services';
 import categoryServices from '@/services/category.services';
 
 // @ts-ignore
-import CustomSelect from "@/components/CustomSelect.vue";
-import productSevices from '@/services/product.sevices';
+import productServices from '@/services/product.sevices';
 import reviewServices from '@/services/review.services';
 import brandServices from '@/services/brand.services';
 import typeServices from '@/services/type.services';
@@ -669,7 +667,7 @@ onMounted(async () => {
 
         id.value = Number(route.params.id);
 
-        let respProduct = await productSevices.getOne(id.value)
+        let respProduct = await productServices.getOne(id.value)
         product.value = respProduct.data.products[0]
 
         productGuide.value = product.value.guide.split('\nBước ')
@@ -869,6 +867,6 @@ onMounted(async () => {
 }
 .image-product{
     width: 830px;
-    height: 500px;
+    height: 830px;
 }
 </style>

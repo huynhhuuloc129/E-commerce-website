@@ -767,7 +767,8 @@ import Swal from 'sweetalert2';
 import reviewServices from '@/services/review.services';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
-import productSevices from '@/services/product.sevices';
+import productServices from '@/services/product.sevices';
+
 
 const reviews = ref([{
     reviewId: 0,
@@ -1024,7 +1025,7 @@ async function addProduct(e: any) {
 
         console.log(newProduct.value)
 
-        await productSevices.create(newProduct.value)
+        await productServices.create(newProduct.value)
 
         Swal.fire({
             title: "Thành công!",

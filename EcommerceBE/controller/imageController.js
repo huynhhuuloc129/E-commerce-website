@@ -20,6 +20,29 @@ exports.getAll = async (req, res) => {
     }
 };
 
+exports.getAllByBelongIdLimit1 = async (req, res) => {
+    try {
+        const sql = `SELECT * FROM image WHERE belongId = CONCAT("product", ${req.params.id}) LIMIT 1`
+        connection.query(sql, (err,rows) => {
+            if(err) throw err;
+            
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    image: rows,
+                },
+            });
+        });
+    }  catch (err) {
+    res.status(404).json({
+        status: 'fail',
+        message: err,
+    });
+    }
+};
+
 exports.getAllByBelongId = async (req, res) => {
     try {
         connection.query('SELECT * FROM image WHERE belongId = ?', req.params.id , (err,rows) => {

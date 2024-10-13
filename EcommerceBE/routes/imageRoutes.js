@@ -15,4 +15,7 @@ router
   .route('/belong/:id')
   .get(imageController.getAllByBelongId)
   .delete(imageController.deleteByBelongId)
+router 
+  .route('/belong/limit/:id')
+  .get(imageController.getAllByBelongIdLimit1)
 module.exports = router;

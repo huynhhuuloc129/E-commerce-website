@@ -22,7 +22,20 @@ exports.getAll = async (req, res) => {
 
 exports.getAllByBrandId = async (req, res) => {
     try {
-        connection.query('SELECT * FROM product WHERE brandId = ?', req.params.id, (err, rows) => {
+        connection.query(`SELECT 
+    p.*, 
+    i.base64 AS image
+    FROM product p
+    LEFT JOIN (
+        SELECT imageId, base64, belongId
+        FROM image img
+        WHERE img.imageId = (
+            SELECT MIN(imageId) 
+            FROM image 
+            WHERE belongId = img.belongId
+        )
+    ) i ON i.belongId = CONCAT('product', p.proId)
+    WHERE p.brandId = ?`, req.params.id, (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -173,15 +186,7 @@ exports.update = async (req, res) => {
                             });
                         }
                     });
-                    connection.query('DELETE FROM type WHERE productId = ?', req.params.id, (err, result) => { 
-                        if (err) {
-                            console.log(err);
-                            return res.status(400).json({
-                                errorMessage: err,
-                                status: false
-                            });
-                        }
-                    });
+        
                     // Loop through the images array
                     for (let i = 0; i < req.body.images.length; i++) {
                         let newImage = {
@@ -200,25 +205,7 @@ exports.update = async (req, res) => {
                             }
                         });
                     }
-            
-                    for (let i = 0; i < req.body.types.length; i++) {
-                        let newType = {
-                            name: req.body.types[i].name, 
-                            productId: req.params.id, 
-                            unitPrice: req.body.types[i].unitPrice,
-                            quantityInStock: req.body.types[i].quantityInStock
-                        };
-            
-                        connection.query('INSERT INTO type SET ?', newType, (err, result) => {
-                            if (err) {
-                                console.log(err);
-                                return res.status(400).json({
-                                    errorMessage: err,
-                                    status: false
-                                });
-                            }
-                        });
-                    }
+
 
                     for (let i = 0; i < req.body.tagIds.length; i++) {
                         let newProductTag = {

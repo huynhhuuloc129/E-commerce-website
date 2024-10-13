@@ -16,6 +16,15 @@ class ImageService {
     }
   }
 
+  async getAllByBelongIdLimit1(id: number) {
+    try {
+      const images = await this.api.get("/images/belong/limit/" + id);
+      return images.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
   async getAllByBelongId(id: string) {
     try {
       const images = await this.api.get("/images/belong/" + id);

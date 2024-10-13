@@ -22,9 +22,9 @@
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center">
 
                 <div v-for="product in products" :key="product.proId" class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper">
+                    <div class="wrapper" :style="`background: url(${product.image});`">
                         <div class="header">
-                            <div class="date">
+                            <!-- <div class="date">
                                 <span class="day">12</span>
                                 <span class="month">Aug</span>
                                 <span class="year">2016</span>
@@ -35,10 +35,10 @@
                                 </li>
                                 <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
                                 <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
+                            </ul> -->
                         </div>
                         <div class="data">
-                            <div class="content text-white">
+                            <div class="content ">
                                 <span class="author text-uppercase">{{ brand.name }}</span>
                                 <h1 class="title"><a href="#">{{ product.name }}</a></h1>
                                 <p class="text" style="overflow: hidden;">{{ product.description }}</p>
@@ -51,8 +51,9 @@
 
 
             <h2 class="mt-5">Các nhãn hàng phổ biến</h2>
-            <div class="container mt-2 d-flex justify-content-center flex-wrap align-items-center" >
-                <button v-for="brand in brands" :key="brand.brandId" class="fw-bold btn btn-light text-uppercase me-3 mt-2 mb-2"
+            <div class="container mt-2 d-flex justify-content-center flex-wrap align-items-center">
+                <button v-for="brand in brands" :key="brand.brandId"
+                    class="fw-bold btn btn-light text-uppercase me-3 mt-2 mb-2"
                     @click="pushToWithId('brand', brand.brandId)" style="color: #fbbfc0;">
                     <h5 class="fw-bold ">
                         {{ brand.name }}
@@ -69,7 +70,7 @@ import tagServices from '@/services/tag.services';
 
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue';
-import productSevices from '@/services/product.sevices';
+import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
 
 
@@ -122,7 +123,8 @@ const products = ref([{
     created_at: '',
     updated_at: '',
     maintain: '',
-    note: ''
+    note: '',
+    image: ''
 }])
 
 function pushToWithId(name: string, id: number) {
@@ -140,13 +142,14 @@ onMounted(async () => {
 
         brand.value = respBrand.data.brand[0];
 
-        let respProducts = await productSevices.getAllByBrandId(brand.value.brandId);
+        let respProducts = await productServices.getAllByBrandId(brand.value.brandId);
         products.value = respProducts.data.products;
 
-        let respBrands = await brandServices.getTop10();
-        brands.value = respBrands.data.brand;
+        console.log(products.value)
 
-        console.log(brands.value)
+        let respBrands = await brandServices.getTop10();
+        brands.value = respBrands.data.brand; 
+
     } catch (error) {
         console.log(error)
     }
@@ -258,11 +261,6 @@ a {
 
 .card-tag input[type='checkbox']:checked+.menu-content {
     transform: translateY(-60px);
-}
-
-/* Second example styles */
-.example-2 .wrapper {
-    background: url('https://tvseriescritic.files.wordpress.com/2016/10/stranger-things-bicycle-lights-children.jpg') center / cover no-repeat;
 }
 
 .example-2 .wrapper:hover .menu-content span {

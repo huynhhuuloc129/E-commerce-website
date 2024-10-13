@@ -23,9 +23,9 @@
 
                 <div v-for="(product, index) in products" :key="product.proId"
                     class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper">
+                    <div class="wrapper" :style="`background: url(${images[index].base64})`">
                         <div class="header">
-                            <div class="date">
+                            <!-- <div class="date">
                                 <span class="day">12</span>
                                 <span class="month">Aug</span>
                                 <span class="year">2016</span>
@@ -36,10 +36,10 @@
                                 </li>
                                 <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
                                 <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul>
+                            </ul> -->
                         </div>
                         <div class="data">
-                            <div class="content text-white">
+                            <div class="content">
                                 <span class="author text-uppercase">{{ brands[index].name }}</span>
                                 <h1 class="title"><a href="#">{{ product.name }}</a></h1>
                                 <p class="text" style="overflow: hidden;">{{ product.description }}</p>
@@ -69,8 +69,9 @@ import tagServices from '@/services/tag.services';
 
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue';
-import productSevices from '@/services/product.sevices';
+import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
+import imageServices from '@/services/image.services';
 
 
 const route = useRoute();
@@ -123,7 +124,13 @@ const products = ref([{
     maintain: '',
     note: ''
 }])
-
+const images = ref([{
+    imageId: 0,
+    created_at: '',
+    updated_at: '',
+    base64: '',
+    belongId: ''
+}])
 function pushToWithId(name: string, id: number) {
     router.push({
         name: name,
@@ -143,12 +150,17 @@ onMounted(async () => {
         product_tags.value = respProductTags.data.product_tag;
 
         let respProducts = []
+        let respImgs = []
         for (let i = 0; i < product_tags.value.length; i++) {
-            let respProduct = await productSevices.getOne(product_tags.value[i].productId)
+            let respProduct = await productServices.getOne(product_tags.value[i].productId)
 
             respProducts.push(respProduct.data.products[0])
+
+            let respImage = await imageServices.getAllByBelongIdLimit1(respProduct.data.products[0].proId)
+            respImgs.push(respImage.data.image[0])
         }
         products.value = respProducts;
+        images.value = respImgs
 
         let respBrands = []
         for (let i = 0; i < products.value.length; i++) {
@@ -163,7 +175,7 @@ onMounted(async () => {
         let respTags = await tagServices.getTop();
         tags.value = respTags.data.tag;
 
-        console.log(tags.value)
+        console.log(images.value)
     } catch (error) {
         console.log(error)
     }
@@ -275,11 +287,6 @@ a {
 
 .card-tag input[type='checkbox']:checked+.menu-content {
     transform: translateY(-60px);
-}
-
-/* Second example styles */
-.example-2 .wrapper {
-    background: url('https://tvseriescritic.files.wordpress.com/2016/10/stranger-things-bicycle-lights-children.jpg') center / cover no-repeat;
 }
 
 .example-2 .wrapper:hover .menu-content span {

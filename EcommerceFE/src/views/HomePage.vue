@@ -22,14 +22,16 @@
                     @click="pushToProduct($event, firstProducts[index].proId)">
                     <div class="card-body text-center" v-if="firstProducts[index] != null">
 
-                        <div class="mb-3">{{ firstProducts[index].name }}</div>
-                        <div class="text-truncate text-wrap" style="height: 150px;">
+                        <img :src="firstProducts[index].image" alt="" height="150px" width="">
+
+                        <div class="mb-3 fw-bold small">{{ firstProducts[index].name }}</div>
+                        <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
                             {{ firstProducts[index].description }}
                         </div>
                         <!-- <div class="mt-2">
                             VND 429,000đ
                         </div> -->
-                        <div class="mt-5">
+                        <div class="mt-5 fw-bold text-uppercase">
                             Xem chi tiết
                         </div>
                     </div>
@@ -60,17 +62,20 @@
                     @click="pushToProduct($event, secondProducts[index].proId)">
                     <div class="card-body text-center" v-if="secondProducts[index] != null">
 
-                        <div class="mb-3">{{ secondProducts[index].name }}</div>
-                        <div class="text-truncate text-wrap" style="height: 150px;">
+                        <img :src="secondProducts[index].image" alt="" height="150px" width="">
+
+                        <div class="mb-3 fw-bold small">{{ secondProducts[index].name }}</div>
+                        <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
                             {{ secondProducts[index].description }}
                         </div>
                         <!-- <div class="mt-2">
-                            VND 429,000đ
-                        </div> -->
-                        <div class="mt-5">
+    VND 429,000đ
+</div> -->
+                        <div class="mt-5 fw-bold text-uppercase">
                             Xem chi tiết
                         </div>
                     </div>
+
 
                 </li>
             </ul>
@@ -92,17 +97,20 @@
                     @click="pushToProduct($event, thirdProducts[index].proId)">
                     <div class="card-body text-center" v-if="thirdProducts[index] != null">
 
-                        <div class="mb-3">{{ thirdProducts[index].name }}</div>
-                        <div class="text-truncate text-wrap" style="height: 150px;">
+                        <img :src="thirdProducts[index].image" alt="" height="150px" width="">
+
+                        <div class="mb-3 fw-bold small">{{ thirdProducts[index].name }}</div>
+                        <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
                             {{ thirdProducts[index].description }}
                         </div>
                         <!-- <div class="mt-2">
-                            VND 429,000đ
-                        </div> -->
-                        <div class="mt-5">
+    VND 429,000đ
+</div> -->
+                        <div class="mt-5 fw-bold text-uppercase">
                             Xem chi tiết
                         </div>
                     </div>
+
 
                 </li>
             </ul>
@@ -153,7 +161,8 @@ import { useRouter } from "vue-router";
 import { ref, onMounted, computed } from 'vue';
 import Swal from "sweetalert2";
 import brandServices from "@/services/brand.services";
-import productSevices from "@/services/product.sevices";
+import productServices from "@/services/product.sevices";
+import imageServices from "@/services/image.services";
 
 const router = useRouter();
 const brands = ref([{
@@ -175,7 +184,8 @@ type productType = {
     created_at: string,
     updated_at: string,
     maintain: string,
-    note: string
+    note: string,
+    image: string
 }
 
 const firstProducts = ref([] as productType[])
@@ -193,13 +203,31 @@ onMounted(async () => {
         let respBrands = await brandServices.getTop10();
         brands.value = respBrands.data.brand;
 
-        let respPro1 = await productSevices.getAllByBrandId(brands.value[0].brandId)
-        let respPro2 = await productSevices.getAllByBrandId(brands.value[1].brandId)
-        let respPro3 = await productSevices.getAllByBrandId(brands.value[2].brandId)
+        let respPro1 = await productServices.getAllByBrandId(brands.value[0].brandId)
+        let respPro2 = await productServices.getAllByBrandId(brands.value[1].brandId)
+        let respPro3 = await productServices.getAllByBrandId(brands.value[2].brandId)
 
         firstProducts.value = respPro1.data.products
         secondProducts.value = respPro2.data.products
         thirdProducts.value = respPro3.data.products
+
+
+
+        for (let i = 0; i < 5; i++) {
+            if (firstProducts.value[i] != null) {
+                let respImg1 = await imageServices.getAllByBelongIdLimit1(firstProducts.value[i].proId)
+                firstProducts.value[i].image = respImg1.data.image[0].base64
+            }
+            if (secondProducts.value[i] != null) {
+                let respImg2 = await imageServices.getAllByBelongIdLimit1(secondProducts.value[i].proId)
+                secondProducts.value[i].image = respImg2.data.image[0].base64
+            }
+            if (thirdProducts.value[i] != null) {
+                let respImg3 = await imageServices.getAllByBelongIdLimit1(thirdProducts.value[i].proId)
+                thirdProducts.value[i].image = respImg3.data.image[0].base64
+            }
+
+        }
 
     } catch (error) {
         console.log(error)

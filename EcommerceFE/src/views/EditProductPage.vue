@@ -49,7 +49,7 @@
                         <div class="d-flex">
                             <div class="mb-3 w-75">
                                 <label for="guide" class="fw-bold form-label">Hướng dẫn sử dụng (viết theo định
-                                    dạng 1., 2., 3., ...):</label>
+                                    dạng Bước 1.,Bước 2.,Bước 3., ...):</label>
                                 <div class="d-flex align-items-center">
                                     <textarea v-model="editProduct.guide" class="form-control" id="guide"
                                         required> </textarea>
@@ -86,36 +86,26 @@
                                     :key="'type' + index">
 
                                     <div class="w-50">
-                                        <label v-if="index == 0" for="type" class="fw-bold form-label">Loại (Ví
-                                            dụ 50ml,
-                                            100ml):</label>
-                                        <input v-model="editProduct.types[index].name" type="text" id="type"
+                                        <label v-if="index == 0" for="type" class="fw-bold form-label">Loại:</label>
+                                        <input disabled v-model="editProduct.types[index].name" type="text" id="type"
                                             class="form-control" required>
                                     </div>
 
                                     <div class="w-25">
                                         <label v-if="index == 0" for="count" class="fw-bold form-label">Số
                                             lượng:</label>
-                                        <input v-model="editProduct.types[index].quantityInStock" type="number"
+                                        <input disabled v-model="editProduct.types[index].quantityInStock" type="number"
                                             id="count" min="0" class="form-control" required>
                                     </div>
 
                                     <div class="w-25">
                                         <label v-if="index == 0" for="price" class="fw-bold form-label">Giá
                                             loại:</label>
-                                        <input v-model="editProduct.types[index].unitPrice" type="number" id="price"
+                                        <input disabled v-model="editProduct.types[index].unitPrice" type="number" id="price"
                                             min="0" class="form-control" required>
                                     </div>
-
-                                    <button v-if="index > 0" type="button" style="border-radius: 0" class="btn btn-dark"
-                                        @click="removeInput(index)">
-                                        <i class="fa-solid fa-x"></i>
-                                    </button>
                                 </div>
 
-                                <button type="button" id="addInputBtn" class="w-100 btn-dark btn mt-2"
-                                    style="border-radius: 0px;" @click="addMoreInput"><i
-                                        class="fa-solid fa-plus"></i></button>
                             </div>
 
                             <div class="d-flex flex-column w-50 ms-3">
@@ -163,7 +153,7 @@ import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
-import productSevices from '@/services/product.sevices';
+import productServices from '@/services/product.sevices';
 
 
 const route = useRoute();
@@ -277,7 +267,7 @@ async function onEditProduct(e: any) {
             editProduct.value.images = currentProduct.value.base64s.split(',')
         }
 
-        await productSevices.update(currentProduct.value.proId, editProduct.value)
+        await productServices.update(currentProduct.value.proId, editProduct.value)
 
         Swal.fire({
             title: "Thành công!",
@@ -316,7 +306,7 @@ onMounted(async () => {
     try {
 
         id.value = Number(route.params.id);
-        let respCurrentProduct = await productSevices.getOneDetail(id.value)
+        let respCurrentProduct = await productServices.getOneDetail(id.value)
         currentProduct.value = respCurrentProduct.data.products[0]
 
         editProduct.value = {
