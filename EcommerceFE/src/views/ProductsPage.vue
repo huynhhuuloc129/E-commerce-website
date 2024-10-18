@@ -1,351 +1,356 @@
-<template>
-    <div style="width: 100vw;" class="archivo-medium">
-        <div class="d-flex flex-column justify-content-between m-auto align-items-center"
-            style="height: 550px; background-color: #EEEEEE;">
-            <div style="height: 15vh;"></div>
-            <div>
-                <div class="text-uppercase">
-                    {{ brand.name }}
+    <template>
+        <div style="width: 100vw;" class="archivo-medium">
+            <div class="d-flex flex-column justify-content-between m-auto align-items-center"
+                style="height: 350px; background-color: #fbbfc0;">
+                <div style="height: 15vh;"></div>
+                <div class="text-white mt-5">
+                    <div class="text-uppercase">
+                        {{ brand.name }}
+                    </div>
+                    <h1>
+                        {{ product.name }}
+                    </h1>
                 </div>
-                <h1>
-                    {{ product.name }}
-                </h1>
-            </div>
 
-            <div v-if="currentUser.username == 'admin'" class="w-100  text-end mb-3 me-5">
+                <div v-if="currentUser.username == 'admin'" class="w-100  text-end mb-3 me-5">
 
-                <button class="btn btn-light " @click="pushToWithId('editProduct', product.proId)">Chỉnh sửa</button>
-            </div>
-            <div v-else>
-
-            </div>
-        </div>
-        <div class="container align-items-center d-flex flex-column  justify-content-center mt-5 mb-3"
-            style="max-width: 50%;">
-            <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 0"></button>
-                    <button type="button" v-for="(image, index) in images" :key="image.imageId"  data-bs-target="#carouselExampleDark" :data-bs-slide-to="index+1"
-                        :aria-label="'Slide ' + index+1"></button>
+                    <button class="btn btn-light " @click="pushToWithId('editProduct', product.proId)">Chỉnh
+                        sửa</button>
+                </div>
+                <div v-else>
 
                 </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item image-carousel active"
-                        data-bs-interval="10000">
-                        <img :src="singleImage.base64" class="d-block image-product" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <!-- <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p> -->
+            </div>
+            <div class="container align-items-center d-flex flex-column  justify-content-center mb-3"
+                style="max-width: 50%;">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 0"></button>
+                        <button type="button" v-for="(image, index) in images" :key="image.imageId"
+                            data-bs-target="#carouselExampleDark" :data-bs-slide-to="index + 1"
+                            :aria-label="'Slide ' + index + 1"></button>
+
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item image-carousel active" data-bs-interval="10000">
+                            <img :src="singleImage.base64" class="d-block image-product" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <!-- <h5>First slide label</h5>
+                                <p>Some representative placeholder content for the first slide.</p> -->
+                            </div>
                         </div>
-                    </div>
 
-                    <div v-for="(image) in images" :key="image.imageId" class="carousel-item image-carousel"
-                        data-bs-interval="10000">
-                        <img :src="image.base64" class="d-block image-product" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <!-- <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p> -->
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            <hr class="w-100">
-
-            <div class="w-100 d-flex align-items-center justify-content-between">
-
-                <div class="d-flex align-items-center">
-                    <h6 for="selectType">Loại:</h6>
-
-                    <select v-model="typeSelection" id="selectType" class="form-select ms-3"
-                        aria-label="Default select example">
-                        <option v-for="(type, index) in types" :key="type.typeId" :value="index">{{ type.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="d-flex flex-column w-50 align-items-center">
-                    <div class="d-flex w-100 align-items-center">
-                        <h6 class="me-3">Số lượng: </h6>
-                        <input v-model="numberSelection" class="form-control w-50" type="number" min="0" max="100">
-                    </div>
-                    <div class="d-flex w-100 align-items-center">
-                        <h6 class="me-3 mt-2">Số lượng trong kho: {{ quantityInStock }}</h6>
-                    </div>
-                </div>
-            </div>
-            <hr class="w-100">
-
-
-            <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
-                <a class="collapse-btn " data-bs-toggle="collapse" href="#collapseExample" role="button"
-                    aria-expanded="false" aria-controls="collapseExample">
-                    Thông tin sản phẩm
-                </a>
-                <i class="fa-solid fa-plus"></i>
-            </div>
-
-            <div class="collapse" id="collapseExample">
-                <div>
-                    {{ product.description }}
-                </div>
-            </div>
-
-            <hr class="w-100">
-            <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
-                <a class="collapse-btn" data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false"
-                    aria-controls="collapse1">
-                    Thành phần
-                </a>
-
-                <i class="fa-solid fa-plus"></i>
-            </div>
-
-
-            <div class="collapse" id="collapse1">
-                <div>
-                    Some placeholder content for the collapse component. This panel is hidden by default but revealed
-                    when the user activates the relevant trigger.
-                </div>
-            </div>
-            <hr class="w-100">
-
-            <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
-                <a class="collapse-btn" data-bs-toggle="collapse" href="#collapse2" role="button" aria-expanded="false"
-                    aria-controls="collapse2">
-                    Cách sử dụng
-                </a>
-
-                <i class="fa-solid fa-plus"></i>
-            </div>
-            <div class="collapse" id="collapse2">
-                <div>
-                    <div v-for="guide in productGuide" :key="guide">
-                        {{ guide }}
-                    </div>
-                </div>
-            </div>
-
-            <h6 class="text-end w-100 mt-5" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{
-                types[typeSelection].unitPrice.toLocaleString("it-IT", {
-                    style: "currency",
-                    currency: "VND",
-                }) }}</h6>
-
-
-            <div class="d-flex justify-content-end w-100 mt-3">
-                <button class="cart-button me-3" @click="addToCart"><i class="fa-solid fa-cart-shopping"></i> Thêm vào
-                    giỏ hàng</button>
-                <button class="buy-button">Mua ngay</button>
-
-            </div>
-        </div>
-
-        <div class="container mb-5" style="width: 50vw; margin-top: 100px;">
-            <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
-                @click="pushToWithId('tag', tag.tagId)">
-                {{ tag.name }}
-            </button>
-        </div>
-        <hr class="w-100">
-
-        <div class="d-flex flex-column align-items-center justify-content-center mb-5 m-5">
-            <h4 class="text-uppercase">Các sản phẩm tương tự</h4>
-
-            <div id="recommenderCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="d-flex justify-content-between">
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 1</h5>
-                                    <p class="card-text">Description of the first recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 2</h5>
-                                    <p class="card-text">Description of the second recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 3</h5>
-                                    <p class="card-text">Description of the third recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 4</h5>
-                                    <p class="card-text">Description of the fourth recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 5</h5>
-                                    <p class="card-text">Description of the fifth recommended item.</p>
-                                </div>
+                        <div v-for="(image) in images" :key="image.imageId" class="carousel-item image-carousel"
+                            data-bs-interval="10000">
+                            <img :src="image.base64" class="d-block image-product" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <!-- <h5>First slide label</h5>
+                                <p>Some representative placeholder content for the first slide.</p> -->
                             </div>
                         </div>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <hr class="w-100">
 
-                    <div class="carousel-item">
-                        <div class="d-flex justify-content-between">
+                <div class="w-100 d-flex align-items-center justify-content-between">
 
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 6</h5>
-                                    <p class="card-text">Description of the sixth recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 7</h5>
-                                    <p class="card-text">Description of the seventh recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 8</h5>
-                                    <p class="card-text">Description of the eighth recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 9</h5>
-                                    <p class="card-text">Description of the ninth recommended item.</p>
-                                </div>
-                            </div>
-                            <div class="card me-2">
-                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recommendation 10</h5>
-                                    <p class="card-text">Description of the tenth recommended item.</p>
-                                </div>
-                            </div>
+                    <div class="d-flex align-items-center">
+                        <h6 class="fw-bold" for="selectType">Loại:</h6>
+
+                        <select v-model="typeSelection" id="selectType" class="form-select ms-3"
+                            aria-label="Default select example">
+                            <option v-for="(type, index) in types" :key="type.typeId" :value="index">{{ type.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex flex-column w-50 align-items-center">
+                        <div class="d-flex w-100 align-items-center">
+                            <h6 class="me-3 fw-bold">Số lượng: </h6>
+                            <input v-model="numberSelection" class="form-control w-50" type="number" min="0" max="100">
+                        </div>
+                        <div class="d-flex w-100 align-items-center">
+                            <h6 class="me-3 mt-2 fw-bold">Số lượng trong kho: <span>{{ quantityInStock }}</span></h6>
+                        </div>
+                    </div>
+                </div>
+                <hr class="w-100">
+
+
+                <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
+                    <a class="collapse-btn fw-bold " data-bs-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        Thông tin sản phẩm
+                    </a>
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <div class="collapse" id="collapseExample">
+                    <div>
+                        {{ product.description }}
+                    </div>
+                </div>
+
+                <hr class="w-100">
+                <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
+                    <a class="collapse-btn fw-bold" data-bs-toggle="collapse" href="#collapse1" role="button"
+                        aria-expanded="false" aria-controls="collapse1">
+                        Thành phần
+                    </a>
+
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+
+
+                <div class="collapse" id="collapse1">
+                    <div>
+                        Some placeholder content for the collapse component. This panel is hidden by default but
+                        revealed
+                        when the user activates the relevant trigger.
+                    </div>
+                </div>
+                <hr class="w-100">
+
+                <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
+                    <a class="collapse-btn fw-bold" data-bs-toggle="collapse" href="#collapse2" role="button"
+                        aria-expanded="false" aria-controls="collapse2">
+                        Cách sử dụng
+                    </a>
+
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <div class="collapse" id="collapse2">
+                    <div>
+                        <div v-for="guide in productGuide" :key="guide">
+                            {{ guide }}
                         </div>
                     </div>
                 </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#recommenderCarousel"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#recommenderCarousel"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                <h6 class="text-end w-100 mt-5" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{
+                    types[typeSelection].unitPrice.toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                    }) }}</h6>
+
+
+                <div class="d-flex justify-content-end w-100 mt-3">
+                    <button :disabled="!checkLogin()" class="cart-button me-3" @click="addToCart"><i
+                            class="fa-solid fa-cart-shopping"></i> Thêm
+                        vào
+                        giỏ hàng</button>
+                    <button :disabled="!checkLogin()" class="buy-button">Mua ngay</button>
+
+                </div>
+            </div>
+
+            <div class="container mb-5" style="width: 50vw; margin-top: 100px;">
+                <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
+                    @click="pushToWithId('tag', tag.tagId)">
+                    {{ tag.name }}
                 </button>
             </div>
-        </div>
+            <hr class="w-100">
 
-        <hr class="w-100">
+            <div class="d-flex flex-column align-items-center justify-content-center mb-5 m-5">
+                <h4 class="text-uppercase">Các sản phẩm tương tự</h4>
 
-        <div class="container rating d-flex flex-column align-items-center justify-content-center">
-            <h4 class="text-uppercase ">Đánh giá sản phẩm</h4>
-        </div>
+                <div id="recommenderCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-between">
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 1</h5>
+                                        <p class="card-text">Description of the first recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 2</h5>
+                                        <p class="card-text">Description of the second recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 3</h5>
+                                        <p class="card-text">Description of the third recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 4</h5>
+                                        <p class="card-text">Description of the fourth recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 5</h5>
+                                        <p class="card-text">Description of the fifth recommended item.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <section>
-            <div class="py-5 text-body">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-6">
-                        <div class="card">
-                            <div class="card-body p-4">
-                                <div class="d-flex flex-start w-100">
-                                    <img class="rounded-circle shadow-1-strong me-3"
-                                        v-if="currentUser.avatar != null && currentUser.avatar != ''"
-                                        :src="currentUser.avatar" alt="avatar" width="65" height="65" />
-                                    <img v-else src="https://placehold.co/65x65" alt=""
-                                        class="rounded-circle shadow-1-strong me-3" width="65" height="65">
-                                    <div class="w-100">
-                                        <h5>Thêm bình luận</h5>
-                                        <h6>{{ currentUser.name }}</h6>
-                                        <div class="container-wrapper">
-                                            <div class="container d-flex align-items-center justify-content-start ">
-                                                <div class="row justify-content-center">
+                        <div class="carousel-item">
+                            <div class="d-flex justify-content-between">
 
-                                                    <!-- star rating -->
-                                                    <div class="rating-wrapper">
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 6</h5>
+                                        <p class="card-text">Description of the sixth recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 7</h5>
+                                        <p class="card-text">Description of the seventh recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 8</h5>
+                                        <p class="card-text">Description of the eighth recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 9</h5>
+                                        <p class="card-text">Description of the ninth recommended item.</p>
+                                    </div>
+                                </div>
+                                <div class="card me-2">
+                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recommendation 10</h5>
+                                        <p class="card-text">Description of the tenth recommended item.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                                        <!-- star 5 -->
-                                                        <input v-model="starNum" class="rating-input" type="radio"
-                                                            id="5-star-rating" name="star-rating" value="5">
-                                                        <label for="5-star-rating" class="star-rating">
-                                                            <i class="fas fa-star d-inline-block"></i>
-                                                        </label>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#recommenderCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#recommenderCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
 
-                                                        <!-- star 4 -->
-                                                        <input v-model="starNum" class="rating-input" type="radio"
-                                                            id="4-star-rating" name="star-rating" value="4">
-                                                        <label for="4-star-rating" class="star-rating star">
-                                                            <i class="fas fa-star d-inline-block"></i>
-                                                        </label>
+            <hr class="w-100">
 
-                                                        <!-- star 3 -->
-                                                        <input v-model="starNum" class="rating-input" type="radio"
-                                                            id="3-star-rating" name="star-rating" value="3">
-                                                        <label for="3-star-rating" class="star-rating star">
-                                                            <i class="fas fa-star d-inline-block"></i>
-                                                        </label>
+            <div class="container rating d-flex flex-column align-items-center justify-content-center">
+                <h4 class="text-uppercase ">Đánh giá sản phẩm</h4>
+            </div>
 
-                                                        <!-- star 2 -->
-                                                        <input v-model="starNum" class="rating-input" type="radio"
-                                                            id="2-star-rating" name="star-rating" value="2">
-                                                        <label for="2-star-rating" class="star-rating star">
-                                                            <i class="fas fa-star d-inline-block"></i>
-                                                        </label>
+            <section v-if="checkLogin()">
+                <div class="py-5 text-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-10 col-lg-8 col-xl-6">
+                            <div class="card">
+                                <div class="card-body p-4">
+                                    <div class="d-flex flex-start w-100">
+                                        <img class="rounded-circle shadow-1-strong me-3"
+                                            v-if="checkLogin() == true && currentUser.avatar != ''"
+                                            :src="currentUser.avatar" alt="avatar" width="65" height="65" />
+                                        <img v-else src="https://placehold.co/65x65" alt=""
+                                            class="rounded-circle shadow-1-strong me-3" width="65" height="65">
+                                        <div class="w-100">
+                                            <h5>Thêm bình luận</h5>
+                                            <h6>{{ currentUser.name }}</h6>
+                                            <div class="container-wrapper">
+                                                <div class="container d-flex align-items-center justify-content-start ">
+                                                    <div class="row justify-content-center">
 
-                                                        <!-- star 1 -->
-                                                        <input v-model="starNum" class="rating-input" type="radio"
-                                                            id="1-star-rating" name="star-rating" value="1">
-                                                        <label for="1-star-rating" class="star-rating star">
-                                                            <i class="fas fa-star d-inline-block"></i>
-                                                        </label>
+                                                        <!-- star rating -->
+                                                        <div class="rating-wrapper">
+
+                                                            <!-- star 5 -->
+                                                            <input v-model="starNum" class="rating-input" type="radio"
+                                                                id="5-star-rating" name="star-rating" value="5">
+                                                            <label for="5-star-rating" class="star-rating">
+                                                                <i class="fas fa-star d-inline-block"></i>
+                                                            </label>
+
+                                                            <!-- star 4 -->
+                                                            <input v-model="starNum" class="rating-input" type="radio"
+                                                                id="4-star-rating" name="star-rating" value="4">
+                                                            <label for="4-star-rating" class="star-rating star">
+                                                                <i class="fas fa-star d-inline-block"></i>
+                                                            </label>
+
+                                                            <!-- star 3 -->
+                                                            <input v-model="starNum" class="rating-input" type="radio"
+                                                                id="3-star-rating" name="star-rating" value="3">
+                                                            <label for="3-star-rating" class="star-rating star">
+                                                                <i class="fas fa-star d-inline-block"></i>
+                                                            </label>
+
+                                                            <!-- star 2 -->
+                                                            <input v-model="starNum" class="rating-input" type="radio"
+                                                                id="2-star-rating" name="star-rating" value="2">
+                                                            <label for="2-star-rating" class="star-rating star">
+                                                                <i class="fas fa-star d-inline-block"></i>
+                                                            </label>
+
+                                                            <!-- star 1 -->
+                                                            <input v-model="starNum" class="rating-input" type="radio"
+                                                                id="1-star-rating" name="star-rating" value="1">
+                                                            <label for="1-star-rating" class="star-rating star">
+                                                                <i class="fas fa-star d-inline-block"></i>
+                                                            </label>
+
+                                                        </div>
 
                                                     </div>
-
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div data-mdb-input-init class="form-outline">
-                                            <textarea v-model="review.content" class="form-control" id="textAreaExample"
-                                                rows="4"></textarea>
-                                        </div>
-                                        <div class="d-flex justify-content-between mt-3">
-                                            <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-dark" @click="review.content = ''">Xóa</button>
-                                            <button :disabled="review.content.length == 0" type="button"
-                                                data-mdb-button-init data-mdb-ripple-init class="btn"
-                                                style="background-color: #fbbfc0; color: white;"
-                                                @click="modifyReview($event)">
-                                                <span v-if="review.accountId == 0">
-                                                    Gửi
-                                                </span>
-                                                <span v-else>
-                                                    Cập nhật
-                                                </span>
-                                                <i class="fas fa-long-arrow-alt-right ms-1"></i>
-                                            </button>
+                                            <div data-mdb-input-init class="form-outline">
+                                                <textarea v-model="review.content" class="form-control"
+                                                    id="textAreaExample" rows="4"></textarea>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-3">
+                                                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                                    class="btn btn-dark" @click="review.content = ''">Xóa</button>
+                                                <button :disabled="review.content.length == 0" type="button"
+                                                    data-mdb-button-init data-mdb-ripple-init class="btn"
+                                                    style="background-color: #fbbfc0; color: white;"
+                                                    @click="modifyReview($event)">
+                                                    <span v-if="review.accountId == 0">
+                                                        Gửi
+                                                    </span>
+                                                    <span v-else>
+                                                        Cập nhật
+                                                    </span>
+                                                    <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -353,53 +358,50 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section>
-            <div class=" py-5 text-body">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-11 col-lg-9 col-xl-7">
+            <section>
+                <div class=" py-5 text-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-11 col-lg-9 col-xl-7">
 
-                        <div v-for="review in reviews" :key="review.reviewId" class="d-flex flex-start mb-4">
-                            <img v-if="review.avatar != null && review.avatar != ''"
-                                class="rounded-circle shadow-1-strong me-3" :src="review.avatar" alt="avatar" width="65"
-                                height="65" />
-                            <img v-else src="https://placehold.co/65x65" alt=""
-                                class="rounded-circle shadow-1-strong me-3" width="65" height="65">
-                            <div v-if="reviews[0].reviewId != 0" class="card w-100">
-                                <div class="card-body p-4">
-                                    <div class="">
+                            <div v-for="review in reviews" :key="review.reviewId" class="d-flex flex-start mb-4">
+                                <img v-if="review.avatar != null && review.avatar != ''"
+                                    class="rounded-circle shadow-1-strong me-3" :src="review.avatar" alt="avatar"
+                                    width="65" height="65" />
+                                <img v-else src="https://placehold.co/65x65" alt=""
+                                    class="rounded-circle shadow-1-strong me-3" width="65" height="65">
+                                <div v-if="reviews[0].reviewId != 0" class="card w-100">
+                                    <div class="card-body p-4">
+                                        <div class="">
 
-                                        <h5>{{ review.name }}</h5>
-                                        <i v-for="index in review.star" :key="index" class="fas fa-star d-inline-block"
-                                            style="color: #fbbfc0"></i>
+                                            <h5>{{ review.name }}</h5>
+                                            <i v-for="index in review.star" :key="index"
+                                                class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
 
-                                        <p class="small">{{ calculateTimeElapse(review.created_at) }}</p>
-                                        <p>
-                                            {{ review.content }}
-                                        </p>
+                                            <p class="small">{{ calculateTimeElapse(review.created_at) }}</p>
+                                            <p>
+                                                {{ review.content }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
-
-
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-</template>
+            </section>
+        </div>
+    </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import accountServices from '@/services/account.services';
-import productComponentServices from '@/services/productComponent.services';
 import { checkLogin, calculateTimeElapse } from '@/utilities/utilities';
 import product_tagServices from '@/services/product_tag.services';
-import componentServices from '@/services/component.services';
-import categoryServices from '@/services/category.services';
+
 
 // @ts-ignore
 import productServices from '@/services/product.sevices';
@@ -413,6 +415,7 @@ import { useCookies } from 'vue3-cookies';
 import Swal from 'sweetalert2';
 import selectedProductServices from '@/services/selectedProduct.services';
 import imageServices from '@/services/image.services';
+import orderServices from '@/services/order.services';
 
 const id = ref(0);
 
@@ -532,51 +535,21 @@ const reviews = ref([{
     avatar: ''
 }])
 
-const products = ref([
-    {
-        proId: 0,
-        catId: 0,
-        brandId: 0,
-        name: '',
-        description: '',
-        unit: '',
-        unitPrice: 0,
-        quantityInStock: 0,
-        guide: '',
-        created_at: '',
-        updated_at: ''
-    }
-])
+const orders = ref([{
+    orderId: 0,
+    created_at: '',
+    updated_at: '',
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shippingAddress: "",
+    shipped: 0,
+    shippedDate: "",
+    shipmentTracking: "",
+    paid: 0
+}])
 
-const categories = ref([
-    {
-        catId: 0,
-        name: '',
-        description: '',
-        created_at: '',
-        updated_at: ''
-    }
-])
-
-const components = ref([
-    {
-        componentId: 0,
-        name: '',
-        description: '',
-        created_at: '',
-        updated_at: ''
-    }
-])
-
-const brands = ref([
-    {
-        brandId: 0,
-        name: '',
-        created_at: '',
-        updated_at: '',
-        logo: ''
-    }
-])
+const checkOrdered = ref(false)
 
 function pushToWithId(name: string, id: number) {
     router.push({
@@ -662,8 +635,10 @@ async function addToCart() {
 onMounted(async () => {
     try {
         // get current user
-        let resp = await accountServices.getMe(token);
-        currentUser.value = resp.data.account[0];
+        if (checkLogin()) {
+            let resp = await accountServices.getMe(token);
+            currentUser.value = resp.data.account[0];
+        }
 
         id.value = Number(route.params.id);
 
@@ -672,6 +647,8 @@ onMounted(async () => {
 
         productGuide.value = product.value.guide.split('\nBước ')
         productGuide.value[0] = productGuide.value[0].replace('Bước 1', '1')
+
+        console.log(product.value)
 
         if (product.value.proId != 0) {
             // get brand
@@ -701,20 +678,22 @@ onMounted(async () => {
             let respReviews = await reviewServices.getAllByProductId(product.value.proId)
             reviews.value = respReviews.data.review;
 
-            let respReview = await reviewServices.getAllByProductIdAndAccountId(product.value.proId, currentUser.value.accountId)
-            review.value = respReview.data.review[0];
-            if (review.value == undefined) {
-                review.value = {
-                    reviewId: 0,
-                    productId: 0,
-                    accountId: 0,
-                    content: '',
-                    star: 0,
-                    created_at: '',
-                    updated_at: '',
-                    name: '',
-                    email: '',
-                    avatar: ''
+            if (currentUser.value.accountId != 0) {
+                let respReview = await reviewServices.getAllByProductIdAndAccountId(product.value.proId, currentUser.value.accountId)
+                review.value = respReview.data.review[0];
+                if (review.value == undefined) {
+                    review.value = {
+                        reviewId: 0,
+                        productId: 0,
+                        accountId: 0,
+                        content: '',
+                        star: 0,
+                        created_at: '',
+                        updated_at: '',
+                        name: '',
+                        email: '',
+                        avatar: ''
+                    }
                 }
             }
 
@@ -724,7 +703,14 @@ onMounted(async () => {
             singleImage.value = images.value[0];
 
             images.value.splice(0, 1)
-            console.log(images.value)
+
+            // get orders
+            let respOrders = await orderServices.getAllByAccountIdAndShipped(currentUser.value.accountId)
+            orders.value = respOrders.data.order
+
+            for(let i=0; i< orders.value.length; i++){
+                console.log('')
+            }
         }
 
     } catch (error) {
@@ -764,9 +750,9 @@ onMounted(async () => {
     }
 }
 
-
 #header {
     color: black;
+    background-color: white;
 
     #text-search-input {
         color: black;
@@ -862,10 +848,12 @@ onMounted(async () => {
 .cart-button:hover {
     background-color: rgb(181, 181, 181);
 }
-.image-carousel{
+
+.image-carousel {
     width: 830px;
 }
-.image-product{
+
+.image-product {
     width: 830px;
     height: 830px;
 }

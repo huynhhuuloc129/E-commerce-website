@@ -4,6 +4,7 @@
   </header>
   <div id="app">
     <HeaderComponent v-if="!$route.meta.hideNavbar"></HeaderComponent>
+    <ChatbotComponent v-if="checkLogin() && !$route.meta.hideChatbot"></ChatbotComponent>
     <RouterView :key="$route.fullPath" />
     <FooterComponent v-if="!$route.meta.hideNavbar"></FooterComponent>
   </div>
@@ -13,8 +14,10 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import ChatbotComponent from './components/ChatbotComponent.vue';
 import HeaderComponent from './components/HeaderComponent.vue'
 import FooterComponent from './components/FooterComponent.vue';
+import { checkLogin } from './utilities/utilities';
 </script>
 
 <style>

@@ -22,9 +22,10 @@ exports.getAll = async (req, res) => {
 
 exports.getAllByAccountIdInCart = async (req, res) => {
     try {
-        let sql = `SELECT sp.*, p.name
+        let sql = `SELECT sp.*, p.name, ty.name as typeName
                     FROM selectedproduct sp
                     JOIN product p ON sp.proId = p.proId
+                    JOIN type ty ON sp.typeId = ty.typeId
                     WHERE sp.accountId = ${req.params.id} AND block = 0`
 
         connection.query(sql, req.params.id, (err, rows) => {

@@ -412,7 +412,7 @@
             </div>
 
             <div>
-                <div v-if="currentUser.accountId == 0" class="d-flex justify-content-between">
+                <div v-if="currentUser != null && currentUser.accountId == 0" class="d-flex justify-content-between">
                     <button class="btn btn-light me-2 fw-bold text-white" style="background-color: #fbbfc0;">
                         <a class="header-link-login" href="#" @click="pushToLogin($event)">
                             Đăng nhập
@@ -427,7 +427,7 @@
                             class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
                             data-mdb-toggle="dropdown" aria-expanded="false">
                             
-                            <img v-if="currentUser.avatar != null && currentUser.avatar != ''" :src="currentUser.avatar" height="25px" width="25px" alt="">
+                            <img v-if="currentUser != null && currentUser.avatar != null && currentUser.avatar != ''" :src="currentUser.avatar" height="25px" width="25px" alt="">
                             <i v-else class="fa-solid fa-user" style="color: #fbbfc0; "></i>
 
                         </button>
@@ -436,7 +436,7 @@
                             </li>
                             <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
                                     href="http://localhost:5173/admin">Admin</a></li>
-                            <li><a class="dropdown-item" href="#">Đơn mua</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:5173/orders">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
                         </ul>
                     </div>
@@ -460,7 +460,7 @@
                             class="cart-product ps-3 d-flex justify-content-between">
 
                             <div class="d-flex">
-                                <img src="https://placehold.co/90x50" class="me-2" alt="">
+                                <img :src="images[index].base64" class="me-2" height="auto" width="90" alt="">
                                 <div class="d-flex flex-column">
 
                                     <a class="text-wrap cart-items"
@@ -485,7 +485,9 @@
 
                         </div>
 
-                        <button class="btn cart-btn ms-3 mt-2">Xem giỏ hàng</button>
+                        <div class="text-end">
+                            <button class="btn cart-btn me-3 mt-2" @click="pushToCart">Xem giỏ hàng</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -497,6 +499,7 @@
 import selectedProductServices from '@/services/selectedProduct.services';
 import accountServices from '@/services/account.services';
 import brandServices from '@/services/brand.services';
+import imageServices from '@/services/image.services';
 
 import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
@@ -535,7 +538,13 @@ const currentUser = ref({
     created_at: null,
     updated_at: null,
 });
-
+const images = ref([{
+    imageId: 0,
+    created_at: '',
+    updated_at: '',
+    base64: '',
+    belongId: ''
+}])
 const sProducts = ref([{
     selectedProductId: 0,
     quantitySelected: 0,
@@ -580,6 +589,10 @@ function pushToLogin(e: any) {
     e.preventDefault();
     router.push({ name: "login" });
 }
+function pushToCart(e: any) {
+    e.preventDefault();
+    router.push({ name: "cart" });
+}
 
 function signOut() {
     document.cookie = "Token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
@@ -593,7 +606,14 @@ async function getAllSProducts() {
         let respSProducts = await selectedProductServices.getAllByAccountIdInCart(currentUser.value.accountId);
         sProducts.value = respSProducts.data.sProducts
 
-        console.log(sProducts.value)
+        let respImgs = []
+        for (let i = 0; i < sProducts.value.length; i++) {
+
+
+            let respImage = await imageServices.getAllByBelongIdLimit1(sProducts.value[i].proId)
+            respImgs.push(respImage.data.image[0])
+        }
+        images.value = respImgs
     } catch (error) {
         console.log(error)
     }
@@ -603,10 +623,10 @@ async function getAllSProducts() {
 async function removeSelectedProduct(index: number) {
     try {
 
-        sProducts.value.splice(index, 1)
-
+        
         await selectedProductServices.delete(sProducts.value[index].selectedProductId)
-
+        
+        sProducts.value.splice(index, 1)
     } catch (error) {
         console.log(error)
     }

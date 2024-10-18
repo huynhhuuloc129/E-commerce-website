@@ -11,5 +11,10 @@ router
   .route('/:id')
   .get(orderController.getOne)
   .delete(orderController.delete);
-
+router
+  .route('/account/:id')
+  .get(orderController.getAllByAccountIdAndShipped)
+router
+  .route('/detail/:id')
+  .get(orderController.getDetailsByAccountId)
 module.exports = router;

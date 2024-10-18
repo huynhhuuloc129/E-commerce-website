@@ -1,219 +1,234 @@
 <template>
     <div style="width: 100vw;">
-        <div style="height: 200px; background-color: #fbbfc0;">
-        </div>
-        <section class="h-100 gradient-custom">
-            <div class="container py-5">
-                <div class="row d-flex justify-content-center my-4">
-                    <div class="col-md-8">
-                        <div class="card mb-4">
-                            <div class="card-header py-3">
-                                <h5 class="mb-0">Cart - 2 items</h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- Single item -->
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-                                        <!-- Image -->
-                                        <div class="bg-image hover-overlay hover-zoom ripple rounded"
-                                            data-mdb-ripple-color="light">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/12a.webp"
-                                                class="w-100" alt="Blue Jeans Jacket" />
-                                            <a href="#!">
-                                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <!-- Image -->
-                                    </div>
+        <div style="background-color: #fbbfc0; height: 150px;"></div>
+        <div class="container my-4">
+            <!-- Cart Header -->
+            <div class="row border-bottom py-2 fw-bold bg-light">
+                <div class="col-5">Sản Phẩm</div>
+                <div class="col-2">Đơn Giá</div>
+                <div class="col-2">Số Lượng</div>
+                <div class="col-2">Số Tiền</div>
+                <div class="col-1"></div>
+            </div>
 
-                                    <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                                        <!-- Data -->
-                                        <p><strong>Blue denim shirt</strong></p>
-                                        <p>Color: blue</p>
-                                        <p>Size: M</p>
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-primary btn-sm me-1 mb-2" data-mdb-tooltip-init
-                                            title="Remove item">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-danger btn-sm mb-2" data-mdb-tooltip-init
-                                            title="Move to the wish list">
-                                            <i class="fas fa-heart"></i>
-                                        </button>
-                                        <!-- Data -->
-                                    </div>
+            <div v-if="sProducts.length == 0">Giỏ hàng chưa có sản phẩm nào</div>
+            <!-- Cart Row 1 -->
+            <div v-for="(sProduct, index) in sProducts" :key="sProduct.selectedProductId"
+                class="row align-items-center border-bottom py-3">
 
-                                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                                        <!-- Quantity -->
-                                        <div class="d-flex mb-4" style="max-width: 300px">
-                                            <button data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-primary px-3 me-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-
-                                            <div data-mdb-input-init class="form-outline">
-                                                <input id="form1" min="0" name="quantity" value="1" type="number"
-                                                    class="form-control" />
-                                                <label class="form-label" for="form1">Quantity</label>
-                                            </div>
-
-                                            <button data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-primary px-3 ms-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                        <!-- Quantity -->
-
-                                        <!-- Price -->
-                                        <p class="text-start text-md-center">
-                                            <strong>$17.99</strong>
-                                        </p>
-                                        <!-- Price -->
-                                    </div>
-                                </div>
-                                <!-- Single item -->
-
-                                <hr class="my-4" />
-
-                                <!-- Single item -->
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-                                        <!-- Image -->
-                                        <div class="bg-image hover-overlay hover-zoom ripple rounded"
-                                            data-mdb-ripple-color="light">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/13a.webp"
-                                                class="w-100" />
-                                            <a href="#!">
-                                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <!-- Image -->
-                                    </div>
-
-                                    <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                                        <!-- Data -->
-                                        <p><strong>Red hoodie</strong></p>
-                                        <p>Color: red</p>
-                                        <p>Size: M</p>
-
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-primary btn-sm me-1 mb-2" data-mdb-tooltip-init
-                                            title="Remove item">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-danger btn-sm mb-2" data-mdb-tooltip-init
-                                            title="Move to the wish list">
-                                            <i class="fas fa-heart"></i>
-                                        </button>
-                                        <!-- Data -->
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                                        <!-- Quantity -->
-                                        <div class="d-flex mb-4" style="max-width: 300px">
-                                            <button data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-primary px-3 me-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-
-                                            <div data-mdb-input-init class="form-outline">
-                                                <input id="form1" min="0" name="quantity" value="1" type="number"
-                                                    class="form-control" />
-                                                <label class="form-label" for="form1">Quantity</label>
-                                            </div>
-
-                                            <button data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-primary px-3 ms-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                        <!-- Quantity -->
-
-                                        <!-- Price -->
-                                        <p class="text-start text-md-center">
-                                            <strong>$17.99</strong>
-                                        </p>
-                                        <!-- Price -->
-                                    </div>
-                                </div>
-                                <!-- Single item -->
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <p><strong>Expected shipping delivery</strong></p>
-                                <p class="mb-0">12.10.2020 - 14.10.2020</p>
-                            </div>
-                        </div>
-                        <div class="card mb-4 mb-lg-0">
-                            <div class="card-body">
-                                <p><strong>We accept</strong></p>
-                                <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                                    alt="Visa" />
-                                <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                                    alt="American Express" />
-                                <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                                    alt="Mastercard" />
-                               
-                            </div>
-                        </div>
+                <div class="col-5 d-flex">
+                    <div class="me-3">
+                        <img v-if="images[index] != null" :src="images[index].base64" height="80" width="80"
+                            class="img-fluid" alt="Product 1">
                     </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-header py-3">
-                                <h5 class="mb-0">Summary</h5>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    <li
-                                        class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                        Products
-                                        <span>$53.98</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                        Shipping
-                                        <span>Gratis</span>
-                                    </li>
-                                    <li
-                                        class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                                        <div>
-                                            <strong>Total amount</strong>
-                                            <strong>
-                                                <p class="mb-0">(including VAT)</p>
-                                            </strong>
-                                        </div>
-                                        <span><strong>$53.98</strong></span>
-                                    </li>
-                                </ul>
-
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-primary btn-lg btn-block">
-                                    Go to checkout
-                                </button>
-                            </div>
-                        </div>
+                    <div>
+                        <div class="fw-bold"><a class="cart-items fw-bold"
+                                :href="'http://localhost:5173/products/' + sProduct.proId">{{ sProduct.name }}</a></div>
+                        <div class="text-muted">{{ sProduct.typeName }}</div>
                     </div>
                 </div>
-            </div>
-        </section>
+                <div class="col-2" v-if="sProduct.sellingPrice != null">{{ sProduct.sellingPrice.toLocaleString("it-IT",
+                    {
+                        style: "currency",
+                        currency: "VND",
+                    }) }}</div>
+                <div class="col-2 d-flex align-items-center">
+                    {{ sProduct.quantitySelected }}
+                </div>
+                <div class="col-2 text-danger" v-if="sProduct.sellingPrice != null">{{
+                    (sProduct.sellingPrice * sProduct.quantitySelected).toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                    }) }}</div>
+                <div class="col-1">
 
+                    <button @click="removeSelectedProduct(index)" class="btn btn-light"><i
+                            class="fa-solid fa-x"></i></button>
+                </div>
+            </div>
+
+            <div class="row align-items-center border-top py-3">
+                <div class="col-md-6 d-flex align-items-center">
+                </div>
+                <div class="col-md-5 d-flex align-items-center justify-content-end w-100">
+                    <div class="me-3 text-end">
+                        <div>Tổng thanh toán ({{ sProducts.length }} sản phẩm): <span class="fw-bold text-danger">{{
+                            calculatePrice().toLocaleString("it-IT",
+                                {
+                                    style: "currency",
+                                    currency: "VND",
+                                }) }}</span></div>
+                    </div>
+                    <button class="btn btn-light px-4 py-2 fw-bold" @click="addOrder($event)"
+                        style="border-radius: 0px; background-color: #fbbfc0; color: white;">Đặt
+                        Hàng</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import Swal from 'sweetalert2';
+
+import selectedProductServices from '@/services/selectedProduct.services';
+import accountServices from '@/services/account.services';
+import imageServices from '@/services/image.services';
+import orderServices from '@/services/order.services';
+
+import { useRouter } from "vue-router";
+import { useCookies } from "vue3-cookies";
+import { checkLogin } from '@/utilities/utilities';
+const router = useRouter();
+const cookies = useCookies();
+
+const token = cookies.cookies.get("Token");
+
+const sProducts = ref([{
+    selectedProductId: 0,
+    quantitySelected: 0,
+    sellingPrice: 0,
+    created_at: '',
+    updated_at: '',
+    proId: 0,
+    orderId: 0,
+    accountId: 0,
+    typeId: 0,
+    block: 0,
+    name: '',
+    typeName: ''
+}])
+
+const currentUser = ref({
+    accountId: 0,
+    username: "",
+    password: "",
+    email: "",
+    name: "",
+    phone: "",
+    birthDate: null,
+    avatar: "",
+    billingAddress: "",
+    created_at: null,
+    updated_at: null,
+});
+const images = ref([{
+    imageId: 0,
+    created_at: '',
+    updated_at: '',
+    base64: '',
+    belongId: ''
+}])
+async function removeSelectedProduct(index: number) {
+    try {
+
+
+        await selectedProductServices.delete(sProducts.value[index].selectedProductId)
+
+        sProducts.value.splice(index, 1)
+    } catch (error) {
+        console.log(error)
+    }
+}
+function calculatePrice() {
+    if (sProducts.value.length > 0) {
+        let s = 0
+        for (let i = 0; i < sProducts.value.length; i++) {
+            s += (sProducts.value[i].sellingPrice * sProducts.value[i].quantitySelected)
+        }
+        return s
+    } else {
+        return 0
+    }
+}
+const newOrder = ref({
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shippingAddress: "",
+    shipped: false,
+    shippedDate: null,
+    shipmentTracking: "",
+    paid: false
+})
+
+async function addOrder(e: any) {
+    e.preventDefault();
+    try {
+        newOrder.value = {
+            accountId: currentUser.value.accountId,
+            totalPrice: calculatePrice(),
+            shippingPrice: 50000,
+            shippingAddress: currentUser.value.billingAddress,
+            shipped: false,
+            shippedDate: null,
+            shipmentTracking: "",
+            paid: false
+        }
+
+        await orderServices.create(newOrder.value)
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Đặt hàng thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+        console.log(error)
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Đặt hàng thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+onMounted(async () => {
+    try {
+        if (!checkLogin()) {
+            Swal.fire({
+                title: "Chưa đăng nhập!",
+                text: "Vui lòng đăng nhập để xem thông tin",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+
+            router.push({ name: "home" });
+        } else {
+            let resp = await accountServices.getMe(token);
+            currentUser.value = resp.data.account[0];
+        }
+
+        let respSProducts = await selectedProductServices.getAllByAccountIdInCart(currentUser.value.accountId);
+        sProducts.value = respSProducts.data.sProducts
+
+        let respImgs = []
+        for (let i = 0; i < sProducts.value.length; i++) {
+
+
+            let respImage = await imageServices.getAllByBelongIdLimit1(sProducts.value[i].proId)
+            respImgs.push(respImage.data.image[0])
+        }
+        images.value = respImgs
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.cart-items {
+    color: black;
+    text-decoration: none;
+}
+
+.cart-items:hover {
+    text-decoration: underline;
+}
+</style>

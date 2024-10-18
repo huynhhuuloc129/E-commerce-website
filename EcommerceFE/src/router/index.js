@@ -19,7 +19,8 @@ const router = createRouter({
       name: 'login',
       component: () => import('../views/LoginPage.vue'),
       meta: {
-        hideNavbar: true
+        hideNavbar: true,
+        hideChatbot: true
       }
     },
     {
@@ -27,7 +28,8 @@ const router = createRouter({
       name: 'signup',
       component: () => import('../views/SignUpPage.vue'),
       meta: {
-        hideNavbar: true
+        hideNavbar: true,
+        hideChatbot: true
       }
     },
     {
@@ -64,6 +66,11 @@ const router = createRouter({
       path: '/brand/:id',
       name: 'brand',
       component: () => import('../views/BrandPage.vue')
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: () => import('../views/ordersDetail.vue')
     }
   ],
   scrollBehavior(to, from, savedPosition) {
