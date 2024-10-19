@@ -9,32 +9,40 @@ class OrderService {
   }
   async getAll() {
     try {
-      const chts = await this.api.get("/orders");
-      return chts.data;
+      const orders = await this.api.get("/orders");
+      return orders.data;
     } catch (err) {
       handlingError(err);
     }
   }
   async getAllByAccountIdAndShipped(id: number) {
     try {
-      const chts = await this.api.get("/orders/account/" + id);
-      return chts.data;
+      const orders = await this.api.get("/orders/account/" + id);
+      return orders.data;
     } catch (err) {
       handlingError(err);
     }
   }
   async getDetailByAccountId(id: number) {
     try {
-      const chts = await this.api.get("/orders/detail/" + id);
-      return chts.data;
+      const orders = await this.api.get("/orders/detail/" + id);
+      return orders.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+  async getAllDetail() {
+    try {
+      const orders = await this.api.get("/orders/all/detail");
+      return orders.data;
     } catch (err) {
       handlingError(err);
     }
   }
   async getOne(id: number) {
     try {
-      const chts = await this.api.get("/orders/" + id);
-      return chts.data;
+      const orders = await this.api.get("/orders/" + id);
+      return orders.data;
     } catch (err) {
       handlingError(err);
     }

@@ -28,7 +28,7 @@ class ComponentService {
   async create(data: any) {
     try {
       const resp = await this.api.post(
-        "http://localhost:3000/api/component",
+        "http://localhost:3000/api/components",
         data
       );
       return resp.data;

@@ -68,7 +68,7 @@ const currentUser = ref({
 const userAvatar = ref("");
 
 const messages = ref([
-    { sender: 'bot', text: 'Hi! How can I assist you today?' },
+    { sender: 'bot', text: 'Xin chào! Tôi có thể trợ giúp bạn những gì?' },
 ]);
 
 const userInput = ref('');

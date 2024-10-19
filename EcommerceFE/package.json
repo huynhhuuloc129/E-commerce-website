@@ -24,6 +24,7 @@
     "sweetalert2": "^11.13.2",
     "vue": "^3.4.29",
     "vue-router": "^4.4.3",
+    "vue3-charts": "^1.1.33",
     "vue3-cookies": "^1.0.6",
     "vue3-google-login": "^2.0.33",
     "vue3-spinners": "^1.2.2"

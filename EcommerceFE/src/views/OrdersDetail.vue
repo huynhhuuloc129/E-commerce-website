@@ -2,9 +2,8 @@
     <div class="mb-5" style="height: 150px; background-color: #fbbfc0;">
     </div>
     <div style="width: 100vw;">
-        <section v-for="order in orders" :key="order.orderId" class="h-100 h-custom rounded-4 container mb-5"
-            style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-            <div class="container h-100 py-5">
+        <section v-for="order in orders" :key="order.orderId" class="h-100 h-custom container mb-5">
+            <div class="container h-100 py-3 rounded-4 " style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col">
 
@@ -60,7 +59,10 @@
                                     <div class="col-lg-4 col-xl-3 w-100">
                                         <div class="d-flex justify-content-between" style="font-weight: 500;">
                                             <p class="mb-2">Tổng giá:</p>
-                                            <p class="mb-2">$23.49</p>
+                                            <p class="mb-2">{{ (144000).toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</p>
                                         </div>
 
                                         <div class="d-flex justify-content-between" style="font-weight: 500;">
@@ -71,15 +73,28 @@
                                             }) }}</p>
                                         </div>
 
+
+
                                         <hr class="w-100">
 
-                                        <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
-                                            <p class="mb-2">Tổng cộng:</p>
-                                            <p class="mb-2">$26.48</p>
+                                        <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                            <p class="mb-0">Tổng cộng:</p>
+                                            <p class="mb-0">{{ (194000).toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</p>
                                         </div>
 
-                                        <button v-if="order.paid == 0" type="button" data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-primary btn-block btn-lg" style="border-radius: 0px; background-color: #fbbfc0; border: 0;">
+                                        <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                            <p class="mb-0">Địa chỉ giao hàng:</p>
+                                            <p class="mb-0">
+                                                {{ order.shippingAddress }}
+                                            </p>
+                                        </div>
+
+                                        <button v-if="order.paid == 0" type="button" data-mdb-button-init
+                                            data-mdb-ripple-init class="btn btn-primary btn-block btn-lg"
+                                            style="border-radius: 0px; background-color: #fbbfc0; border: 0;">
                                             <div class="d-flex justify-content-between">
                                                 <span>Thanh toán</span>
                                             </div>
@@ -134,6 +149,7 @@ let orders = ref([{
     shipped: 0,
     shippedDate: "",
     shipmentTracking: "",
+    shippingAddress: "",
     paid: 0,
     selectedProductId: 0,
     typeId: 0,

@@ -17,4 +17,7 @@ router
 router
   .route('/detail/:id')
   .get(orderController.getDetailsByAccountId)
+router
+  .route('/all/detail')
+  .get(orderController.getAllDetailsByAccountId)
 module.exports = router;

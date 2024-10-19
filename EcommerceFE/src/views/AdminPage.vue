@@ -35,7 +35,7 @@
                                     <i class="fa fa-chart-line fa-3x " style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Lượt bán hôm nay</p>
-                                        <h6 class="mb-0">$1234</h6>
+                                        <h6 class="mb-0">{{ orders.length }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                                     <i class="fa fa-chart-bar fa-3x" style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Tổng lượt bán</p>
-                                        <h6 class="mb-0">$1234</h6>
+                                        <h6 class="mb-0">{{ orders.length }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -78,16 +78,57 @@
                                 <div class="bg-light text-center rounded p-4">
                                     <div class="d-flex align-items-center justify-content-between mb-4">
                                         <h6 class="mb-0">Thống kê lượt bán</h6>
+
                                     </div>
-                                    <canvas id="worldwide-sales"></canvas>
+                                    <div id="worldwide-sales">
+                                        <Chart :size="{ width: 500, height: 400 }" :data="plByMonth" :margin="{
+                                            left: 0,
+                                            top: 20,
+                                            right: 0,
+                                            bottom: 0
+                                        }" direction="horizontal">
+
+                                            <template #layers>
+                                                <Grid strokeDasharray="2,2" />
+                                                <Line :dataKeys="['name', 'pl']" />
+                                            </template>
+
+                                        </Chart>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-xl-6">
                                 <div class="bg-light text-center rounded p-4">
                                     <div class="d-flex align-items-center justify-content-between mb-4">
                                         <h6 class="mb-0">Thống kê doanh thu</h6>
+
                                     </div>
-                                    <canvas id="salse-revenue"></canvas>
+                                    <div id="salse-revenue">
+                                        <Chart :size="{ width: 500, height: 400 }" :data="plByMonth" :margin="{
+                                            left: 0,
+                                            top: 20,
+                                            right: 0,
+                                            bottom: 0
+                                        }" direction="horizontal">
+
+                                            <template #layers>
+                                                <Grid strokeDasharray="2,2" />
+
+                                                <Line :dataKeys="['name', 'pl']" type="monotone" :lineStyle="{
+                                                    stroke: '#9f7aea'
+                                                }" />
+
+                                                <defs>
+                                                    <linearGradient id="grad" gradientTransform="rotate(90)">
+                                                        <stop offset="0%" stop-color="#be90ff" stop-opacity="1" />
+                                                        <stop offset="100%" stop-color="white" stop-opacity="0.4" />
+                                                    </linearGradient>
+                                                </defs>
+                                            </template>
+
+
+                                        </Chart>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -114,51 +155,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
+                                        <tr v-for="order in orders" :key="order.orderId">
+                                            <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
+                                            <td>{{ order.orderId }}</td>
+                                            <td>{{ order.accountName }}</td>
+                                            <td v-if="order.totalPrice != null">
+                                                {{ order.totalPrice.toLocaleString("it-IT", {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                }) }}</td>
+                                            <td v-if="order.paid == 0">Chưa thanh toán</td>
+                                            <td v-else>Đã thanh toán</td>
                                             <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
+                                                    href="">Chi tiết</a>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -167,13 +179,12 @@
                     <!-- Recent Sales End -->
 
                     <!-- Widgets Start -->
-                    <div class="container-fluid pt-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-6 col-xl-4">
+                    <div class="container-fluid pt-4 d-flex w-100">
+                        <div class="w-50 me-2">
+                            <div class="">
                                 <div class="h-100 bg-light rounded p-4">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
                                         <h6 class="mb-0">Đánh giá</h6>
-                                        <a href="">Show All</a>
                                     </div>
                                     <div v-for="review in reviews" :key="review.reviewId"
                                         class="d-flex align-items-center border-bottom py-3">
@@ -197,224 +208,92 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-6 col-xl-4">
-                                <div class="h-100 bg-light rounded p-4">
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
-                                        <h6 class="mb-0">Calender</h6>
-                                        <a href="">Show All</a>
-                                    </div>
-                                    <div id="calender"></div>
+
+
+
+                        </div>
+                        <div class="w-50">
+                            <div class="bg-light text-center rounded p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <h6 class="mb-0">Danh sách thể loại</h6>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6 col-xl-4">
-                                <div class="h-100 bg-light rounded p-4">
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
-                                        <h6 class="mb-0">To Do List</h6>
-                                        <a href="">Show All</a>
-                                    </div>
-                                    <div class="d-flex mb-2">
-                                        <input class="form-control bg-transparent" type="text" placeholder="Enter task">
-                                        <button type="button" class="btn btn-primary ms-2">Add</button>
-                                    </div>
-                                    <div class="d-flex align-items-center border-bottom py-2">
-                                        <input class="form-check-input m-0" type="checkbox">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span>Short task goes here...</span>
-                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                <button class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
+                                    data-bs-target="#addCategoryModal"><i class="fa-solid fa-plus"></i></button>
+
+                                <!-- Modal -->
+                                <div class=" modal fade" id="addCategoryModal" tabindex="-1"
+                                    aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog-centered modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addCategoryModalLabel">Thêm thể loại
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body d-flex flex-column w-100">
+                                                <div class="d-flex w-100 justify-content-between mb-3">
+                                                    <label for="tag-name">Tên thể loại:</label>
+                                                    <input class="w-75 form-control" type="text" id="tag-name" required
+                                                        v-model="newCategory.name">
+                                                </div>
+
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <label for="tag-name">Mô tả:</label>
+                                                    <input class="w-75 form-control" type="text" id="tag-name" required
+                                                        v-model="newCategory.description">
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary"
+                                                    @click="addCategory()">Thêm</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center border-bottom py-2">
-                                        <input class="form-check-input m-0" type="checkbox">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span>Short task goes here...</span>
-                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center border-bottom py-2">
-                                        <input class="form-check-input m-0" type="checkbox" checked>
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span><del>Short task goes here...</del></span>
-                                                <button class="btn btn-sm text-primary"><i
-                                                        class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center border-bottom py-2">
-                                        <input class="form-check-input m-0" type="checkbox">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span>Short task goes here...</span>
-                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center pt-2">
-                                        <input class="form-check-input m-0" type="checkbox">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span>Short task goes here...</span>
-                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+
+                                    <table class="table text-start align-middle table-bordered table-hover mb-0">
+                                        <thead>
+                                            <tr class="text-dark">
+                                                <th scope="col">Ngày tạo</th>
+                                                <th scope="col">Tên</th>
+                                                <th scope="col">Mô tả</th>
+                                                <th style="width: 15%;" scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="cat in categories" :key="cat.catId">
+                                                <td>{{ cat.created_at.slice(0, 10) }}</td>
+                                                <td>{{ cat.name }}</td>
+                                                <td>{{ cat.description }}</td>
+                                                <td class="d-flex justify-content-around"><button class="btn btn-sm"
+                                                        style="background-color: #fbbfc0; color: white"
+                                                        @click="choosenCategory = cat" data-bs-toggle="modal"
+                                                        data-bs-target="#editCategoryModal">Chỉnh sửa</button>
+
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteCategory" @click="choosenCategory = cat">
+                                                        Xóa
+                                                    </button>
+
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                     <!-- Widgets End -->
 
-                    <div class="container-fluid pt-4">
-                        <div class="bg-light text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Các sản phẩm gần đây</h6>
-                            </div>
-                            <button class="btn btn-dark fw-bold w-100"><i class="fa-solid fa-plus"></i></button>
 
-                            <div class="table-responsive">
-                                <table class="table text-start align-middle table-bordered table-hover mb-0">
-                                    <thead>
-                                        <tr class="text-dark">
-                                            <th scope="col">Ngày</th>
-                                            <th scope="col">Mã hóa đơn</th>
-                                            <th scope="col">Khách hàng</th>
-                                            <th scope="col">Giá</th>
-                                            <th scope="col">Trạng thái</th>
-                                            <th style="width: 10%;" scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Jan 2045</td>
-                                            <td>INV-0123</td>
-                                            <td>Jhon Doe</td>
-                                            <td>$123</td>
-                                            <td>Paid</td>
-                                            <td><a class="btn btn-sm btn-primary"
-                                                    style="background-color: #fbbfc0; color: white" href="">Chi tiết</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container-fluid pt-4">
-                        <div class="bg-light text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Danh sách thể loại</h6>
-                            </div>
-                            <button class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
-                                data-bs-target="#addCategoryModal"><i class="fa-solid fa-plus"></i></button>
-
-                            <!-- Modal -->
-                            <div class=" modal fade" id="addCategoryModal" tabindex="-1"
-                                aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-                                <div class="modal-dialog-centered modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="addCategoryModalLabel">Thêm thể loại</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body d-flex flex-column w-100">
-                                            <div class="d-flex w-100 justify-content-between mb-3">
-                                                <label for="tag-name">Tên thể loại:</label>
-                                                <input class="w-75 form-control" type="text" id="tag-name" required
-                                                    v-model="newCategory.name">
-                                            </div>
-
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label for="tag-name">Mô tả:</label>
-                                                <input class="w-75 form-control" type="text" id="tag-name" required
-                                                    v-model="newCategory.description">
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"
-                                                @click="addCategory()">Thêm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive">
-
-                                <table class="table text-start align-middle table-bordered table-hover mb-0">
-                                    <thead>
-                                        <tr class="text-dark">
-                                            <th style="width: 15%;" scope="col">Ngày tạo</th>
-                                            <th scope="col">Tên</th>
-                                            <th scope="col">Mô tả</th>
-                                            <th style="width: 15%;" scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="cat in categories" :key="cat.catId">
-                                            <td>{{ cat.created_at.slice(0, 10) }}</td>
-                                            <td>{{ cat.name }}</td>
-                                            <td>{{ cat.description }}</td>
-                                            <td class="d-flex justify-content-around"><button class="btn btn-sm"
-                                                    style="background-color: #fbbfc0; color: white"
-                                                    @click="choosenCategory = cat" data-bs-toggle="modal"
-                                                    data-bs-target="#editCategoryModal">Chỉnh sửa</button>
-
-                                                <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteCategory" @click="choosenCategory = cat">
-                                                    Xóa
-                                                </button>
-
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- edit Modal -->
                     <div class="modal fade" id="editCategoryModal" tabindex="-1"
@@ -440,7 +319,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                        @click="editCategory()">Cập nhật</button>
+                                        @click="editCategory()">Cập
+                                        nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -594,6 +474,123 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="container-fluid pt-4">
+                        <div class="bg-light text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Danh sách các thành phần</h6>
+                            </div>
+                            <button type="button" class="btn btn-dark fw-bold w-100" data-bs-toggle="modal"
+                                data-bs-target="#addCompModal"><i class="fa-solid fa-plus"></i></button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="addCompModal" tabindex="-1" aria-labelledby="addCompModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog-centered modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addCompModalLabel">Thêm thành phần</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-start d-flex">
+                                            <div class="d-flex flex-column w-100 justify-content-between mb-3">
+                                                <div class="w-100">
+                                                    <label class="" for="comp-name">Tên thành phần:</label>
+                                                    <input class="w-100 form-control" type="text" id="comp-name"
+                                                        v-model="newCompName" required>
+
+                                                </div>
+
+                                                <div class="w-100 mt-3">
+
+                                                    <label for="comp-description">Mô tả thành phần:</label>
+                                                    <input class="w-100 form-control" type="text" id="comp-description"
+                                                        v-model="newCompNameDescription" required>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                                @click="addComp()">Thêm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="editCompModal" tabindex="-1"
+                                aria-labelledby="editCompModalLabel" aria-hidden="true">
+                                <div class="modal-dialog-centered modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editCompModalLabel">Chỉnh sửa thành phần</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-start d-flex">
+                                            <div class="d-flex w-100 justify-content-between mb-3">
+                                                <label for="tag-name-edit">Tên thành phần:</label>
+                                                <input class="w-75 form-control" type="text" id="tag-name-edit"
+                                                    v-model="choosenTag.name" required>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                                @click="editComp()">Cập
+                                                nhật</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                                    <thead>
+                                        <tr class="text-dark">
+                                            <th class="fw-bold" scope="col">Ngày tạo</th>
+                                            <th class="fw-bold" scope="col">Tên</th>
+                                            <th class="fw-bold" scope="col">Mô tả</th>
+                                            <th style="width: 15%;" scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="w-100">
+                                        <tr v-for="component in VisibleComponents()" :key="component.componentId">
+                                            <td>{{ component.created_at.slice(0, 10) }}</td>
+                                            <td class="text-capitalize">{{ component.name }}</td>
+                                            <td class="">{{ component.description }}</td>
+
+                                            <td class="d-flex justify-content-around">
+                                                <button class="btn btn-sm"
+                                                    style="background-color: #fbbfc0; color: white"
+                                                    data-bs-toggle="modal" data-bs-target="#editCompModal"
+                                                    @click="choosenComp = component">
+                                                    Chỉnh sửa
+                                                </button>
+
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteComp" @click="choosenComp = component">
+                                                    Xóa
+                                                </button>
+
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="w-100 d-flex justify-content-center align-items-center text-center mt-2">
+
+                                    <button @click="compVisibles += steps" v-if="compVisibles < components.length"
+                                        class="btn moreUser w-50" style="border-radius: 50px; border: 2px solid black;">
+                                        Xem thêm >>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -649,7 +646,8 @@
                                             dạng 1., 2., 3., ...):</label>
                                         <div class="d-flex align-items-center">
                                             <textarea v-model="newProduct.guide" class="form-control" id="guide"
-                                                required> </textarea>
+                                                required>
+                                </textarea>
                                         </div>
                                     </div>
 
@@ -665,7 +663,8 @@
                                     <label for="maintain" class="fw-bold form-label">Bảo quản: </label>
                                     <div class="d-flex align-items-center">
                                         <textarea v-model="newProduct.maintain" class="form-control" id="maintain"
-                                            required> </textarea>
+                                            required>
+                            </textarea>
                                     </div>
                                 </div>
 
@@ -760,15 +759,46 @@
 <script setup lang="ts">
 import categoryServices from '@/services/category.services';
 import tagServices from '@/services/tag.services';
+import { calculateTimeElapse } from '@/utilities/utilities';
+import { Chart, Grid, Line } from 'vue3-charts'
 
-import { checkLogin, calculateTimeElapse } from '@/utilities/utilities';
 import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import reviewServices from '@/services/review.services';
 import brandServices from '@/services/brand.services';
-import imageServices from '@/services/image.services';
 import productServices from '@/services/product.sevices';
+import orderServices from '@/services/order.services';
+import componentServices from '@/services/component.services';
 
+const plByMonth = [
+    { name: 'Jan', pl: 1000, avg: 500, inc: 300 },
+    { name: 'Feb', pl: 2000, avg: 900, inc: 400 },
+    { name: 'Apr', pl: 400, avg: 400, inc: 500 },
+    { name: 'Mar', pl: 3100, avg: 1300, inc: 700 },
+    { name: 'May', pl: 200, avg: 100, inc: 200 },
+    { name: 'Jun', pl: 600, avg: 400, inc: 300 },
+    { name: 'Jul', pl: 500, avg: 90, inc: 100 },
+    { name: 'Aug', pl: 500, avg: 90, inc: 100 },
+    { name: 'Sep', pl: 900, avg: 90, inc: 100 },
+    { name: 'Oct', pl: 1500, avg: 90, inc: 100 },
+    { name: 'Nov', pl: 500, avg: 90, inc: 100 },
+    { name: 'Dec', pl: 500, avg: 90, inc: 100 }
+]
+
+const orders = ref([{
+    orderId: 0,
+    created_at: "",
+    updated_at: "",
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shippingAddress: "",
+    shipped: 0,
+    shippedDate: "",
+    shipmentTracking: "",
+    paid: 0,
+    accountName: ""
+}])
 
 const reviews = ref([{
     reviewId: 0,
@@ -995,6 +1025,80 @@ async function editTag() {
     }
 }
 
+const components = ref([{
+    componentId: 0,
+    name: "",
+    description: "",
+    created_at: "",
+    updated_at: ""
+}])
+const compVisibles = ref(5);
+const choosenComp = ref({
+    componentId: 0,
+    name: "",
+    description: "",
+    created_at: "",
+    updated_at: ""
+})
+const newCompName = ref("")
+const newCompNameDescription = ref("")
+
+function VisibleComponents() {
+    return components.value.slice(0, compVisibles.value)
+}
+
+async function addComp() {
+    try {
+        if (newCompName.value == '') throw "Vui lòng nhập tên thành phần!"
+        if (newCompNameDescription.value == '') throw "Vui lòng nhập mô tả thành phần!"
+
+        let resp = await componentServices.create({
+            name: newCompName.value,
+            description: newCompNameDescription.value
+        });
+
+        if (resp == undefined) throw "Thành phần đã tồn tại."
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Thêm thành phần thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Thêm thành phần thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
+async function editComp() {
+    try {
+        if (choosenTag.value.name == '') throw "Vui lòng nhập tên thành phần!"
+
+        await tagServices.update(choosenComp.value.componentId, choosenComp.value.name);
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Cập nhật thành phần thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Cập nhật thành phần thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
+
 const toBase64 = (file: any) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1002,8 +1106,6 @@ const toBase64 = (file: any) =>
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
     });
-
-const base64s = ref([] as string[])
 
 async function uploadImageProducts(event: any) {
     newProduct.value.images = []
@@ -1062,6 +1164,9 @@ function removeInput(index: number) {
 
 onMounted(async () => {
     try {
+        // get all orders
+        let respOrders = await orderServices.getAllDetail();
+        orders.value = respOrders.data.order
 
         // get all reviews
         let respReviews = await reviewServices.getAll()
@@ -1080,6 +1185,10 @@ onMounted(async () => {
         // get all brands
         let resp = await brandServices.getAll();
         brands.value = resp.data.brand
+
+        // get all components
+        let respComp = await componentServices.getAll();
+        components.value = respComp.data.component
     } catch (error) {
         console.log(error)
     }

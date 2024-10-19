@@ -266,7 +266,8 @@
             <hr class="w-100">
 
             <div class="container rating d-flex flex-column align-items-center justify-content-center">
-                <h4 class="text-uppercase ">Đánh giá sản phẩm</h4>
+                <h4 class="text-uppercase mb-4">Đánh giá sản phẩm</h4>
+                <h5  v-if="reviews.length == 0">Hiện chưa có đánh giá nào cho sản phẩm này</h5>
             </div>
 
             <section v-if="checkLogin()">

@@ -94,7 +94,6 @@ CREATE TABLE IF NOT EXISTS Product_Component (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     productId int NOT NULL,
     componentId int NOT NULL,
-    percentage int NOT NULL,
     FOREIGN KEY (componentId)
       REFERENCES Component (componentId)
       ON UPDATE CASCADE
@@ -1210,3 +1209,4 @@ INSERT INTO Review (productId, accountId, content, star) VALUES (2, 1, '"Sản p
 INSERT INTO Review (productId, accountId, content, star) VALUES (2, 2, '"Sản phẩm son môi này thật sự tuyệt vời! Chất son mềm mượt, lên màu chuẩn ngay từ lần thoa đầu tiên và không gây khô môi. Đặc biệt, son giữ màu lâu, giúp tôi tự tin suốt cả ngày mà không cần dặm lại. Mùi hương dịu nhẹ cũng là một điểm cộng lớn, khiến tôi cảm thấy dễ chịu mỗi khi sử dụng. Thiết kế sang trọng và tiện dụng, rất phù hợp để mang theo bên mình. Đây chắc chắn sẽ là lựa chọn yêu thích của tôi trong thời gian dài!', 4);
 
 INSERT INTO SelectedProduct() VALUES() ;
+

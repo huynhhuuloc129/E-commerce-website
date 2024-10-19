@@ -19,6 +19,37 @@ exports.getAll = async (req, res) => {
         });
     }
 };
+
+
+exports.getAllDetailsByAccountId = async (req, res) => {
+    try {
+        let sql = `SELECT 
+                    o.*, 
+                    a.name as accountName
+                FROM orders o
+                JOIN account a ON o.accountId = a.accountId
+                ORDER BY o.orderId;
+`
+        connection.query(sql, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    order: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.getDetailsByAccountId = async (req, res) => {
     try {
         let sql = `SELECT 
