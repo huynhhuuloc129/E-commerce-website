@@ -53,7 +53,7 @@
                                     <i class="fa fa-chart-area fa-3x" style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Doanh thu hôm nay</p>
-                                        <h6 class="mb-0">$1234</h6>
+                                        <h6 class="mb-0">144.000 VND</h6>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                     <i class="fa fa-chart-pie fa-3x" style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Tổng doanh thu</p>
-                                        <h6 class="mb-0">$1234</h6>
+                                        <h6 class="mb-0">144.000 VND</h6>
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
 
                                     </div>
                                     <div id="salse-revenue">
-                                        <Chart :size="{ width: 500, height: 400 }" :data="plByMonth" :margin="{
+                                        <Chart :size="{ width: 500, height: 400 }" :data="plByMoney" :margin="{
                                             left: 0,
                                             top: 20,
                                             right: 0,
@@ -732,7 +732,25 @@
                                     </div>
                                 </div>
 
+                                <div class="d-flex flex-column mb-3">
+                                    <div class="fw-bold mb-2">
+                                        Chọn thành phần cho sản phẩm:
 
+                                    </div>
+                                    <div class="d-flex flex-wrap" id="component-wrap">
+                                        <div class="me-2 mb-2" v-for="component in components"
+                                            :key="component.componentId">
+                                            <input type="checkbox" class="btn-check"
+                                                :id="'componentEdit' + component.componentId"
+                                                v-model="newProduct.componentIds" autocomplete="off"
+                                                :value="component.componentId">
+                                            <label class="btn btn-outline-dark"
+                                                :for="'componentEdit' + component.componentId"
+                                                style="border-radius: 0px;">{{ component.name
+                                                }}</label>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                                 <div class="mb-3">
@@ -771,18 +789,32 @@ import orderServices from '@/services/order.services';
 import componentServices from '@/services/component.services';
 
 const plByMonth = [
-    { name: 'Jan', pl: 1000, avg: 500, inc: 300 },
-    { name: 'Feb', pl: 2000, avg: 900, inc: 400 },
-    { name: 'Apr', pl: 400, avg: 400, inc: 500 },
-    { name: 'Mar', pl: 3100, avg: 1300, inc: 700 },
-    { name: 'May', pl: 200, avg: 100, inc: 200 },
-    { name: 'Jun', pl: 600, avg: 400, inc: 300 },
-    { name: 'Jul', pl: 500, avg: 90, inc: 100 },
-    { name: 'Aug', pl: 500, avg: 90, inc: 100 },
-    { name: 'Sep', pl: 900, avg: 90, inc: 100 },
-    { name: 'Oct', pl: 1500, avg: 90, inc: 100 },
-    { name: 'Nov', pl: 500, avg: 90, inc: 100 },
-    { name: 'Dec', pl: 500, avg: 90, inc: 100 }
+    { name: 'Jan', pl: 0, avg: 0, inc: 0 },
+    { name: 'Feb', pl: 0, avg: 0, inc: 0 },
+    { name: 'Apr', pl: 0, avg: 0, inc: 0 },
+    { name: 'Mar', pl: 0, avg: 0, inc: 0 },
+    { name: 'May', pl: 0, avg: 0, inc: 0 },
+    { name: 'Jun', pl: 0, avg: 0, inc: 0 },
+    { name: 'Jul', pl: 0, avg: 0, inc: 0 },
+    { name: 'Aug', pl: 0, avg: 0, inc: 0 },
+    { name: 'Sep', pl: 0, avg: 0, inc: 0 },
+    { name: 'Oct', pl: 1, avg: 1, inc: 1 },
+    { name: 'Nov', pl: 0, avg: 0, inc: 0 },
+    { name: 'Dec', pl: 0, avg: 0, inc: 0 }
+]
+const plByMoney = [
+    { name: 'Jan', pl: 0, avg: 0, inc: 0 },
+    { name: 'Feb', pl: 0, avg: 0, inc: 0 },
+    { name: 'Apr', pl: 0, avg: 0, inc: 0 },
+    { name: 'Mar', pl: 0, avg: 0, inc: 0 },
+    { name: 'May', pl: 0, avg: 0, inc: 0 },
+    { name: 'Jun', pl: 0, avg: 0, inc: 0 },
+    { name: 'Jul', pl: 0, avg: 0, inc: 0 },
+    { name: 'Aug', pl: 0, avg: 0, inc: 0 },
+    { name: 'Sep', pl: 0, avg: 0, inc: 0 },
+    { name: 'Oct', pl: 144000, avg: 1, inc: 1 },
+    { name: 'Nov', pl: 0, avg: 0, inc: 0 },
+    { name: 'Dec', pl: 0, avg: 0, inc: 0 }
 ]
 
 const orders = ref([{
@@ -850,7 +882,9 @@ const newProduct = ref({
         quantityInStock: 0
     }],
     images: [] as string[],
-    tagIds: [] as number[]
+    tagIds: [] as number[],
+    componentIds: [] as number[]
+
 })
 
 const choosenCategory = ref({

@@ -88,7 +88,8 @@ exports.getOneDetails = async (req, res) => {
                 typeData.typeIds,
                 GROUP_CONCAT(DISTINCT t.tagId) AS tagIds,  -- You can keep DISTINCT here if you want unique tagIds
                 GROUP_CONCAT(DISTINCT i.imageId) AS imageIds, -- Use DISTINCT if you want unique imageIds
-                 GROUP_CONCAT(DISTINCT i.base64) AS base64s 
+                GROUP_CONCAT(DISTINCT i.base64) AS base64s, 
+                GROUP_CONCAT(DISTINCT c.componentId) AS componentIds
             FROM product p
             -- Subquery to aggregate types
             LEFT JOIN (
@@ -106,6 +107,9 @@ exports.getOneDetails = async (req, res) => {
             LEFT JOIN tag t ON pt.tagId = t.tagId
             -- Join with images table
             LEFT JOIN image i ON i.belongId = CONCAT('product', p.proId)
+            LEFT JOIN product_component pc ON p.proId = pc.productId
+            LEFT JOIN component c ON pc.componentId = c.componentId
+
             WHERE p.proId =  ${req.params.id}
             GROUP BY p.proId
         `
@@ -133,7 +137,7 @@ exports.getOneDetails = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images) {
+        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images && req.body.componentIds) {
 
             const newProduct = {
                 proId: req.params.id,
@@ -166,8 +170,17 @@ exports.update = async (req, res) => {
                         status: false
                     });
                 } else {
-                    // delete all image and product_tags and types
+                    // delete all image and product_tags and  productcomponent
                     connection.query('DELETE FROM product_tag WHERE productId = ?', req.params.id, (err, result) => { 
+                        if (err) {
+                            console.log(err);
+                            return res.status(400).json({
+                                errorMessage: err,
+                                status: false
+                            });
+                        }
+                    });
+                    connection.query('DELETE FROM product_component WHERE productId = ?', req.params.id, (err, result) => { 
                         if (err) {
                             console.log(err);
                             return res.status(400).json({
@@ -224,6 +237,23 @@ exports.update = async (req, res) => {
                         });
                     }
 
+                    for (let i = 0; i < req.body.componentIds.length; i++) {
+                        let newProductComp = {
+                            productId: req.params.id, 
+                            componentId: req.body.componentIds[i]
+                        };
+            
+                        connection.query('INSERT INTO product_component SET ?', newProductComp, (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+
                     // Send success response after inserting product
                     res.status(200).json({
                         message: "Product and images inserted successfully",
@@ -249,7 +279,7 @@ exports.update = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images) {
+        if (req.body && req.body.catId && req.body.brandId && req.body.name && req.body.description && req.body.unit && req.body.guide && req.body.maintain && req.body.note && req.body.types && req.body.tagIds && req.body.images && req.body.componentIds) {
 
             const newProduct = {
                 catId: req.body.catId,
@@ -315,6 +345,23 @@ exports.create = async (req, res) => {
                         };
             
                         connection.query('INSERT INTO product_tag SET ?', newProductTag, (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(400).json({
+                                    errorMessage: err,
+                                    status: false
+                                });
+                            }
+                        });
+                    }
+
+                    for (let i = 0; i < req.body.componentIds.length; i++) {
+                        let newProductComp = {
+                            productId: req.params.id, 
+                            componentId: req.body.componentIds[i]
+                        };
+            
+                        connection.query('INSERT INTO product_component SET ?', newProductComp, (err, result) => {
                             if (err) {
                                 console.log(err);
                                 return res.status(400).json({

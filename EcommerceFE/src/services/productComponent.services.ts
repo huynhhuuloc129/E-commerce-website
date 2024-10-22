@@ -24,7 +24,14 @@ class ProductComponentService {
       handlingError(err);
     }
   }
-
+  async getAllByProductId(id: number) {
+    try {
+      const product_components = await this.api.get("/product-components/product/" + id);
+      return product_components.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
 //   async create(data: any) {
 //     try {
 //       const resp = await this.api.post(

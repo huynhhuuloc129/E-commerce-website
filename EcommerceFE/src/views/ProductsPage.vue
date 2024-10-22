@@ -21,8 +21,7 @@
 
                 </div>
             </div>
-            <div class="container align-items-center d-flex flex-column  justify-content-center mb-3"
-                style="max-width: 50%;">
+            <div class="container align-items-center d-flex flex-column  justify-content-center mb-3">
                 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
@@ -96,7 +95,7 @@
                     <i class="fa-solid fa-plus"></i>
                 </div>
 
-                <div class="collapse" id="collapseExample">
+                <div class="collapse w-100" id="collapseExample">
                     <div>
                         {{ product.description }}
                     </div>
@@ -113,11 +112,12 @@
                 </div>
 
 
-                <div class="collapse" id="collapse1">
-                    <div>
-                        Some placeholder content for the collapse component. This panel is hidden by default but
-                        revealed
-                        when the user activates the relevant trigger.
+                <div class="collapse w-100" id="collapse1">
+                    <div class="" v-for="comp in components" :key="comp.componentId">
+                        <span class="fw-bold">
+                            {{ comp.name }}:
+                        </span>
+                        {{ comp.description }}
                     </div>
                 </div>
                 <hr class="w-100">
@@ -130,7 +130,7 @@
 
                     <i class="fa-solid fa-plus"></i>
                 </div>
-                <div class="collapse" id="collapse2">
+                <div class="collapse w-100" id="collapse2">
                     <div>
                         <div v-for="guide in productGuide" :key="guide">
                             {{ guide }}
@@ -155,7 +155,7 @@
                 </div>
             </div>
 
-            <div class="container mb-5" style="width: 50vw; margin-top: 100px;">
+            <div class="container mb-5" style="margin-top: 100px;">
                 <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
                     @click="pushToWithId('tag', tag.tagId)">
                     {{ tag.name }}
@@ -266,12 +266,12 @@
             <hr class="w-100">
 
             <div class="container rating d-flex flex-column align-items-center justify-content-center">
-                <h4 class="text-uppercase mb-4">Đánh giá sản phẩm</h4>
-                <h5  v-if="reviews.length == 0">Hiện chưa có đánh giá nào cho sản phẩm này</h5>
+                <h4 class="text-uppercase">Đánh giá sản phẩm</h4>
+                <h5 v-if="reviews.length == 0">Hiện chưa có đánh giá nào cho sản phẩm này</h5>
             </div>
 
             <section v-if="checkLogin()">
-                <div class="py-5 text-body">
+                <div class=" text-body">
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="card">
@@ -415,9 +415,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies';
 import Swal from 'sweetalert2';
 import selectedProductServices from '@/services/selectedProduct.services';
+import componentServices from '@/services/component.services';
 import imageServices from '@/services/image.services';
 import orderServices from '@/services/order.services';
-
+import productComponentServices from '@/services/productComponent.services';
 const id = ref(0);
 
 const cookies = useCookies();
@@ -499,7 +500,15 @@ const product_tags = ref([
         updated_at: ''
     }
 ])
-
+const product_components = ref([
+    {
+        productComponentId: 0,
+        componentId: 0,
+        productId: 0,
+        created_at: '',
+        updated_at: ''
+    }
+])
 const tagsBelong = ref([
     {
         tagId: 0,
@@ -633,6 +642,14 @@ async function addToCart() {
     }
 }
 
+const components = ref([{
+    componentId: 0,
+    name: "",
+    description: "",
+    created_at: "",
+    updated_at: ""
+}])
+
 onMounted(async () => {
     try {
         // get current user
@@ -675,6 +692,19 @@ onMounted(async () => {
 
             tagsBelong.value = respTags;
 
+            // get all components
+            let respProComp = await productComponentServices.getAllByProductId(product.value.proId);
+            product_components.value = respProComp.data.product_component
+
+            let respComps = []
+            for (let i = 0; i < product_components.value.length; i++) {
+                let respComponent = await componentServices.getOne(product_components.value[i].componentId)
+
+                respComps.push(respComponent.data.component[0])
+            }
+            console.log(product_components.value)
+
+            components.value = respComps;
             // get review
             let respReviews = await reviewServices.getAllByProductId(product.value.proId)
             reviews.value = respReviews.data.review;
@@ -709,7 +739,7 @@ onMounted(async () => {
             let respOrders = await orderServices.getAllByAccountIdAndShipped(currentUser.value.accountId)
             orders.value = respOrders.data.order
 
-            for(let i=0; i< orders.value.length; i++){
+            for (let i = 0; i < orders.value.length; i++) {
                 console.log('')
             }
         }

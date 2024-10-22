@@ -101,8 +101,8 @@
                                     <div class="w-25">
                                         <label v-if="index == 0" for="price" class="fw-bold form-label">Giá
                                             loại:</label>
-                                        <input disabled v-model="editProduct.types[index].unitPrice" type="number" id="price"
-                                            min="0" class="form-control" required>
+                                        <input disabled v-model="editProduct.types[index].unitPrice" type="number"
+                                            id="price" min="0" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -121,6 +121,22 @@
                                             style="border-radius: 0px;">{{ tag.name
                                             }}</label>
                                     </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="d-flex flex-column mb-3">
+                            <div class="fw-bold mb-2">
+                                Chọn thành phần cho sản phẩm:
+
+                            </div>
+                            <div class="d-flex flex-wrap" id="component-wrap">
+                                <div class="me-2 mb-2" v-for="component in components" :key="component.componentId">
+                                    <input type="checkbox" class="btn-check" :id="'componentEdit' + component.componentId"
+                                    v-model="editProduct.componentIds"  autocomplete="off" :value="component.componentId">
+                                    <label class="btn btn-outline-dark" :for="'componentEdit' + component.componentId"
+                                        style="border-radius: 0px;">{{ component.name
+                                        }}</label>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +170,7 @@ import Swal from 'sweetalert2';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
 import productServices from '@/services/product.sevices';
+import componentServices from '@/services/component.services';
 
 
 const route = useRoute();
@@ -206,7 +223,8 @@ const currentProduct = ref({
     tagIds: "",
     unitPrices: "",
     typeNames: "",
-    quantitiesInStock: ""
+    quantitiesInStock: "",
+    componentIds: ""
 })
 
 const editProduct = ref({
@@ -224,7 +242,8 @@ const editProduct = ref({
         quantityInStock: 0
     }],
     images: [] as string[],
-    tagIds: [] as number[]
+    tagIds: [] as number[],
+    componentIds: [] as number[]
 })
 
 const brands = ref([
@@ -236,6 +255,13 @@ const brands = ref([
     }
 ])
 
+const components = ref([{
+    componentId: 0,
+    name: "",
+    description: "",
+    created_at: "",
+    updated_at: ""
+}])
 
 const toBase64 = (file: any) =>
     new Promise((resolve, reject) => {
@@ -262,8 +288,8 @@ async function uploadImageProducts(event: any) {
 async function onEditProduct(e: any) {
     e.preventDefault();
     try {
-        if ((editProduct.value.images == null || editProduct.value.images.length == 0) && 
-        (currentProduct.value.base64s != null && currentProduct.value.base64s.length > 0)) {
+        if ((editProduct.value.images == null || editProduct.value.images.length == 0) &&
+            (currentProduct.value.base64s != null && currentProduct.value.base64s.length > 0)) {
             editProduct.value.images = currentProduct.value.base64s.split(',')
         }
 
@@ -324,7 +350,8 @@ onMounted(async () => {
                 quantityInStock: parseInt(currentProduct.value.quantitiesInStock.split(',')[index] || '0')
             })) : [],
             images: currentProduct.value.imageIds ? [currentProduct.value.imageIds] : [],
-            tagIds: currentProduct.value.tagIds ? currentProduct.value.tagIds.split(',').map(Number) : [] // Convert to an array of numbers
+            tagIds: currentProduct.value.tagIds ? currentProduct.value.tagIds.split(',').map(Number) : [], // Convert to an array of numbers
+            componentIds: currentProduct.value.componentIds ? currentProduct.value.componentIds.split(',').map(Number): []
         };
 
         // get all tags
@@ -338,6 +365,10 @@ onMounted(async () => {
         // get all brands
         let resp = await brandServices.getAll();
         brands.value = resp.data.brand
+
+        // get all components
+        let respComp = await componentServices.getAll();
+        components.value = respComp.data.component
     } catch (error) {
         console.log(error)
     }

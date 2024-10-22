@@ -61,7 +61,7 @@
                     </div>
                     <button class="btn btn-light px-4 py-2 fw-bold" @click="addOrder($event)"
                         style="border-radius: 0px; background-color: #fbbfc0; color: white;">Đặt
-                        Hàng</button>
+                        hàng</button>
                 </div>
             </div>
         </div>
@@ -177,6 +177,8 @@ async function addOrder(e: any) {
             icon: "success",
             confirmButtonText: "OK",
         });
+
+        window.location.reload();
     } catch (error) {
         console.log(error)
 

@@ -131,84 +131,125 @@
                 </div>
                 <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab"
                     style="width: 80vw">
-                    <div>
-                        <div class="container mt-4 px-2">
-                            <h5 class="mb-2 d-flex justify-content-between align-items-center">
-                                Thông tin tất cả bài viết đã xuất bản
-                            </h5>
-                            <hr />
-                            <div class="position-relative">
-                                <span class="position-absolute search"><i class="fa fa-search"></i></span>
-                                <input class="form-control form-control-special w-100"
-                                    placeholder="Tìm kiếm bằng tên bài viết" />
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-responsive">
-                                    <thead>
-                                        <tr class="bg-light">
-                                            <th scope="col" width="1%">ID</th>
-                                            <th scope="col" width="10%">Ngày tạo</th>
-                                            <th scope="col" width="15%">Loại</th>
-                                            <th scope="col" width="25%">Tên bài viết</th>
-                                            <th scope="col" width="17%">Người tạo</th>
-                                            <th scope="col" width="9%" class="text-center">Lượt thích</th>
-                                            <th scope="col" width="11%" class="text-center">Lượt chia sẻ</th>
-                                            <th scope="col" class="text-end" width="10%"><span></span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                    <section v-for="order in orders" :key="order.orderId" class="h-100 h-custom container mb-5">
+                        <div class="container h-100 py-3 rounded-4 "
+                            style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                            <div class="row d-flex justify-content-center align-items-center h-100">
+                                <div class="col">
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="text-center">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="h5">Sản phẩm</th>
+                                                    <th scope="col">Đơn vị</th>
+                                                    <th scope="col">Số lượng</th>
+                                                    <th scope="col">Giá</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(sProductId, index) in order.selectedProductIds"
+                                                    :key="sProductId + ' ' + index">
+                                                    <th scope="row">
+                                                        <div class="d-flex align-items-center">
+                                                            <img :src="order.imageBase64[index]"
+                                                                class="img-fluid rounded-3" style="width: 120px;"
+                                                                alt="Book">
+                                                            <div class="flex-column ms-4">
+                                                                <p class="mb-2"><a class="linkp fw-bold"
+                                                                        :href="'http://localhost:5173/products/' + order.productIds[index]">{{
+                                                                            order.productNames[index] }}</a></p>
+                                                                <p class="mb-0">{{ order.typeNames[index] }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td class="align-middle">
+                                                        <p class="mb-0" style="font-weight: 500;">Thỏi</p>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="d-flex flex-row">
+                                                            <input disabled id="form1" min="0" name="quantity"
+                                                                :value="order.quantitySelected[index]" type="number"
+                                                                class="form-control form-control-sm"
+                                                                style="width: 50px;" />
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <p class="mb-0" style="font-weight: 500;"
+                                                            v-if="order.sellingPrices[index] != null">
+                                                            {{
+                                                                order.sellingPrices[index].toLocaleString("it-IT", {
+                                                                    style: "currency",
+                                                                    currency: "VND",
+                                                                }) }}</p>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mb-5 mb-lg-0">
+                                        <div class=" p-4 d-flex justify-content-end">
+
+                                            <div class="row w-50 text-end">
+                                                <div class="col-lg-4 col-xl-3 w-100">
+                                                    <div class="d-flex justify-content-between"
+                                                        style="font-weight: 500;">
+                                                        <p class="mb-2">Tổng giá:</p>
+                                                        <p class="mb-2">{{ (order.totalPrice).toLocaleString("it-IT", {
+                                                            style: "currency",
+                                                            currency: "VND",
+                                                        }) }}</p>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between"
+                                                        style="font-weight: 500;">
+                                                        <p class="mb-0">Phí vận chuyển:</p>
+                                                        <p class="mb-0">{{ (order.shippingPrice).toLocaleString("it-IT",
+                                                            {
+                                                                style: "currency",
+                                                                currency: "VND",
+                                                            }) }}</p>
+                                                    </div>
+
+                                                    <hr class="w-100">
+
+                                                    <div class="d-flex justify-content-between"
+                                                        style="font-weight: 500;">
+                                                        <p class="mb-0">Tổng cộng:</p>
+                                                        <p class="mb-0">{{ (order.totalPrice +
+                                                            order.shippingPrice).toLocaleString("it-IT", {
+                                                                style: "currency",
+                                                                currency: "VND",
+                                                            }) }}</p>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between mb-4"
+                                                        style="font-weight: 500;">
+                                                        <p class="mb-0">Địa chỉ giao hàng:</p>
+                                                        <p class="mb-0">
+                                                            {{ order.shippingAddress }}
+                                                        </p>
+                                                    </div>
+
+                                                    <button v-if="order.paid == 0" type="button" data-mdb-button-init
+                                                        data-mdb-ripple-init class="btn btn-primary btn-block btn-lg"
+                                                        style="border-radius: 0px; background-color: #fbbfc0; border: 0;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <span>Thanh toán</span>
+                                                        </div>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div>
-                        <div class="container mt-5 px-2">
-                            <h5 class="mb-2 d-flex justify-content-between align-items-center">
-                                Thông tin tất cả bài viết đang chờ phê duyệt
-                            </h5>
-                            <hr />
-                            <div class="position-relative">
-                                <span class="position-absolute search"><i class="fa fa-search"></i></span>
-                                <input class="form-control form-control-special w-100"
-                                    placeholder="Tìm kiếm bằng tên bài viết" />
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-responsive">
-                                    <thead>
-                                        <tr class="bg-light">
-                                            <th scope="col" width="1%">ID</th>
-                                            <th scope="col" width="10%">Ngày tạo</th>
-                                            <th scope="col" width="15%">Loại</th>
-                                            <th scope="col" width="40%">Tên bài viết</th>
-                                            <th scope="col" width="20%">Người tạo</th>
-                                            <th scope="col" class="text-end" width="20%"><span></span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-
-                                            <td class="text-end d-flex">
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="text-center">
-                                    <button class="btn moreUser" style="border-radius: 50px; border: 2px solid black">
-                                        Xem thêm >>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </section>
                 </div>
                 <div class="tab-pane fade" id="favorite" role="tabpanel" aria-labelledby="favorite-tab"
                     style="width: 80vw">
@@ -264,7 +305,7 @@ import { useCookies } from 'vue3-cookies';
 import { checkLogin } from "@/utilities/utilities";
 
 import accountServices from '@/services/account.services';
-
+import orderServices from '@/services/order.services';
 const cookies = useCookies();
 const token = cookies.cookies.get("Token");
 
@@ -283,6 +324,29 @@ const currentUser = ref({
     created_at: '',
     updated_at: ''
 })
+
+let orders = ref([{
+    orderId: 0,
+    created_at: "",
+    updated_at: "",
+    quantitySelected: [] as number[],
+    sellingPrices: [] as number[],
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shipped: 0,
+    shippedDate: "",
+    shipmentTracking: "",
+    shippingAddress: "",
+    paid: 0,
+    selectedProductIds: [] as number[],
+    typeIds: [] as number[],
+    typeNames: [] as string[],
+    productIds: [] as number[],
+    proId: 0,
+    productNames: [] as string[],
+    imageBase64: [] as string[]
+}])
 
 var updateUser = async (e: any) => {
     e.preventDefault();
@@ -352,6 +416,35 @@ onMounted(async () => {
         let resp = await accountServices.getMe(token);
         currentUser.value = resp.data.account[0];
 
+        orders.value = [];
+
+        let respOrders = await orderServices.getDetailByAccountId(currentUser.value.accountId)
+        for (let i = 0; i < respOrders.data.order.length; i++) {
+            let data = respOrders.data.order[i];
+            // Push the transformed order into the orders array
+            orders.value.push({
+                orderId: data.orderId,
+                created_at: data.created_at,
+                updated_at: data.updated_at,
+                quantitySelected: data.quantitiesSelected.split(',').map(Number), // Convert string to array of numbers
+                sellingPrices: data.sellingPrices.split(',').map(Number), // Convert string to array of numbers
+                accountId: data.accountId,
+                totalPrice: data.totalPrice,
+                shippingPrice: data.shippingPrice,
+                shipped: data.shipped,
+                shippedDate: data.shippedDate,
+                shipmentTracking: data.shipmentTracking,
+                shippingAddress: data.shippingAddress,
+                paid: data.paid,
+                selectedProductIds: data.selectedProductIds.split(',').map(Number), // Convert string to array of numbers
+                typeIds: data.typeIds.split(',').map(Number), // Convert string to array of numbers
+                typeNames: data.typeNames.split(','), // Convert string to array of strings
+                productIds: data.productIds.split(',').map(Number), // Convert string to array of numbers
+                proId: data.proId,
+                productNames: data.productNames.split(','), // Convert string to array of strings
+                imageBase64: data.imageBase64.split('||')
+            });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -363,5 +456,14 @@ onMounted(async () => {
 .list-group-item.active {
     border: 0px;
     background-color: #fbbfc0;
+}
+
+.linkp {
+    color: black;
+    text-decoration: none;
+}
+
+.linkp:hover {
+    text-decoration: underline;
 }
 </style>

@@ -1,6 +1,5 @@
 USE sunny_cosmetic;
-ALTER TABLE product AUTO_INCREMENT = 1
-ALTER TABLE type AUTO_INCREMENT = 1
+SET SESSION group_concat_max_len = 1000000;
 
 CREATE TABLE IF NOT EXISTS Image (
     imageId int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -326,7 +325,8 @@ INSERT INTO Tag (name) VALUES ('Loại Bỏ Da Chết');
 INSERT INTO Tag (name) VALUES ('Nước Tẩy Trang');
 INSERT INTO Tag (name) VALUES ('Làm Sạch Tươi Mát');
 INSERT INTO Tag (name) VALUES ('Dưỡng Ẩm Cho Da');
-
+ALTER TABLE product AUTO_INCREMENT = 1
+ALTER TABLE type AUTO_INCREMENT = 1
 INSERT INTO Product (catId, brandId, name, description, unit, guide, maintain, note) VALUES (2, 21, 'Judydoll Watery Glow Lipstick','Son Dưỡng Có Màu Làm Mềm Môi Judydoll Watery Glow Lipstick là son dưỡng của thương
  hiệu Judydoll. Với khả năng cấp ẩm cho đôi môi mềm mại mà không gây tình trạng bết dính 
 trên môi. Cùng với chất son mỏng nhẹ chỉ cần lướt nhẹ trên môi cùng bảng màu trong trẻo
