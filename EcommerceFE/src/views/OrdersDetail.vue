@@ -90,7 +90,7 @@
                                             </p>
                                         </div>
 
-                                        <button v-if="order.paid == 0" type="button" data-mdb-button-init
+                                        <button @click="addToPayment(order.totalPrice + order.shippingPrice, order.productNames)" v-if="order.paid == 0" type="button" data-mdb-button-init
                                             data-mdb-ripple-init class="btn btn-primary btn-block btn-lg"
                                             style="border-radius: 0px; background-color: #fbbfc0; border: 0;">
                                             <div class="d-flex justify-content-between">
@@ -117,8 +117,13 @@ import { onMounted, ref } from 'vue';
 import { useCookies } from 'vue3-cookies';
 import { checkLogin } from '@/utilities/utilities';
 import accountServices from '@/services/account.services';
+import paymentServices from '@/services/payment.services';
+import { useRouter } from 'vue-router';
+
 const cookies = useCookies();
 const token = cookies.cookies.get("Token");
+
+const router = useRouter();
 
 const currentUser = ref({
     accountId: 0,
@@ -158,7 +163,24 @@ let orders = ref([{
     imageBase64: [] as string[]
 }])
 
-let images = ref([] as number[])
+async function addToPayment(amount: number, descriptions: string[]){
+    let mainDescription = "Thanh toán cho đơn hàng "
+    for (let i=0; i<descriptions.length; i++) {
+        if (i <descriptions.length -1) mainDescription += (descriptions[i] + ", ")
+        else mainDescription += descriptions[i]
+    }
+
+    try {
+        let resp = await paymentServices.create({
+            amount: amount,
+            description: mainDescription
+        })
+
+        router.push(resp.order_url);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 onMounted(async () => {
     try {

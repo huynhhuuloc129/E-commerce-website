@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="container align-items-center d-flex flex-column  justify-content-center mb-3">
-                <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                <div id="carouselExampleDark" class="w-75 carousel carousel-dark slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 0"></button>
