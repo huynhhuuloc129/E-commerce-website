@@ -97,7 +97,7 @@
                                                 <span>Thanh toán</span>
                                             </div>
                                         </button>
-
+                                        <div v-else class="text-success fw-bold"> Đã thanh toán</div>
                                     </div>
                                 </div>
 
@@ -175,8 +175,7 @@ async function addToPayment(amount: number, descriptions: string[]){
             amount: amount,
             description: mainDescription
         })
-
-        router.push(resp.order_url);
+        window.location.href = resp.order_url;
     } catch (error) {
         console.log(error)
     }

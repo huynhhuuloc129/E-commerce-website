@@ -31,6 +31,14 @@ class OrderService {
       handlingError(err);
     }
   }
+  async getDetailByOrderId(id: number) {
+    try {
+      const orders = await this.api.get("/orders/singledetail/" + id);
+      return orders.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
   async getAllDetail() {
     try {
       const orders = await this.api.get("/orders/all/detail");

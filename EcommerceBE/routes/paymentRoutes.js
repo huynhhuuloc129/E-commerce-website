@@ -29,11 +29,11 @@ router
       app_time: Date.now(), // miliseconds
       item: JSON.stringify(items),
       embed_data: JSON.stringify(embed_data),
-      amount: 50000,
+      amount: req.body.amount,
       //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
       //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
       callback_url: 'http://localhost:3000/callback',
-      description: `Lazada - Payment for the order #${transID}`,
+      description: req.body.description,
       bank_code: '',
     };
   

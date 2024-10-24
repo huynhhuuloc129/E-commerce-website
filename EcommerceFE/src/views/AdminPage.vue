@@ -15,7 +15,11 @@
                         <i class="fa-solid fa-newspaper fa-fw me-3"></i>
                         <span>Tạo sản phẩm mới</span>
                     </a>
-
+                    <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="false"
+                        data-bs-toggle="tab" data-bs-target="#order" aria-controls="order">
+                        <i class="fa-solid fa-newspaper fa-fw me-3"></i>
+                        <span>Đơn hàng trong hệ thống</span>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -133,50 +137,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Sales Chart End -->
-
-
-                    <!-- Recent Sales Start -->
-                    <div class="container-fluid pt-4">
-                        <div class="bg-light text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Lượt bán gần đây</h6>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table text-start align-middle table-bordered table-hover mb-0">
-                                    <thead>
-                                        <tr class="text-dark">
-                                            <th scope="col">Ngày</th>
-                                            <th scope="col">Mã hóa đơn</th>
-                                            <th scope="col">Khách hàng</th>
-                                            <th scope="col">Giá</th>
-                                            <th scope="col">Trạng thái</th>
-                                            <th style="width: 10%;" scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="order in orders" :key="order.orderId">
-                                            <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
-                                            <td>{{ order.orderId }}</td>
-                                            <td>{{ order.accountName }}</td>
-                                            <td v-if="order.totalPrice != null">
-                                                {{ order.totalPrice.toLocaleString("it-IT", {
-                                                    style: "currency",
-                                                    currency: "VND",
-                                                }) }}</td>
-                                            <td v-if="order.paid == 0">Chưa thanh toán</td>
-                                            <td v-else>Đã thanh toán</td>
-                                            <td><a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
-                                                    href="">Chi tiết</a>
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Recent Sales End -->
 
                     <!-- Widgets Start -->
                     <div class="container-fluid pt-4 d-flex w-100">
@@ -764,14 +724,193 @@
                                     @click="addProduct($event)">Tạo sản phẩm</button>
 
                             </div>
-                            <!-- Profile Picture -->
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light rounded tab-pane fade show mt-4" id="order" role="tabpanel" aria-labelledby="order-tab"
+                style="width: 80vw">
+                <div class="container-fluid pt-4">
+                    <div class="bg-light text-center rounded p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h6 class="mb-0">Lượt bán gần đây</h6>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr class="text-dark">
+                                        <th scope="col">Ngày</th>
+                                        <th scope="col">Mã hóa đơn</th>
+                                        <th scope="col">Khách hàng</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th style="width: 10%;" scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="order in orders" :key="order.orderId">
+                                        <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
+                                        <td>{{ order.orderId }}</td>
+                                        <td>{{ order.accountName }}</td>
+                                        <td v-if="order.totalPrice != null">
+                                            {{ order.totalPrice.toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</td>
+                                        <td v-if="order.paid == 0">Chưa thanh toán</td>
+                                        <td v-else>Đã thanh toán</td>
+                                        <td>
+                                            <a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
+                                                href="" data-bs-toggle="modal" data-bs-target="#detailOrder"
+                                                @click="getOneDetailOrder(order.orderId)">
+                                                Chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="detailOrder" tabindex="-1" aria-labelledby="detailOrderLabel"
+                                aria-hidden="true">
+                                <div id="orderDetailModal" class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="detailOrderLabel">Chi tiết đơn hàng</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" class="h5">Sản phẩm</th>
+                                                            <th scope="col">Đơn vị</th>
+                                                            <th scope="col">Số lượng</th>
+                                                            <th scope="col">Giá</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="(sProductId, index) in orderDetail.selectedProductIds"
+                                                            :key="sProductId + ' ' + index">
+                                                            <th scope="row">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img :src="orderDetail.imageBase64[index]"
+                                                                        class="img-fluid rounded-3"
+                                                                        style="width: 120px;" alt="Book">
+                                                                    <div class="flex-column ms-4">
+                                                                        <p class="mb-2"><a class="linkp fw-bold"
+                                                                                :href="'http://localhost:5173/products/' + orderDetail.productIds[index]">
+                                                                                {{
+                                                                                    orderDetail.productNames[index]
+                                                                                }}
+                                                                            </a>
+                                                                        </p>
+                                                                        <p class="mb-0">
+                                                                            {{
+                                                                                orderDetail.typeNames[index]
+                                                                            }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+                                                            <td class="align-middle">
+                                                                <p class="mb-0" style="font-weight: 500;">Thỏi</p>
+                                                            </td>
+                                                            <td class="align-middle">
+                                                                <div class="d-flex flex-row">
+                                                                    <input disabled id="form1" min="0" name="quantity"
+                                                                        :value="orderDetail.quantitySelected[index]"
+                                                                        type="number"
+                                                                        class="form-control form-control-sm"
+                                                                        style="width: 50px;" />
+                                                                </div>
+                                                            </td>
+                                                            <td class="align-middle">
+                                                                <p class="mb-0" style="font-weight: 500;"
+                                                                    v-if="orderDetail.sellingPrices[index] != null">
+                                                                    {{
+                                                                        orderDetail.sellingPrices[index].toLocaleString("it-IT",
+                                                                            {
+                                                                                style: "currency",
+                                                                                currency: "VND",
+                                                                            }) }}</p>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="mb-5 mb-lg-0">
+                                                <div class=" p-4 d-flex justify-content-end">
+
+                                                    <div class="row w-50 text-end">
+                                                        <div class="col-lg-4 col-xl-3 w-100">
+                                                            <div class="d-flex justify-content-between"
+                                                                style="font-weight: 500;">
+                                                                <p class="mb-2">Tổng giá:</p>
+                                                                <p class="mb-2">{{
+                                                                    (orderDetail.totalPrice).toLocaleString("it-IT", {
+                                                                        style: "currency",
+                                                                        currency: "VND",
+                                                                    }) }}</p>
+                                                            </div>
+
+                                                            <div class="d-flex justify-content-between"
+                                                                style="font-weight: 500;">
+                                                                <p class="mb-0">Phí vận chuyển:</p>
+                                                                <p class="mb-0">{{
+                                                                    (orderDetail.shippingPrice).toLocaleString("it-IT",
+                                                                        {
+                                                                            style: "currency",
+                                                                            currency: "VND",
+                                                                    }) }}</p>
+                                                            </div>
+
+                                                            <hr class="w-100">
+
+                                                            <div class="d-flex justify-content-between"
+                                                                style="font-weight: 500;">
+                                                                <p class="mb-0">Tổng cộng:</p>
+                                                                <p class="mb-0">{{ (orderDetail.totalPrice +
+                                                                    orderDetail.shippingPrice).toLocaleString("it-IT", {
+                                                                        style: "currency",
+                                                                        currency: "VND",
+                                                                    }) }}</p>
+                                                            </div>
+
+                                                            <div class="d-flex justify-content-between mb-4"
+                                                                style="font-weight: 500;">
+                                                                <p class="mb-0">Địa chỉ giao hàng:</p>
+                                                                <p class="mb-0">
+                                                                    {{ orderDetail.shippingAddress }}
+                                                                </p>
+                                                            </div>
+
+                                                            <div v-if="orderDetail.paid == 0"
+                                                                class="text-danger fw-bold">
+                                                                Chưa thanh toán
+                                                            </div>
+                                                            <div v-else class="text-success fw-bold"> Đã thanh toán
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Content Start -->
 </template>
 
 <script setup lang="ts">
@@ -816,7 +955,28 @@ const plByMoney = [
     { name: 'Nov', pl: 0, avg: 0, inc: 0 },
     { name: 'Dec', pl: 0, avg: 0, inc: 0 }
 ]
-
+let orderDetail = ref({
+    orderId: 0,
+    created_at: "",
+    updated_at: "",
+    quantitySelected: [] as number[],
+    sellingPrices: [] as number[],
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shipped: 0,
+    shippedDate: "",
+    shipmentTracking: "",
+    shippingAddress: "",
+    paid: 0,
+    selectedProductIds: [] as number[],
+    typeIds: [] as number[],
+    typeNames: [] as string[],
+    productIds: [] as number[],
+    proId: 0,
+    productNames: [] as string[],
+    imageBase64: [] as string[]
+})
 const orders = ref([{
     orderId: 0,
     created_at: "",
@@ -1195,6 +1355,38 @@ function removeInput(index: number) {
     newProduct.value.types.splice(index, 1);
 }
 
+async function getOneDetailOrder(orderId: number) {
+    try {
+        let respOrderDetail = await orderServices.getDetailByOrderId(orderId)
+        let data = respOrderDetail.data.order[0];
+
+        orderDetail.value = {
+            orderId: data.orderId,
+            created_at: data.created_at,
+            updated_at: data.updated_at,
+            quantitySelected: data.quantitiesSelected.split(',').map(Number), // Convert string to array of numbers
+            sellingPrices: data.sellingPrices.split(',').map(Number), // Convert string to array of numbers
+            accountId: data.accountId,
+            totalPrice: data.totalPrice,
+            shippingPrice: data.shippingPrice,
+            shipped: data.shipped,
+            shippedDate: data.shippedDate,
+            shipmentTracking: data.shipmentTracking,
+            shippingAddress: data.shippingAddress,
+            paid: data.paid,
+            selectedProductIds: data.selectedProductIds.split(',').map(Number), // Convert string to array of numbers
+            typeIds: data.typeIds.split(',').map(Number), // Convert string to array of numbers
+            typeNames: data.typeNames.split(','), // Convert string to array of strings
+            productIds: data.productIds.split(',').map(Number), // Convert string to array of numbers
+            proId: data.proId,
+            productNames: data.productNames.split(','), // Convert string to array of strings
+            imageBase64: data.imageBase64.split('||')
+        };
+
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 onMounted(async () => {
     try {
@@ -1243,5 +1435,19 @@ onMounted(async () => {
     max-height: 219px;
     overflow: scroll;
     overflow-x: hidden;
+}
+
+#orderDetailModal {
+    max-width: 1000px;
+    /* Change this value as needed */
+}
+
+.linkp {
+    color: black;
+    text-decoration: none;
+}
+
+.linkp:hover {
+    text-decoration: underline;
 }
 </style>
