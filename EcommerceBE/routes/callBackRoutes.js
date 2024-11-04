@@ -1,10 +1,15 @@
 const express = require('express');
-const paymentController = require('./../controller/paymentController');
 const axios = require('axios')
 const router = express.Router();
-
+const CryptoJS = require('crypto-js');
+const config = {
+  app_id: '2553',
+  key1: 'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
+  key2: 'kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz',
+  endpoint: 'https://sb-openapi.zalopay.vn/v2/create',
+};
 router
-    .route('/')
+    .route('/:id')
     .post((req, res) => {
         let result = {};
         console.log(req.body);
@@ -23,11 +28,28 @@ router
           } else {
             // thanh toán thành công
             // merchant cập nhật trạng thái cho đơn hàng ở đây
-            let dataJson = JSON.parse(dataStr, config.key2);
-            console.log(
-              "update order's status = success where app_trans_id =",
-              dataJson['app_trans_id'],
-            );
+
+            try {
+  
+  
+              let sql = `UPDATE orders SET
+                  paid = 1,
+                  shipmentTracking = 'Đang vận chuyển'
+              WHERE orderId = ${req.params.id}`
+  
+              connection.query(sql, (err, row) => {
+                  if (err) {
+                      console.log(err)
+                      return;
+                  } 
+                }
+              )
+              console.log('Cập nhật đơn hàng thành công.')
+
+            } catch (err) {
+                console.log(err)
+                return
+            }
       
             result.return_code = 1;
             result.return_message = 'success';

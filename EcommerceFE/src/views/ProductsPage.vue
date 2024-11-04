@@ -270,7 +270,7 @@
                 <h5 v-if="reviews.length == 0">Hiện chưa có đánh giá nào cho sản phẩm này</h5>
             </div>
 
-            <section v-if="checkLogin()">
+            <section v-if="checkLogin() && checkBought()">
                 <div class=" text-body">
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-10 col-lg-8 col-xl-6">
@@ -545,22 +545,6 @@ const reviews = ref([{
     avatar: ''
 }])
 
-const orders = ref([{
-    orderId: 0,
-    created_at: '',
-    updated_at: '',
-    accountId: 0,
-    totalPrice: 0,
-    shippingPrice: 0,
-    shippingAddress: "",
-    shipped: 0,
-    shippedDate: "",
-    shipmentTracking: "",
-    paid: 0
-}])
-
-const checkOrdered = ref(false)
-
 function pushToWithId(name: string, id: number) {
     router.push({
         name: name,
@@ -650,6 +634,38 @@ const components = ref([{
     updated_at: ""
 }])
 
+let orderReviews = ref([{
+    orderId: 0,
+    created_at: "",
+    updated_at: "",
+    quantitySelected: [] as number[],
+    sellingPrices: [] as number[],
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shipped: 0,
+    shippedDate: "",
+    shipmentTracking: "",
+    shippingAddress: "",
+    paid: 0,
+    selectedProductIds: [] as number[],
+    typeIds: [] as number[],
+    typeNames: [] as string[],
+    productIds: [] as number[],
+    proId: 0,
+    productNames: [] as string[],
+    imageBase64: [] as string[],
+    confirm: 0
+}])
+
+function checkBought() {
+    for (let i = 0; i < orderReviews.value.length; i++) {
+        if (orderReviews.value[i].productIds.includes(product.value.proId) && orderReviews.value[i].confirm == 1)
+            return true;
+    }
+    return false
+}
+
 onMounted(async () => {
     try {
         // get current user
@@ -736,11 +752,36 @@ onMounted(async () => {
             images.value.splice(0, 1)
 
             // get orders
-            let respOrders = await orderServices.getAllByAccountIdAndShipped(currentUser.value.accountId)
-            orders.value = respOrders.data.order
+            orderReviews.value = []
+            let respOrders = await orderServices.getDetailByAccountId(currentUser.value.accountId)
+            for (let i = 0; i < respOrders.data.order.length; i++) {
+                let data = respOrders.data.order[i];
+                // Push the transformed order into the orders array
+                orderReviews.value.push({
+                    orderId: data.orderId,
+                    created_at: data.created_at,
+                    updated_at: data.updated_at,
+                    quantitySelected: data.quantitiesSelected.split(',').map(Number), // Convert string to array of numbers
+                    sellingPrices: data.sellingPrices.split(',').map(Number), // Convert string to array of numbers
+                    accountId: data.accountId,
+                    totalPrice: data.totalPrice,
+                    shippingPrice: data.shippingPrice,
+                    shipped: data.shipped,
+                    shippedDate: data.shippedDate,
+                    shipmentTracking: data.shipmentTracking,
+                    shippingAddress: data.shippingAddress,
+                    paid: data.paid,
+                    selectedProductIds: data.selectedProductIds.split(',').map(Number), // Convert string to array of numbers
+                    typeIds: data.typeIds.split(',').map(Number), // Convert string to array of numbers
+                    typeNames: data.typeNames.split(','), // Convert string to array of strings
+                    productIds: data.productIds.split(',').map(Number), // Convert string to array of numbers
+                    proId: data.proId,
+                    productNames: data.productNames.split(','), // Convert string to array of strings
+                    imageBase64: data.imageBase64.split('||'),
+                    confirm: data.confirm
+                });
 
-            for (let i = 0; i < orders.value.length; i++) {
-                console.log('')
+                console.log(orderReviews.value)
             }
         }
 

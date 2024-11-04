@@ -47,7 +47,19 @@ class AccountService {
         else if (err.response.status == '400') throw new Error("Các trường nhập vào không hợp lệ hoặc không đủ ký tự, vui lòng nhập lại");
         throw new Error("Lỗi hệ thống")
     }
-}
+  }
+
+  async loginGoogle(data: any) {
+    try {
+        const tokens = (await this.api.post("http://localhost:3000/api/accounts/google", data));
+        return tokens.data;
+
+    } catch (err: any) {
+        if (err.response.status == '401') throw new Error("Sai email hoặc mật khẩu, vui lòng nhập lại");
+        else if (err.response.status == '400') throw new Error("Các trường nhập vào không hợp lệ hoặc không đủ ký tự, vui lòng nhập lại");
+        throw new Error("Lỗi hệ thống")
+    }
+  }
 
   async delete(id: number) {
     try {

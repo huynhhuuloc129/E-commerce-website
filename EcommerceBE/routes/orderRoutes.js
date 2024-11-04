@@ -8,8 +8,15 @@ router
   .get(orderController.getAll)
   .post(orderController.create);
 router
+  .route('/confirm/:id')
+  .get(orderController.getAllConfirmedOrder)
+router
+  .route('/unconfirm/:id')
+  .get(orderController.getAllUnConfirmedOrder)
+router
   .route('/:id')
   .get(orderController.getOne)
+  .patch(orderController.update)
   .delete(orderController.delete);
 router
   .route('/account/:id')

@@ -20,6 +20,64 @@ exports.getAll = async (req, res) => {
     }
 };
 
+exports.getAllConfirmedOrder = async (req, res) => {
+    try {
+        let sql = `SELECT 
+        o.*, 
+        a.name as accountName
+    FROM orders o
+    JOIN account a ON o.accountId = a.accountId
+    WHERE confirm = 1
+    ORDER BY o.orderId;`
+        connection.query(sql, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    order: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.getAllUnConfirmedOrder = async (req, res) => {
+    try {
+        let sql = `SELECT 
+        o.*, 
+        a.name as accountName
+    FROM orders o
+    JOIN account a ON o.accountId = a.accountId
+    WHERE confirm = 0
+    ORDER BY o.orderId;`
+        connection.query(sql, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    order: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 
 exports.getAllDetailsByAccountId = async (req, res) => {
     try {
@@ -49,6 +107,7 @@ exports.getAllDetailsByAccountId = async (req, res) => {
         });
     }
 };
+
 exports.getDetailsByOrderId = async (req, res) => {
     try {
         let sql = ` 
@@ -210,7 +269,8 @@ exports.create = async (req, res) => {
                 'shipped': req.body.shipped,
                 'shippedDate': req.body.shippedDate,
                 'shipmentTracking': req.body.shipmentTracking,
-                'paid': req.body.paid                
+                'paid': req.body.paid,
+                'confirm': req.body.confirm            
             }
 
             connection.query('INSERT INTO orders SET ?', newOrder, (err, row) => {
@@ -271,6 +331,34 @@ exports.delete = async (req, res) => {
         )
     } catch (err) {
         res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+
+exports.update = async (req, res) => {
+    try {
+
+        let sql = `UPDATE orders SET
+           confirm = 1
+        WHERE orderId = ${req.params.id}`
+
+        connection.query(sql, (err, row) => {
+            if (err) {
+                console.log(err)
+                return;
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Update Successfully.'
+                });
+        }
+        )
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
             status: 'fail',
             message: err,
         });

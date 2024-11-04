@@ -149,10 +149,11 @@ const newOrder = ref({
     totalPrice: 0,
     shippingPrice: 0,
     shippingAddress: "",
-    shipped: false,
+    shipped: 0,
     shippedDate: null,
     shipmentTracking: "",
-    paid: false
+    paid: 0,
+    confirm: 0
 })
 
 async function addOrder(e: any) {
@@ -163,10 +164,11 @@ async function addOrder(e: any) {
             totalPrice: calculatePrice(),
             shippingPrice: 50000,
             shippingAddress: currentUser.value.billingAddress,
-            shipped: false,
+            shipped: 0,
             shippedDate: null,
             shipmentTracking: "",
-            paid: false
+            paid: 0,
+            confirm: 0
         }
 
         await orderServices.create(newOrder.value)

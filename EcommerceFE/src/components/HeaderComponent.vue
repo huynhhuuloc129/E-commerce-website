@@ -682,7 +682,6 @@ onMounted(async () => {
 
     try {
         // get current User
-
         let resp = await accountServices.getMe(token);
         currentUser.value = resp.data.account[0];
 

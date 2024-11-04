@@ -138,9 +138,40 @@ function pushToHome(e: any) {
     router.push({ name: "home" });
 }
 
-const callback = (response: any) => {
-
+const callback = async (response: any) => {
     console.log("Handle the response", decodeCredential(response.credential))
+
+    var responseCallback: any = decodeCredential(response.credential)
+
+    try {
+        let resp = await accountServices.loginGoogle({
+            username: responseCallback.email,
+            password: responseCallback.email,
+            email: responseCallback.email,
+            name: responseCallback.name,
+            avatar: responseCallback.picture
+        });
+
+        cookies.cookies.set("Token", resp.token);
+
+        Swal.fire({
+            title: "Success!",
+            text: "Login success.",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+
+        setTimeout(async () => {
+
+            router.push({ name: "home" })
+        }, 1500);
+
+
+
+    } catch (err: any) {
+
+        console.log(err);
+    }
 }
 
 async function onLogin(e: any) {

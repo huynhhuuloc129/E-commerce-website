@@ -1,5 +1,4 @@
 const express = require('express');
-const paymentController = require('./../controller/paymentController');
 const axios = require('axios')
 const router = express.Router();
 const moment = require('moment')
@@ -16,7 +15,7 @@ router
   .post( async (req, res) => {
     const embed_data = {
       //sau khi hoàn tất thanh toán sẽ đi vào link này (thường là link web thanh toán thành công của mình)
-      redirecturl: 'http://localhost:5173',
+      redirecturl: 'http://localhost:5173/orders',
     };
   
     const items = [];
@@ -32,7 +31,7 @@ router
       amount: req.body.amount,
       //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
       //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-      callback_url: 'http://localhost:3000/callback',
+      callback_url: 'https://0c51-2001-ee0-5361-af40-c039-9585-33a8-d7d0.ngrok-free.app/api/callback/' + req.body.id,
       description: req.body.description,
       bank_code: '',
     };

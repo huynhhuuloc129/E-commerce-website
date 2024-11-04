@@ -131,6 +131,14 @@
                 </div>
                 <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab"
                     style="width: 80vw">
+                    <div  v-if="orders.length == 0" class="d-flex flex-column justify-content-center align-items-center">
+                        <h4 class="mt-5 text-center">Hiện tại chưa có đơn hàng nào</h4>
+                        <button class="w-25 btn btn-primary" style="border-radius: 0; background-color: #fbbfc0; border: 0;">
+                            <a href="http://localhost:5173/" class="fw-bold" style="text-decoration: none; color: white;">
+                                Mua ngay
+                            </a>
+                        </button>
+                    </div>
                     <section v-for="order in orders" :key="order.orderId" class="h-100 h-custom container mb-5">
                         <div class="container h-100 py-3 rounded-4 "
                             style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">

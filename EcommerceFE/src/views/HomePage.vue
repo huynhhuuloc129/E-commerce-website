@@ -18,7 +18,7 @@
             </div>
 
             <ul class="d-flex  ">
-                <li v-for="index in 5" :key="'firstPro' + index" class="ul-item card"
+                <li v-for="index in 5" :key="'firstPro' + index" class="ul-item card card-product"
                     @click="pushToProduct($event, firstProducts[index].proId)">
                     <div class="card-body text-center" v-if="firstProducts[index] != null">
 
@@ -58,7 +58,7 @@
             </div>
 
             <ul class="d-flex  ">
-                <li v-for="index in 5" :key="'secondPro' + index" class="ul-item card"
+                <li v-for="index in 5" :key="'secondPro' + index" class="ul-item card card-product"
                     @click="pushToProduct($event, secondProducts[index].proId)">
                     <div class="card-body text-center" v-if="secondProducts[index] != null">
 
@@ -93,7 +93,7 @@
         <div class="container mt-5">
 
             <ul class="d-flex  justify-content-between align-items-center">
-                <li v-for="index in 5" :key="'thirdPro' + index" class="ul-item card"
+                <li v-for="index in 5" :key="'thirdPro' + index" class="ul-item card card-product"
                     @click="pushToProduct($event, thirdProducts[index].proId)">
                     <div class="card-body text-center" v-if="thirdProducts[index] != null">
 
@@ -388,7 +388,9 @@ onMounted(async () => {
 .card-hover-content {
     font-size: 16px;
 }
-
+.card-product{
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+}
 #cover {
 
     border-top: 1px solid black;

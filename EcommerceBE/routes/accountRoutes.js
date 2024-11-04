@@ -13,6 +13,9 @@ router
   .route('/login')
   .post(accController.login);
 router
+  .route('/google')
+  .post(accController.loginGoogle);
+router
   .route('/register')
   .post(accController.register);
 router

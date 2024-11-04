@@ -214,6 +214,58 @@ exports.register = async (req, res) => {
     }
 };
 
+
+exports.loginGoogle = async (req, res) => {
+    try {
+        if (req.body && req.body.username && req.body.password && req.body.email && req.body.avatar){
+            const salt = bcrypt.genSaltSync(10)
+
+            const newAccount = {
+                'username': req.body.username,
+                'password': bcrypt.hashSync(req.body.password, salt),
+                'name': req.body.name,
+                'email': req.body.email,
+                'avatar': req.body.avatar
+            }
+
+        connection.query('SELECT * FROM account WHERE username = ?', req.body.username, (err, row) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+
+
+            if (row == undefined || row.length == 0) {
+
+                connection.query('INSERT INTO account SET ?', newAccount, (err, row) => {
+                    if (err) {
+                        console.log(err)
+                        res.status(400).json({
+                            errorMessage: err,
+                            status: false
+                        });
+                    } else
+                    checkUserAndGenerateToken({username: req.body.username, accountId: row.insertId}, req, res)
+
+                })
+
+            } else {
+                checkUserAndGenerateToken({username: req.body.username, accountId: row[0].accountId}, req, res)
+            }
+        });
+    }else {
+        res.status(400).json({
+            errorMessage: 'Add proper parameter first!',
+            status: false
+        });
+    }
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.getMe = async (req, res) => {
     try {
         if (req.header('Token')) {

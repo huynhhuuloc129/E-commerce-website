@@ -15,6 +15,29 @@ class OrderService {
       handlingError(err);
     }
   }
+  async update(id: number) {
+    return await axios.patch(`http://localhost:3000/api/orders/${id}`).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
+  async getAllConfirmed() {
+    try {
+      const orders = await this.api.get("/orders/confirm/detail");
+      return orders.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+  async getAllUnConfirmed() {
+    try {
+      const orders = await this.api.get("/orders/unconfirm/detail");
+      return orders.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
   async getAllByAccountIdAndShipped(id: number) {
     try {
       const orders = await this.api.get("/orders/account/" + id);
