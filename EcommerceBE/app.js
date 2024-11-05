@@ -17,7 +17,8 @@ const orderRoutes = require('./routes/orderRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const prodCompRoutes = require('./routes/productComponentRoutes');
 const selectedProductRoutes = require('./routes/selectedProductRoutes');
-const callbackRoutes = require('./routes/callBackRoutes')
+const callbackRoutes = require('./routes/callBackRoutes');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -36,4 +37,5 @@ app.use('/api/orders', orderRoutes)
 app.use('/api/images', imageRoutes)
 app.use('/api/payment', paymentRoutes)
 app.use('/api/callback', callbackRoutes)
+app.use('/api/chatbot', chatbotRoutes)
 module.exports = app;

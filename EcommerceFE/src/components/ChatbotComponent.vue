@@ -18,7 +18,7 @@
                 <button @click="toggleChatbot" class="btn-close"></button>
             </div>
 
-            <div class="card-body chatbot-body">
+            <div class="card-body chatbot-body" ref="chatBody">
                 <!-- Conversation History -->
                 <div v-for="(message, index) in messages" :key="index" class="chat-message">
                     <div :class="['d-flex', message.sender === 'bot' ? 'bot-message' : 'user-message']">
@@ -27,7 +27,7 @@
                         <img v-if="message.sender === 'bot'" src="@/assets/chatbot-avatar.jpg" class="avatar"
                             alt="avatar" />
                         <img v-else :src="userAvatar" class="avatar" alt="avatar">
-                        <div class="message-text">{{ message.text }}</div>
+                       <pre class="message-text">{{message.text}}</pre>
                     </div>
                 </div>
             </div>
@@ -36,20 +36,23 @@
             <div class="card-footer d-flex">
                 <input v-model="userInput" @keyup.enter="sendMessage" class="form-control me-2" type="text"
                     placeholder="Nhập tin nhắn..." />
-                <button @click="sendMessage" class="btn btn-primary" style="border-radius: 0; background-color: #fbbfc0; border: 0px;">Gửi</button>
+                <button @click="sendMessage" class="btn btn-primary"
+                    style="border-radius: 0; background-color: #fbbfc0; border: 0px;">Gửi</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useCookies } from 'vue3-cookies';
 import { checkLogin } from '@/utilities/utilities';
 import accountServices from '@/services/account.services';
-import { useCookies } from 'vue3-cookies';
+import chatbotServices from '@/services/chatbot.services';
 
 const cookies = useCookies();
 const token = cookies.cookies.get("Token");
+const chatBody = ref<HTMLElement | null>(null);
 
 const currentUser = ref({
     accountId: 0,
@@ -76,18 +79,30 @@ const showChatbot = ref(false);
 function toggleChatbot() {
     showChatbot.value = !showChatbot.value;
 }
-function sendMessage() {
+async function sendMessage() {
     if (userInput.value.trim() !== '') {
-        messages.value.push({ sender: 'user', text: userInput.value });
-
-        setTimeout(() => {
-            messages.value.push({ sender: 'bot', text: 'I received your message!' });
-        }, 1000);
-
-        // Clear input
+        let query = userInput.value
         userInput.value = '';
+
+        messages.value.push({ sender: 'user', text: query});
+
+        let resp = await chatbotServices.ask({ query: query})
+
+        console.log(resp.data.message)
+
+        messages.value.push({ sender: 'bot', text: resp.data.message });
+        if (chatBody.value) {
+            chatBody.value.scrollTop = chatBody.value.scrollHeight;
+        }
+
     }
 }
+// Watch for changes in messages and scroll down when a new message is added
+watch(messages, () => {
+    if (chatBody.value) {
+        chatBody.value.scrollTop = chatBody.value.scrollHeight;
+    }
+});
 onMounted(async () => {
     if (checkLogin()) {
         let resp = await accountServices.getMe(token);
@@ -150,10 +165,18 @@ onMounted(async () => {
 }
 
 .message-text {
+    font-family: "Archivo", sans-serif;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;     
     background-color: #f1f1f1;
     padding: 10px;
     border-radius: 8px;
     max-width: 200px;
+    word-break: break-word;
+    overflow-x: auto;
 }
 
 .card-footer {
