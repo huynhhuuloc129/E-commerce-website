@@ -21,7 +21,7 @@ Hãy dựa trên các bảng trên trả lời câu hỏi sau đây bằng viế
 
     try {
         const response = await axios.post(
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBK11F7QsKhgE-m5wi6WFbQjJzBud7SvNA',
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + process.env.GEMINI_KEY,
             {
                 contents: [
                     {
