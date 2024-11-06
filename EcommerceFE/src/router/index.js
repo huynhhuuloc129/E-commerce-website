@@ -35,7 +35,10 @@ const router = createRouter({
     {
       path: '/cart',
       name: 'cart',
-      component: () => import('../views/CartPage.vue')
+      component: () => import('../views/CartPage.vue'),
+      meta: {
+        hideCart: true,
+      }
     },
     {
       path: '/admin',

@@ -1,8 +1,36 @@
 <template>
     <div class="mb-3" style="height: 150px; background-color: #fbbfc0;">
     </div>
-    <div style="width: 100vw;">
-        <div v-if="orders.length == 0" class="d-flex flex-column justify-content-center align-items-center mb-5">
+    <div class="container justify-content-center align-items-center mb-5">
+        <ul class="nav nav-tabs " id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    role="tab" aria-controls="home" aria-selected="true" style="color: black;"  @click="currentType = 99">Tất cả</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+                    role="tab" aria-controls="profile" aria-selected="false" style="color: black;" @click="currentType = 0">Chờ thanh
+                    toán</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"  @click="currentType = 1">Chờ xác nhận</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"  @click="currentType = 2">Hoàn thành</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"  @click="currentType = 3">Đã hủy</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+           
+        </div>
+    </div>
+    <div style="width: 100vw;" class="mb-5">
+        <div v-if="filterOrders()!.length == 0" class="d-flex flex-column justify-content-center align-items-center mb-5">
             <h4 class="mt-5 text-center">Hiện tại chưa có đơn hàng nào</h4>
             <button class="w-25 btn btn-primary" style="border-radius: 0; background-color: #fbbfc0; border: 0;">
                 <a href="http://localhost:5173/" class="fw-bold" style="text-decoration: none; color: white;">
@@ -10,8 +38,9 @@
                 </a>
             </button>
         </div>
-        <section v-for="order in orders" :key="order.orderId" class="h-100 h-custom container mb-3">
-            <div class="container h-100 rounded-4 " style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+        <section v-for="order in filterOrders()" :key="order.orderId" class="h-100 h-custom container mb-3">
+            <div class="container h-100"
+                style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col">
 
@@ -31,7 +60,7 @@
                                         <th scope="row">
                                             <div class="d-flex align-items-center">
                                                 <img :src="order.imageBase64[index]" class="img-fluid rounded-3"
-                                                    style="width: 120px;" alt="Book">
+                                                    style="width: 80px;" alt="Book">
                                                 <div class="flex-column ms-4">
                                                     <p class="mb-2"><a class="linkp fw-bold"
                                                             :href="'http://localhost:5173/products/' + order.productIds[index]">{{
@@ -65,7 +94,7 @@
                             </table>
                         </div>
                         <div class="mb-5 mb-lg-0">
-                            <div class=" p-4 d-flex justify-content-end">
+                            <div class=" p-4 pt-0 d-flex justify-content-end">
 
                                 <div class="row w-50 text-end">
                                     <div class="col-lg-4 col-xl-3 w-100">
@@ -210,6 +239,20 @@ async function addToPayment(id: number, amount: number, descriptions: string[]) 
         window.location.href = resp.order_url;
     } catch (error) {
         console.log(error)
+    }
+}
+const currentType = ref(99)
+function filterOrders() {
+    if (currentType.value == 0) { // cho thanh toan
+        return orders.value.filter((o) => o.paid == 0)
+    } else if (currentType.value == 1) { // cho duyet
+        return orders.value.filter((o) => o.confirm == 0)
+    } else if (currentType.value == 2) { // da hoan thanh
+        return orders.value.filter((o) => o.paid == 1)
+    } else if (currentType.value == 3) { // da huy
+        console.log(1)
+    } else {
+        return orders.value
     }
 }
 

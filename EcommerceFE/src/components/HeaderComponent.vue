@@ -16,6 +16,10 @@
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-evenly container">
 
+                <button class="header-item fw-bold text-uppercase btn border-0 " type="button" @click="pushToHome">
+                    Trang chủ
+                </button>
+
                 <button class="header-item fw-bold text-uppercase btn border-0 " type="button" id="dropdownMenuButton2"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Dưỡng da
@@ -423,11 +427,11 @@
 
                 <div v-else class="d-flex justify-content-between">
                     <div class="dropdown">
-                        <button data-mdb-button-init data-mdb-ripple-init data-mdb-dropdown-init
-                            class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
+                        <button class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
                             data-mdb-toggle="dropdown" aria-expanded="false">
-                            
-                            <img v-if="currentUser != null && currentUser.avatar != null && currentUser.avatar != ''" :src="currentUser.avatar" height="25px" width="25px" alt="">
+
+                            <img v-if="currentUser != null && currentUser.avatar != null && currentUser.avatar != ''"
+                                :src="currentUser.avatar" height="25px" width="25px" alt="">
                             <i v-else class="fa-solid fa-user" style="color: #fbbfc0; "></i>
 
                         </button>
@@ -442,51 +446,57 @@
                     </div>
 
 
-                    <button type="button" class="btn btn-light me-5 dropdown-toggle" id="dropdownMenuButtonCart"
-                        data-bs-toggle="dropdown" aria-expanded="false" @click="getAllSProducts">
+                    <div class="dropdown" v-if="!$route.meta.hideCart">
 
-                        <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
-                    </button>
+                        <button type="button" class="btn btn-light me-5 dropdown-toggle position-relative"
+                            id="dropdownMenuButtonCart" data-bs-toggle="dropdown" aria-expanded="false"
+                            @click="pushToCart">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                                style="background-color: #fbbfc0;">
+                                {{ sProducts.length }}
+                            </span>
+                            <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
+                        </button>
 
-                    <div class="dropdown-menu w-25 rounded" aria-labelledby="dropdownMenuButtonCart">
-                        <span v-if="sProducts.length > 0" class="ms-3">
-                            Sản phẩm mới thêm
-                        </span>
-                        <span v-else class="ms-3">
-                            Chưa có sản phẩm nào
-                        </span>
+                        <div id="dropdown-cart" class="dropdown-menu w-25 rounded"
+                            aria-labelledby="dropdownMenuButtonCart">
+                            <span v-if="sProducts.length > 0" class="ms-3">
+                                Sản phẩm mới thêm
+                            </span>
+                            <span v-else class="ms-3">
+                                Chưa có sản phẩm nào
+                            </span>
 
-                        <div v-for="(sProduct, index) in sProducts" :key="sProduct.selectedProductId"
-                            class="cart-product ps-3 d-flex justify-content-between">
+                            <div v-for="(sProduct, index) in sProducts" :key="sProduct.selectedProductId"
+                                class="cart-product ps-3 d-flex justify-content-between">
 
-                            <div class="d-flex">
-                                <img :src="images[index].base64" class="me-2" height="auto" width="90" alt="">
-                                <div class="d-flex flex-column">
+                                <div class="d-flex">
+                                    <img :src="images[index].base64" class="me-2" height="auto" width="90" alt="">
+                                    <div class="d-flex flex-column">
 
-                                    <a class="text-wrap cart-items"
-                                        :href="'http://localhost:5173/products/' + sProduct.proId">{{ sProduct.name
-                                        }}</a>
-                                    <div>
-                                        Số lượng: {{ sProduct.quantitySelected }}
-                                    </div>
-                                    <div class="price" v-if="sProduct.sellingPrice != null">
-                                        Đơn Giá:
-                                        {{ sProduct.sellingPrice.toLocaleString("it-IT", {
-                                            style: "currency",
-                                            currency: "VND",
-                                        }) }}
+                                        <a class="text-wrap cart-items"
+                                            :href="'http://localhost:5173/products/' + sProduct.proId">{{ sProduct.name
+                                            }}</a>
+                                        <div>
+                                            Số lượng: {{ sProduct.quantitySelected }}
+                                        </div>
+                                        <div class="price" v-if="sProduct.sellingPrice != null">
+                                            Đơn Giá:
+                                            {{ sProduct.sellingPrice.toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}
+                                        </div>
                                     </div>
                                 </div>
+
+                                <button @click="removeSelectedProduct(index)" class="btn btn-light"><i
+                                        class="fa-solid fa-x"></i></button>
                             </div>
 
-                            <button @click="removeSelectedProduct(index)" class="btn btn-light"><i
-                                    class="fa-solid fa-x"></i></button>
-
-
-                        </div>
-
-                        <div class="text-end">
-                            <button class="btn cart-btn me-3 mt-2" @click="pushToCart">Xem giỏ hàng</button>
+                            <div class="text-end">
+                                <button class="btn cart-btn me-3 mt-2" @click="pushToCart">Xem giỏ hàng</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -502,9 +512,8 @@ import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
 
 import { useCookies } from "vue3-cookies";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
-import Swal from "sweetalert2";
 
 const router = useRouter();
 
@@ -593,16 +602,20 @@ function pushToCart(e: any) {
     e.preventDefault();
     router.push({ name: "cart" });
 }
-
+function pushToHome(e: any) {
+    e.preventDefault();
+    router.push({ name: "home" });
+}
 function signOut() {
     document.cookie = "Token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    window.location.reload();
+    router.push({ name: "home" });
+
 }
 
 async function getAllSProducts() {
     try {
-        // get selected product
 
+        // get selected product
         let respSProducts = await selectedProductServices.getAllByAccountIdInCart(currentUser.value.accountId);
         sProducts.value = respSProducts.data.sProducts
 
@@ -623,9 +636,9 @@ async function getAllSProducts() {
 async function removeSelectedProduct(index: number) {
     try {
 
-        
+
         await selectedProductServices.delete(sProducts.value[index].selectedProductId)
-        
+
         sProducts.value.splice(index, 1)
     } catch (error) {
         console.log(error)
@@ -679,11 +692,12 @@ onMounted(async () => {
         brands3.value.push(brands.value[arrLen * 3 + 2])
     }
 
-
     try {
         // get current User
         let resp = await accountServices.getMe(token);
         currentUser.value = resp.data.account[0];
+
+        await getAllSProducts()
 
     } catch (error) {
         console.log(error);
@@ -832,12 +846,12 @@ onMounted(async () => {
     display: block;
 }
 
-.dropdown>.dropdown-toggle:active {
-    /*Without this, clicking will make it sticky*/
-    pointer-events: none;
+.dropdown-menu{
+    right: 10px
+
 }
 
-.dropdown-menu {
-    overflow-x: hidden;
+#dropdown-cart {
+    min-width: 400px;
 }
 </style>

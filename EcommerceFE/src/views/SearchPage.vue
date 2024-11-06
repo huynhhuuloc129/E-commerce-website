@@ -1,13 +1,9 @@
 <template>
-    <!-- <div class="w-100 h-100"
-        style="position: absolute; display: flex; justify-content: center; align-items: center; z-index: 100;">
-        <VueSpinner size="50 " color="red" />
-    </div> -->
-
     <div style="width: 100vw;" class="archivo-medium">
 
         <div style="height: 400px; background-color: #fbbfc0;">
         </div>
+
         <div class="search-container-main">
             <input @keyup.enter="pushToSearchPage($event, contentSearch)" type="text" placeholder="Tìm kiếm..."
                 id="search-input-main" v-model="contentSearch">
@@ -21,20 +17,21 @@
         </div>
 
         <div class="container mb-5 mt-5">
+            <h1 class="text-center mb-5">Từ khóa tìm kiếm: <span style="color: brown;" class="fw-bold text-uppercase">
+                    {{ content }}
+                </span></h1>
 
-            <h1>
+            <h2>
                 <span v-if="products.length != 0">
-                    Các kết quả tìm kiếm
+                    Các sản phẩm tìm kiếm phù hợp
                 </span>
                 <span v-else>
-                    Không có kết quả tìm kiếm
+                    Không có sản phẩm nào phù hợp
                 </span>
-                <span style="color: brown;" class="fw-bold text-uppercase">
-                    {{ content }}
-                </span>
-            </h1>
+            </h2>
 
-            <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center">
+            <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
+                v-if="products.length > 0">
 
                 <div v-for="(product, index) in products" :key="product.proId"
                     class="example-2 card card-tag mb-5 me-5">
@@ -53,7 +50,8 @@
                         </div>
                         <div class="data">
                             <div class="content">
-                                <span class="author text-uppercase">{{ brands[index].name }}</span>
+                                <span v-if="brands[index] != undefined" class="author text-uppercase">{{
+                                    brands[index].name }}</span>
                                 <h1 class="title"><a href="#">{{ product.name }}</a></h1>
                                 <p class="text" style="overflow: hidden;">{{ product.description }}</p>
                                 <a :href="'http://localhost:5173/products/' + product.proId" class="button">
@@ -63,7 +61,53 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mt-5" v-if="filterBrands()!.length > 0">
+
+                <h2>
+                    <span>
+                        Các nhãn hàng phù hợp
+                    </span>
+                </h2>
+                <div class="container mt-2 d-flex justify-content-center flex-wrap align-items-center">
+                    <button v-for="brand in filterBrands()" :key="brand.brandId"
+                        class="fw-bold btn btn-light text-uppercase me-3 mt-2 mb-2"
+                        @click="pushToWithId('brand', brand.brandId)" style="color: #fbbfc0;">
+                        <h5 class="fw-bold ">
+                            {{ brand.name }}
+                        </h5>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-5" v-else>
+                <h2>
+                    <span>
+                        Không có nhãn hàng nào phù hợp
+                    </span>
+                </h2>
+            </div>
+
+
+            <div class="mt-5" v-if="filterTags()!.length > 0">
+                <h2><span>Các nhãn phù hợp</span></h2>
+
+                <div class="d-flex justify-content-center align-items-center flex-wrap mb-5">
+                    <button v-for="tag in filterTags()" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
+                        @click="pushToWithId('tag', tag.tagId)">
+                        {{ tag.name }}
+                    </button>
+                </div>
+            </div>
+
+            <div v-else class="mt-5">
+                <h2>
+                    <span>
+                        Không có nhãn dán nào phù hợp
+                    </span>
+                </h2>
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -73,6 +117,7 @@ import { useRoute, useRouter } from 'vue-router';
 import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
+import tagServices from '@/services/tag.services';
 
 const route = useRoute();
 const router = useRouter();
@@ -80,14 +125,16 @@ const router = useRouter();
 const content = ref('');
 const contentSearch = ref('');
 
-const brands = ref([{
-    brandId: 0,
-    name: '',
-    created_at: '',
-    updated_at: '',
-    logo: ''
-}])
+type brandType = {
+    brandId: number,
+    name: string,
+    created_at: string,
+    updated_at: string,
+    logo: string
+}
 
+const brands = ref([] as brandType[])
+const allBrand = ref([] as brandType[])
 const products = ref([{
     proId: 0,
     catId: 0,
@@ -103,17 +150,17 @@ const products = ref([{
 }])
 
 type productType = {
-    proId: 0,
-    catId: 0,
-    brandId: 0,
-    name: '',
-    description: '',
-    unit: '',
-    guide: '',
-    created_at: '',
-    updated_at: '',
-    maintain: '',
-    note: ''
+    proId: number,
+    catId: number,
+    brandId: number,
+    name: string,
+    description: string,
+    unit: string,
+    guide: string,
+    created_at: string,
+    updated_at: string,
+    maintain: string,
+    note: string
 }
 const images = ref([{
     imageId: 0,
@@ -122,9 +169,29 @@ const images = ref([{
     base64: '',
     belongId: ''
 }])
+type tagType = {
+    tagId: number,
+    name: string,
+    created_at: string,
+    updated_at: string
+}
+const tags = ref([] as tagType[])
+
 function filterProduct(products: productType[]) {
     return products.filter((p) => {
         return p.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1
+    })
+}
+
+function filterTags() {
+    return tags.value.filter((t) => {
+        return t.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1
+    })
+}
+
+function filterBrands() {
+    return allBrand.value.filter((b) => {
+        return b.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1
     })
 }
 
@@ -132,7 +199,12 @@ function pushToSearchPage(e: any, content: string) {
     e.preventDefault();
     router.push({ name: "search", params: { content: content } });
 }
-
+function pushToWithId(name: string, id: number) {
+    router.push({
+        name: name,
+        params: { id: id }
+    })
+}
 onMounted(async () => {
     try {
         content.value = route.params.content.toString();
@@ -141,7 +213,7 @@ onMounted(async () => {
 
 
         products.value = filterProduct(respProducts.data.products)
-        
+
         let respBrands = []
         let respImgs = []
 
@@ -155,6 +227,14 @@ onMounted(async () => {
         }
         images.value = respImgs
         brands.value = respBrands;
+
+        // get all brands
+        let respAllBrand = await brandServices.getAll();
+        allBrand.value = respAllBrand.data.brand
+
+        // get all tags
+        let respAllTag = await tagServices.getAll();
+        tags.value = respAllTag.data.tag
 
     } catch (error) {
         console.log(error)
@@ -392,5 +472,18 @@ a {
         text-decoration: none;
         background-color: transparent;
     }
+}
+
+.tag-button {
+    font-size: small;
+    font-weight: bold;
+    border: 0px;
+    padding: 11px;
+    background-color: rgb(237, 237, 237);
+}
+
+.tag-button:hover {
+    background-color: black;
+    color: white;
 }
 </style>

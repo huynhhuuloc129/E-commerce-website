@@ -300,6 +300,7 @@ async function onEditProduct(e: any) {
             text: "Cập nhật sản phẩm thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
 
@@ -310,6 +311,7 @@ async function onEditProduct(e: any) {
             text: "Cập nhật sản phẩm thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }

@@ -159,6 +159,7 @@ const callback = async (response: any) => {
             text: "Login success.",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
         setTimeout(async () => {
@@ -189,6 +190,7 @@ async function onLogin(e: any) {
             text: "Login success.",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
         setTimeout(async () => {
@@ -201,6 +203,7 @@ async function onLogin(e: any) {
             text: "Sai tài khoản hoặc mật khẩu",
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
         console.log(err);
     }

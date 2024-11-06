@@ -359,6 +359,9 @@ let orders = ref([{
 var updateUser = async (e: any) => {
     e.preventDefault();
     try {
+        if (currentUser.value.birthDate == undefined || currentUser.value.birthDate == ""){
+            currentUser.value.birthDate = "2002-10-10"
+        }
         await accountServices.update(currentUser.value.accountId, {
             accountId: currentUser.value.accountId,
             name: currentUser.value.name,
@@ -373,6 +376,7 @@ var updateUser = async (e: any) => {
             text: "Cập nhật tài khoản thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -381,6 +385,7 @@ var updateUser = async (e: any) => {
             text: "Cập nhật tài khoản thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 
@@ -417,6 +422,7 @@ onMounted(async () => {
                 text: "Vui lòng đăng nhập để xem thông tin",
                 icon: "error",
                 confirmButtonText: "OK",
+                timer: 1500
             });
 
             router.push({ name: "home" });

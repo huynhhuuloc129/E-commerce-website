@@ -91,6 +91,18 @@ class OrderService {
     }
   }
 
+  async orderNow(data: any) {
+    try {
+      const resp = await this.api.post(
+        "http://localhost:3000/api/orders/ordernow/1",
+        data
+      );
+      return resp.data;
+    } catch (err: any) {
+      handlingError(err);
+    }
+  }
+
   async delete(id: number) {
     try {
       return await this.api.delete("/orders/" + id);

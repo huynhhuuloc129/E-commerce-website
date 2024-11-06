@@ -21,124 +21,122 @@
 
                 </div>
             </div>
-            <div class="container align-items-center d-flex flex-column  justify-content-center mb-3">
-                <div id="carouselExampleDark" class="w-75 carousel carousel-dark slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                            aria-current="true" aria-label="Slide 0"></button>
-                        <button type="button" v-for="(image, index) in images" :key="image.imageId"
-                            data-bs-target="#carouselExampleDark" :data-bs-slide-to="index + 1"
-                            :aria-label="'Slide ' + index + 1"></button>
 
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item image-carousel active" data-bs-interval="10000">
-                            <img :src="singleImage.base64" class="d-block image-product" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <!-- <h5>First slide label</h5>
+            <div class="container align-items-center d-flex  justify-content-center mb-3 w-100">
+                <div>
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+                        <div class="carousel-inner">
+                            <div class="carousel-item image-carousel active" data-bs-interval="10000">
+                                <img :src="singleImage.base64" class="d-block image-product" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                 
+                                </div>
+                            </div>
+
+                            <div v-for="(image) in images" :key="image.imageId" class="carousel-item image-carousel"
+                                data-bs-interval="10000">
+                                <img :src="image.base64" class="d-block image-product" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <!-- <h5>First slide label</h5>
                                 <p>Some representative placeholder content for the first slide.</p> -->
+                                </div>
                             </div>
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
 
-                        <div v-for="(image) in images" :key="image.imageId" class="carousel-item image-carousel"
-                            data-bs-interval="10000">
-                            <img :src="image.base64" class="d-block image-product" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <!-- <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p> -->
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+
+                        <div class="d-flex align-items-center">
+                            <h6 class="fw-bold" for="selectType">Loại:</h6>
+
+                            <select v-model="typeSelection" id="selectType" class="form-select ms-3"
+                                aria-label="Default select example">
+                                <option v-for="(type, index) in types" :key="type.typeId" :value="index">{{ type.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex flex-column w-50 ms-5">
+                            <div class="d-flex w-100 align-items-center mt-3">
+                                <h6 class="me-3 fw-bold ">Số lượng: </h6>
+                                <input v-model="numberSelection" class="form-control w-25" type="number" min="1"
+                                    max="100">
+                            </div>
+                            <div class="d-flex w-100 align-items-center">
+                                <h6 class="me-3 mt-2 fw-bold">Số lượng trong kho: <span>{{ quantityInStock }}</span>
+                                </h6>
                             </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
-                <hr class="w-100">
 
-                <div class="w-100 d-flex align-items-center justify-content-between">
-
-                    <div class="d-flex align-items-center">
-                        <h6 class="fw-bold" for="selectType">Loại:</h6>
-
-                        <select v-model="typeSelection" id="selectType" class="form-select ms-3"
-                            aria-label="Default select example">
-                            <option v-for="(type, index) in types" :key="type.typeId" :value="index">{{ type.name }}
-                            </option>
-                        </select>
+                <div class="w-50 ms-3">
+                    <h2 class="fw-bold">Thông tin sản phẩm </h2>
+                    <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
+                        <a class="collapse-btn fw-bold " data-bs-toggle="collapse" href="#collapseExample" role="button"
+                            aria-expanded="false" aria-controls="collapseExample">
+                            Mô tả sản phẩm
+                        </a>
+                        <i class="fa-solid fa-plus"></i>
                     </div>
 
-                    <div class="d-flex flex-column w-50 align-items-center">
-                        <div class="d-flex w-100 align-items-center">
-                            <h6 class="me-3 fw-bold">Số lượng: </h6>
-                            <input v-model="numberSelection" class="form-control w-50" type="number" min="0" max="100">
-                        </div>
-                        <div class="d-flex w-100 align-items-center">
-                            <h6 class="me-3 mt-2 fw-bold">Số lượng trong kho: <span>{{ quantityInStock }}</span></h6>
+                    <div class="collapse w-100" id="collapseExample">
+                        <div>
+                            {{ product.description }}
                         </div>
                     </div>
-                </div>
-                <hr class="w-100">
 
+                    <hr class="w-100">
+                    <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
+                        <a class="collapse-btn fw-bold" data-bs-toggle="collapse" href="#collapse1" role="button"
+                            aria-expanded="false" aria-controls="collapse1">
+                            Thành phần
+                        </a>
 
-                <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
-                    <a class="collapse-btn fw-bold " data-bs-toggle="collapse" href="#collapseExample" role="button"
-                        aria-expanded="false" aria-controls="collapseExample">
-                        Thông tin sản phẩm
-                    </a>
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-
-                <div class="collapse w-100" id="collapseExample">
-                    <div>
-                        {{ product.description }}
+                        <i class="fa-solid fa-plus"></i>
                     </div>
-                </div>
-
-                <hr class="w-100">
-                <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
-                    <a class="collapse-btn fw-bold" data-bs-toggle="collapse" href="#collapse1" role="button"
-                        aria-expanded="false" aria-controls="collapse1">
-                        Thành phần
-                    </a>
-
-                    <i class="fa-solid fa-plus"></i>
-                </div>
 
 
-                <div class="collapse w-100" id="collapse1">
-                    <div class="" v-for="comp in components" :key="comp.componentId">
-                        <span class="fw-bold">
-                            {{ comp.name }}:
-                        </span>
-                        {{ comp.description }}
+                    <div class="collapse w-100" id="collapse1">
+                        <div class="" v-for="comp in components" :key="comp.componentId">
+                            <span class="fw-bold">
+                                {{ comp.name }}:
+                            </span>
+                            {{ comp.description }}
+                        </div>
                     </div>
-                </div>
-                <hr class="w-100">
+                    <hr class="w-100">
 
-                <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
-                    <a class="collapse-btn fw-bold" data-bs-toggle="collapse" href="#collapse2" role="button"
-                        aria-expanded="false" aria-controls="collapse2">
-                        Cách sử dụng
-                    </a>
+                    <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
+                        <a class="collapse-btn fw-bold" data-bs-toggle="collapse" href="#collapse2" role="button"
+                            aria-expanded="false" aria-controls="collapse2">
+                            Cách sử dụng
+                        </a>
 
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <div class="collapse w-100" id="collapse2">
-                    <div>
-                        <div v-for="guide in productGuide" :key="guide">
-                            {{ guide }}
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <div class="collapse w-100" id="collapse2">
+                        <div>
+                            <div v-for="guide in productGuide" :key="guide">
+                                {{ guide }}
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <h6 class="text-end w-100 mt-5" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{
+            </div>
+            <div class="container">
+                <h6 class="text-end w-100" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{
                     types[typeSelection].unitPrice.toLocaleString("it-IT", {
                         style: "currency",
                         currency: "VND",
@@ -150,7 +148,7 @@
                             class="fa-solid fa-cart-shopping"></i> Thêm
                         vào
                         giỏ hàng</button>
-                    <button :disabled="!checkLogin()" class="buy-button">Mua ngay</button>
+                    <button :disabled="!checkLogin()" class="buy-button" @click="addOrder">Mua ngay</button>
 
                 </div>
             </div>
@@ -478,7 +476,7 @@ const brand = ref({
 })
 
 const typeSelection = ref(0)
-const numberSelection = ref(0)
+const numberSelection = ref(1)
 const quantityInStock = ref(0)
 
 const types = ref([{
@@ -580,6 +578,7 @@ async function modifyReview(e: any) {
             text: "Chỉnh sửa nhận xét thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
         // window.location.reload();
@@ -589,6 +588,7 @@ async function modifyReview(e: any) {
             text: "Đã có lỗi xảy ra! " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
         console.log(error)
     }
@@ -613,6 +613,7 @@ async function addToCart() {
             text: "Thêm vào giỏ hàng thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
     } catch (error) {
@@ -621,6 +622,7 @@ async function addToCart() {
             text: "Đã có lỗi xảy ra! " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
         console.log(error)
     }
@@ -666,6 +668,71 @@ function checkBought() {
     return false
 }
 
+const newOrder = ref({
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shippingAddress: "",
+    shipped: 0,
+    shippedDate: null,
+    shipmentTracking: "",
+    paid: 0,
+    confirm: 0,
+    typeId: 0,
+    proId: 0,
+    quantitySelected: 0,
+    sellingPrice: 0,
+})
+
+async function addOrder(e: any) {
+    e.preventDefault();
+    try {
+
+        if (numberSelection.value <= 0) throw ('Số lượng sản phẩm phải lớn hơn 0!')
+        if (numberSelection.value >= types.value[typeSelection.value].quantityInStock) throw ('Số lượng sản phẩm vượt số lượng đang có.')
+        if (currentUser.value.billingAddress == undefined || currentUser.value.billingAddress == "") {
+            throw "Vui lòng nhập đầy đủ thông tin cá nhân trước khi mua hàng!"
+        }
+
+        newOrder.value = {
+            accountId: currentUser.value.accountId,
+            totalPrice: types.value[typeSelection.value].unitPrice * numberSelection.value,
+            shippingPrice: 50000,
+            shippingAddress: currentUser.value.billingAddress,
+            shipped: 0,
+            shippedDate: null,
+            shipmentTracking: "",
+            paid: 0,
+            confirm: 0,
+            proId: product.value.proId,
+            typeId: types.value[typeSelection.value].typeId,
+            quantitySelected: numberSelection.value,
+            sellingPrice: types.value[typeSelection.value].unitPrice
+        }
+
+        await orderServices.orderNow(newOrder.value)
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Đặt hàng thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+
+        router.push({ name: "orders" });
+    } catch (error) {
+        console.log(error)
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Đặt hàng thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    }
+}
 onMounted(async () => {
     try {
         // get current user
@@ -926,7 +993,10 @@ onMounted(async () => {
 }
 
 .image-product {
-    width: 830px;
-    height: 830px;
+    width: 600px;
+    height: 600px;
+}
+#carouselExampleDark{
+    max-width: 600px;
 }
 </style>

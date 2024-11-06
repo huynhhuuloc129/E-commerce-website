@@ -30,4 +30,7 @@ router
 router
   .route('/singledetail/:id')
   .get(orderController.getDetailsByOrderId)
+router 
+  .route('/ordernow/:id')
+  .post(orderController.orderNow)
 module.exports = router;

@@ -1318,6 +1318,7 @@ async function confirmOrder(e: any, orderId: number) {
             text: "Cập nhật đơn hàng thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
         window.location.reload()
     } catch (error) {
@@ -1327,6 +1328,7 @@ async function confirmOrder(e: any, orderId: number) {
             text: "Cập nhật đơn hàng thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1341,6 +1343,7 @@ async function deleteCategory() {
             text: "Xóa loại thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1349,6 +1352,7 @@ async function deleteCategory() {
             text: "Xóa loại thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1366,6 +1370,7 @@ async function addCategory() {
             text: "Thêm loại thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1374,6 +1379,7 @@ async function addCategory() {
             text: "Thêm loại thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1390,6 +1396,7 @@ async function editCategory() {
             text: "Cập nhật loại thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1398,6 +1405,7 @@ async function editCategory() {
             text: "Cập nhật loại thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1419,6 +1427,7 @@ async function deleteTag() {
             text: "Xóa nhãn thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1427,6 +1436,7 @@ async function deleteTag() {
             text: "Xóa nhãn thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1444,6 +1454,7 @@ async function addTag() {
             text: "Thêm nhãn thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1452,6 +1463,7 @@ async function addTag() {
             text: "Thêm nhãn thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1467,6 +1479,7 @@ async function editTag() {
             text: "Cập nhật nhãn thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1475,6 +1488,7 @@ async function editTag() {
             text: "Cập nhật nhãn thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1518,6 +1532,7 @@ async function addComp() {
             text: "Thêm thành phần thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1526,6 +1541,7 @@ async function addComp() {
             text: "Thêm thành phần thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1541,6 +1557,7 @@ async function editComp() {
             text: "Cập nhật thành phần thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
     } catch (error) {
 
@@ -1549,6 +1566,7 @@ async function editComp() {
             text: "Cập nhật thành phần thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -1588,6 +1606,7 @@ async function addProduct(e: any) {
             text: "Thêm sản phẩm thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
 
@@ -1598,6 +1617,7 @@ async function addProduct(e: any) {
             text: "Thêm sản phẩm thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }

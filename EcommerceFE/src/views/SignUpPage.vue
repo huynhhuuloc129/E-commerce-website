@@ -180,6 +180,7 @@ async function onRegister(e: any) {
             text: "Register success.",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
         setTimeout(async () => {
@@ -194,6 +195,7 @@ async function onRegister(e: any) {
             text: "Wrong username or password.",
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
         console.log(err);
     }

@@ -159,6 +159,10 @@ const newOrder = ref({
 async function addOrder(e: any) {
     e.preventDefault();
     try {
+        if (currentUser.value.billingAddress == undefined || currentUser.value.billingAddress == "") {
+            throw "Vui lòng nhập đầy đủ thông tin cá nhân trước khi đặt hàng!"
+        }
+
         newOrder.value = {
             accountId: currentUser.value.accountId,
             totalPrice: calculatePrice(),
@@ -178,9 +182,10 @@ async function addOrder(e: any) {
             text: "Đặt hàng thành công!",
             icon: "success",
             confirmButtonText: "OK",
+            timer: 1500
         });
 
-        window.location.reload();
+        router.push({ name: "orders" });
     } catch (error) {
         console.log(error)
 
@@ -189,6 +194,7 @@ async function addOrder(e: any) {
             text: "Đặt hàng thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
+            timer: 1500
         });
     }
 }
@@ -200,6 +206,7 @@ onMounted(async () => {
                 text: "Vui lòng đăng nhập để xem thông tin",
                 icon: "error",
                 confirmButtonText: "OK",
+                timer: 1500
             });
 
             router.push({ name: "home" });
