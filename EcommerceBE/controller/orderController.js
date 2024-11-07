@@ -430,3 +430,30 @@ exports.update = async (req, res) => {
         });
     }
 };
+
+exports.cancel = async (req, res) => {
+    try {
+
+        let sql = `UPDATE orders SET
+           cancel = 1
+        WHERE orderId = ${req.params.id}`
+
+        connection.query(sql, (err, row) => {
+            if (err) {
+                console.log(err)
+                return;
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Update Successfully.'
+                });
+        }
+        )
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};

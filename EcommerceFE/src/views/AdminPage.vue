@@ -39,7 +39,7 @@
                                     <i class="fa fa-chart-line fa-3x " style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Lượt bán hôm nay</p>
-                                        <h6 class="mb-0">{{ orders.length }}</h6>
+                                        <h6 class="mb-0">{{ countTotalSaleToday }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,10 @@
                                     <i class="fa fa-chart-area fa-3x" style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Doanh thu hôm nay</p>
-                                        <h6 class="mb-0">144.000 VND</h6>
+                                        <h6 class="mb-0">{{ countTotalPriceToday.toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +69,10 @@
                                     <i class="fa fa-chart-pie fa-3x" style="color: #fbbfc0"></i>
                                     <div class="ms-3">
                                         <p class="mb-2">Tổng doanh thu</p>
-                                        <h6 class="mb-0">144.000 VND</h6>
+                                        <h6 class="mb-0">{{ countTotalPrice.toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +90,7 @@
                                         <h6 class="mb-0">Thống kê lượt bán</h6>
 
                                     </div>
-                                    <div id="worldwide-sales">
+                                    <div id="worldwide-sales" v-if="doneCalculate">
                                         <Chart :size="{ width: 500, height: 400 }" :data="plByMonth" :margin="{
                                             left: 0,
                                             top: 20,
@@ -107,7 +113,7 @@
                                         <h6 class="mb-0">Thống kê doanh thu</h6>
 
                                     </div>
-                                    <div id="salse-revenue">
+                                    <div id="salse-revenue" v-if="doneCalculate">
                                         <Chart :size="{ width: 500, height: 400 }" :data="plByMoney" :margin="{
                                             left: 0,
                                             top: 20,
@@ -910,7 +916,8 @@
                                                             </div>
 
                                                             <button v-if="orderDetail.confirm == 0"
-                                                                class="btn btn-primary mt-3" @click="confirmOrder($event, orderDetail.orderId)">Duyệt
+                                                                class="btn btn-primary mt-3"
+                                                                @click="confirmOrder($event, orderDetail)">Duyệt
                                                                 đơn</button>
                                                         </div>
                                                     </div>
@@ -1132,7 +1139,7 @@ import productServices from '@/services/product.sevices';
 import orderServices from '@/services/order.services';
 import componentServices from '@/services/component.services';
 
-const plByMonth = [
+const plByMonth = ref([
     { name: 'Jan', pl: 0, avg: 0, inc: 0 },
     { name: 'Feb', pl: 0, avg: 0, inc: 0 },
     { name: 'Apr', pl: 0, avg: 0, inc: 0 },
@@ -1142,11 +1149,11 @@ const plByMonth = [
     { name: 'Jul', pl: 0, avg: 0, inc: 0 },
     { name: 'Aug', pl: 0, avg: 0, inc: 0 },
     { name: 'Sep', pl: 0, avg: 0, inc: 0 },
-    { name: 'Oct', pl: 1, avg: 1, inc: 1 },
+    { name: 'Oct', pl: 0, avg: 0, inc: 0 },
     { name: 'Nov', pl: 0, avg: 0, inc: 0 },
     { name: 'Dec', pl: 0, avg: 0, inc: 0 }
-]
-const plByMoney = [
+])
+const plByMoney = ref([
     { name: 'Jan', pl: 0, avg: 0, inc: 0 },
     { name: 'Feb', pl: 0, avg: 0, inc: 0 },
     { name: 'Apr', pl: 0, avg: 0, inc: 0 },
@@ -1156,10 +1163,10 @@ const plByMoney = [
     { name: 'Jul', pl: 0, avg: 0, inc: 0 },
     { name: 'Aug', pl: 0, avg: 0, inc: 0 },
     { name: 'Sep', pl: 0, avg: 0, inc: 0 },
-    { name: 'Oct', pl: 144000, avg: 1, inc: 1 },
+    { name: 'Oct', pl: 0, avg: 0, inc: 0 },
     { name: 'Nov', pl: 0, avg: 0, inc: 0 },
     { name: 'Dec', pl: 0, avg: 0, inc: 0 }
-]
+])
 let orderDetail = ref({
     orderId: 0,
     created_at: "",
@@ -1196,7 +1203,8 @@ const orders = ref([{
     shipmentTracking: "",
     paid: 0,
     accountName: "",
-    confirm: 0
+    confirm: 0,
+    cancel: 0
 }])
 const unconfirmOrders = ref([{
     orderId: 0,
@@ -1308,10 +1316,10 @@ function VisibleTags() {
 }
 
 
-async function confirmOrder(e: any, orderId: number) {
+async function confirmOrder(e: any, orderDetail: any) {
     e.preventDefault();
     try {
-        await orderServices.update(orderId)
+        await orderServices.update(orderDetail.orderId)
 
         Swal.fire({
             title: "Thành công!",
@@ -1320,7 +1328,7 @@ async function confirmOrder(e: any, orderId: number) {
             confirmButtonText: "OK",
             timer: 1500
         });
-        window.location.reload()
+        orderDetail.confirm = 1
     } catch (error) {
 
         Swal.fire({
@@ -1635,6 +1643,25 @@ function removeInput(index: number) {
     newProduct.value.types.splice(index, 1);
 }
 
+const countTotalSaleToday = ref(0)
+const countTotalPriceToday = ref(0)
+const countTotalPrice = ref(0)
+
+function countToday() {
+
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    for (let i = 0; i < orders.value.length; i++) {
+        if (orders.value[i].created_at.slice(0, 10) == currentDate) {
+            countTotalSaleToday.value += 1;
+            if (orders.value[i].paid == 1)
+            countTotalPriceToday.value += orders.value[i].totalPrice
+        }
+        if (orders.value[i].paid == 1)
+            countTotalPrice.value += orders.value[i].totalPrice
+    }
+}
+
 async function getOneDetailOrder(orderId: number) {
     try {
         let respOrderDetail = await orderServices.getDetailByOrderId(orderId)
@@ -1668,13 +1695,21 @@ async function getOneDetailOrder(orderId: number) {
         console.log(error)
     }
 }
-
+const doneCalculate = ref(false)
 onMounted(async () => {
     try {
         // get all orders
         let respOrders = await orderServices.getAllConfirmed();
         orders.value = respOrders.data.order
 
+        countToday()
+        for (let i = 0; i < orders.value.length; i++) {
+            plByMonth.value[Number(orders.value[i].created_at.slice(5, 7)) - 1].pl += 1
+
+            if (orders.value[i].paid == 1)
+                plByMoney.value[Number(orders.value[i].created_at.slice(5, 7)) - 1].pl += orders.value[i].totalPrice
+        }
+        doneCalculate.value = true
         // get all unconfirmed order
         let respUnConfirmOrders = await orderServices.getAllUnConfirmed();
         unconfirmOrders.value = respUnConfirmOrders.data.order
@@ -1682,8 +1717,6 @@ onMounted(async () => {
         // get all reviews
         let respReviews = await reviewServices.getAll()
         reviews.value = respReviews.data.review;
-
-        console.log(reviews.value)
 
         // get all tags
         let respTag = await tagServices.getAll()

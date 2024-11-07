@@ -353,7 +353,8 @@ let orders = ref([{
     productIds: [] as number[],
     proId: 0,
     productNames: [] as string[],
-    imageBase64: [] as string[]
+    imageBase64: [] as string[],
+    cancel: 0
 }])
 
 var updateUser = async (e: any) => {
@@ -456,7 +457,8 @@ onMounted(async () => {
                 productIds: data.productIds.split(',').map(Number), // Convert string to array of numbers
                 proId: data.proId,
                 productNames: data.productNames.split(','), // Convert string to array of strings
-                imageBase64: data.imageBase64.split('||')
+                imageBase64: data.imageBase64.split('||'),
+                cancel: data.cancel
             });
         }
     } catch (error) {

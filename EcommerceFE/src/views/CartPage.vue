@@ -42,8 +42,8 @@
                     }) }}</div>
                 <div class="col-1">
 
-                    <button @click="removeSelectedProduct(index)" class="btn btn-light"><i
-                            class="fa-solid fa-x"></i></button>
+                    <button @click="removeSelectedProduct(index)" class="btn btn-light" style="border-radius: 0;"><i
+                            class="fa-solid fa-x" ></i></button>
                 </div>
             </div>
 

@@ -12,7 +12,7 @@
                     </h1>
                 </div>
 
-                <div v-if="currentUser.username == 'admin'" class="w-100  text-end mb-3 me-5">
+                <div v-if="currentUser.username == 'admin'" class="w-100  text-end mb-2 me-5">
 
                     <button class="btn btn-light " @click="pushToWithId('editProduct', product.proId)">Chỉnh
                         sửa</button>
@@ -27,54 +27,53 @@
                     <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
 
                         <div class="carousel-inner">
-                            <div class="carousel-item image-carousel active" data-bs-interval="10000">
+                            <div :class="['carousel-item', typeSelection == 0 ? 'active' : '']" data-bs-interval="10000">
                                 <img :src="singleImage.base64" class="d-block image-product" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                 
+
                                 </div>
                             </div>
 
-                            <div v-for="(image) in images" :key="image.imageId" class="carousel-item image-carousel"
-                                data-bs-interval="10000">
+                            <div v-for="(image, index) in images" :key="image.imageId"
+                                :class="['carousel-item', index + 1 === typeSelection  ? 'active' : '']">
                                 <img :src="image.base64" class="d-block image-product" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <!-- <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p> -->
-                                </div>
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                        <button v-if="images.length > 1" class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                             data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                        <button v-if="images.length > 1" class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
                             data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
 
-                    <div class="w-100 d-flex align-items-center justify-content-between">
+                    <div class="w-100 d-flex flex-column justify-content-between mt-2">
 
-                        <div class="d-flex align-items-center">
-                            <h6 class="fw-bold" for="selectType">Loại:</h6>
+                        <div id="type-section" class="d-flex flex-wrap align-items-center">
+                            <h6 class="fw-bold me-3" for="selectType">Loại:</h6>
 
-                            <select v-model="typeSelection" id="selectType" class="form-select ms-3"
-                                aria-label="Default select example">
-                                <option v-for="(type, index) in types" :key="type.typeId" :value="index">{{ type.name }}
-                                </option>
-                            </select>
+                            <div class="btn-group mb-3 d-flex flex-wrap" role="group" aria-label="Basic radio toggle button group">
+                                <div class="mb-2" v-for="(type, index) in types" :key="type.typeId">
+                                    <input v-model="typeSelection" :value="index" type="radio" class="btn-check"
+                                        name="typeSelection" :id="'btnradio' + index" autocomplete="off">
+                                    <label class="btn btn-outline-dark me-2 " style="border-radius: 0px;"
+                                        :for="'btnradio' + index">{{ type.name }}</label>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="d-flex flex-column w-50 ms-5">
-                            <div class="d-flex w-100 align-items-center mt-3">
-                                <h6 class="me-3 fw-bold ">Số lượng: </h6>
-                                <input v-model="numberSelection" class="form-control w-25" type="number" min="1"
+                        <div class="d-flex w-100">
+                            <div class="d-flex align-items-center mt-3 w-50 me-5">
+                                <h6 class="fw-bold me-3">Số lượng: </h6>
+                                <input v-model="numberSelection" class="form-control w-75" type="number" min="1"
                                     max="100">
                             </div>
-                            <div class="d-flex w-100 align-items-center">
-                                <h6 class="me-3 mt-2 fw-bold">Số lượng trong kho: <span>{{ quantityInStock }}</span>
+                            <div class="d-flex align-items-center">
+                                <h6 class="mt-2 fw-bold">Số lượng trong kho: <span>{{ quantityInStock }}</span>
                                 </h6>
                             </div>
                         </div>
@@ -91,7 +90,7 @@
                         <i class="fa-solid fa-plus"></i>
                     </div>
 
-                    <div class="collapse w-100" id="collapseExample">
+                    <div class="collapse show  w-100" id="collapseExample">
                         <div>
                             {{ product.description }}
                         </div>
@@ -126,7 +125,7 @@
 
                         <i class="fa-solid fa-plus"></i>
                     </div>
-                    <div class="collapse w-100" id="collapse2">
+                    <div class="collapse show w-100" id="collapse2">
                         <div>
                             <div v-for="guide in productGuide" :key="guide">
                                 {{ guide }}
@@ -162,7 +161,7 @@
             <hr class="w-100">
 
             <div class="d-flex flex-column align-items-center justify-content-center mb-5 m-5">
-                <h4 class="text-uppercase">Các sản phẩm tương tự</h4>
+                <h4 class="text-uppercase">Các sản phẩm cùng nhãn hàng</h4>
 
                 <div id="recommenderCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -341,7 +340,7 @@
                                                     data-mdb-button-init data-mdb-ripple-init class="btn"
                                                     style="background-color: #fbbfc0; color: white;"
                                                     @click="modifyReview($event)">
-                                                    <span v-if="review.accountId == 0">
+                                                    <span v-if="review.accountId == 0" class="fw-bold">
                                                         Gửi
                                                     </span>
                                                     <span v-else>
@@ -364,19 +363,19 @@
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-11 col-lg-9 col-xl-7">
 
-                            <div v-for="review in reviews" :key="review.reviewId" class="d-flex flex-start mb-4">
+                            <div v-for="review in reviews" :key="review.reviewId" class="d-flex flex-start mb-2">
                                 <img v-if="review.avatar != null && review.avatar != ''"
                                     class="rounded-circle shadow-1-strong me-3" :src="review.avatar" alt="avatar"
                                     width="65" height="65" />
                                 <img v-else src="https://placehold.co/65x65" alt=""
                                     class="rounded-circle shadow-1-strong me-3" width="65" height="65">
                                 <div v-if="reviews[0].reviewId != 0" class="card w-100">
-                                    <div class="card-body p-4">
+                                    <div class="card-body p-3">
                                         <div class="">
 
                                             <h5>{{ review.name }}</h5>
                                             <i v-for="index in review.star" :key="index"
-                                                class="fas fa-star d-inline-block" style="color: #fbbfc0"></i>
+                                                class="fas fa-star d-inline-block" style="color: #F4BB47"></i>
 
                                             <p class="small">{{ calculateTimeElapse(review.created_at) }}</p>
                                             <p>
@@ -818,6 +817,8 @@ onMounted(async () => {
 
             images.value.splice(0, 1)
 
+
+
             // get orders
             orderReviews.value = []
             let respOrders = await orderServices.getDetailByAccountId(currentUser.value.accountId)
@@ -879,13 +880,7 @@ onMounted(async () => {
     .star-rating:hover,
     .star-rating:hover~.star-rating,
     .rating-input:checked~.star-rating {
-        color: #fbbfc0;
-    }
-
-    .star-rating:hover,
-    .star-rating:hover~.star-rating,
-    .rating-input:checked~.star-rating {
-        color: #fbbfc0;
+        color: #F4BB47;
     }
 }
 
@@ -996,7 +991,8 @@ onMounted(async () => {
     width: 600px;
     height: 600px;
 }
-#carouselExampleDark{
+
+#carouselExampleDark, #type-section {
     max-width: 600px;
 }
 </style>

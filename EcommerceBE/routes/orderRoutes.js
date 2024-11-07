@@ -33,4 +33,7 @@ router
 router 
   .route('/ordernow/:id')
   .post(orderController.orderNow)
+router
+  .route('/cancel/:id')
+  .post(orderController.cancel)
 module.exports = router;

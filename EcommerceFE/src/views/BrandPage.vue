@@ -21,30 +21,23 @@
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center">
 
-                <div v-for="product in products" :key="product.proId" class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper" :style="`background: url(${product.image});`">
-                        <div class="header">
-                            <!-- <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul> -->
-                        </div>
-                        <div class="data">
-                            <div class="content ">
-                                <span class="author text-uppercase">{{ brand.name }}</span>
-                                <h1 class="title"><a href="#">{{ product.name }}</a></h1>
-                                <p class="text" style="overflow: hidden;">{{ product.description }}</p>
-                                <a :href="'http://localhost:5173/products/' + product.proId" class="button">Xem thêm</a>
-                            </div>
-                        </div>
+                <div v-for="(product) in products" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 18rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 300px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    brand.name }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px;"
+                            @click="pushToWithId('products', product.proId)">{{
+                                product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
                     </div>
                 </div>
             </div>
@@ -72,29 +65,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue';
 import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
-
+import typeServices from '@/services/type.services';
 
 const route = useRoute();
 const router = useRouter()
 
 const id = ref(0)
 
-const tag = ref({
-    tagId: 0,
-    name: '',
-    created_at: '',
-    updated_at: ''
-})
-
-const product_tags = ref([
-    {
-        productTagId: 0,
-        tagId: 0,
-        productId: 0,
-        created_at: '',
-        updated_at: ''
-    }
-])
 
 const brand = ref({
     brandId: 0,
@@ -124,7 +101,8 @@ const products = ref([{
     updated_at: '',
     maintain: '',
     note: '',
-    image: ''
+    image: '',
+    unitPrice: 0
 }])
 
 function pushToWithId(name: string, id: number) {
@@ -145,10 +123,19 @@ onMounted(async () => {
         let respProducts = await productServices.getAllByBrandId(brand.value.brandId);
         products.value = respProducts.data.products;
 
+        for (let i = 0; i < products.value.length; i++) {
+
+            let respTypes = await typeServices.getAllByProductId(products.value[i].proId)
+            products.value[i].unitPrice = respTypes.data.type[0].unitPrice
+
+
+
+        }
+
         console.log(products.value)
 
         let respBrands = await brandServices.getTop10();
-        brands.value = respBrands.data.brand; 
+        brands.value = respBrands.data.brand;
 
     } catch (error) {
         console.log(error)
@@ -355,5 +342,11 @@ a {
         text-decoration: none;
         background-color: transparent;
     }
+}
+
+.product-name:hover {
+    cursor: pointer;
+    color: #f18f90;
+    ;
 }
 </style>

@@ -21,31 +21,23 @@
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center">
 
-                <div v-for="(product, index) in products" :key="product.proId"
-                    class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper" :style="`background: url(${images[index].base64})`">
-                        <div class="header">
-                            <!-- <div class="date">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="#" class="fa fa-bookmark-o"></a>
-                                </li>
-                                <li><a href="#" class="fa fa-heart-o"><span>18</span></a></li>
-                                <li><a href="#" class="fa fa-comment-o"><span>3</span></a></li>
-                            </ul> -->
-                        </div>
-                        <div class="data">
-                            <div class="content">
-                                <span class="author text-uppercase">{{ brands[index].name }}</span>
-                                <h1 class="title"><a href="#">{{ product.name }}</a></h1>
-                                <p class="text" style="overflow: hidden;">{{ product.description }}</p>
-                                <a :href="'http://localhost:5173/products/' + product.proId" class="button">Xem thêm</a>
-                            </div>
-                        </div>
+                <div v-for="(product, index) in products" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 18rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 300px; background: url(${images[index].base64}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span v-if="brands[index] != undefined"
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    brands[index].name }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px;"
+                            @click="pushToWithId('products', product.proId)">{{
+                                product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
                     </div>
                 </div>
             </div>
@@ -72,6 +64,7 @@ import { onMounted, ref } from 'vue';
 import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
+import typeServices from '@/services/type.services';
 
 
 const route = useRoute();
@@ -122,7 +115,8 @@ const products = ref([{
     created_at: '',
     updated_at: '',
     maintain: '',
-    note: ''
+    note: '',
+    unitPrice: 0
 }])
 const images = ref([{
     imageId: 0,
@@ -131,13 +125,13 @@ const images = ref([{
     base64: '',
     belongId: ''
 }])
+
 function pushToWithId(name: string, id: number) {
     router.push({
         name: name,
         params: { id: id }
     })
 }
-
 
 onMounted(async () => {
     try {
@@ -154,10 +148,14 @@ onMounted(async () => {
         for (let i = 0; i < product_tags.value.length; i++) {
             let respProduct = await productServices.getOne(product_tags.value[i].productId)
 
-            respProducts.push(respProduct.data.products[0])
+            let respTypes = await typeServices.getAllByProductId(respProduct.data.products[0].proId)
+            respProduct.data.products[0].unitPrice = respTypes.data.type[0].unitPrice
 
             let respImage = await imageServices.getAllByBelongIdLimit1(respProduct.data.products[0].proId)
             respImgs.push(respImage.data.image[0])
+
+            respProducts.push(respProduct.data.products[0])
+
         }
         products.value = respProducts;
         images.value = respImgs
@@ -394,5 +392,10 @@ a {
 .tag-button:hover {
     background-color: black;
     color: white;
+}
+.product-name:hover {
+    cursor: pointer;
+    color: #f18f90;
+    ;
 }
 </style>

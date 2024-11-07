@@ -110,6 +110,16 @@ class OrderService {
       handlingError(err);
     }
   }
+
+  async cancel(id: number) {
+    try {
+      const resp = await this.api.post(
+        "http://localhost:3000/api/orders/cancel/" + id);
+      return resp.data;
+    } catch (err: any) {
+      handlingError(err);
+    }
+  }
 }
 
 export default new OrderService();

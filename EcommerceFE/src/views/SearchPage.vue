@@ -16,8 +16,8 @@
             </button>
         </div>
 
-        <div class="container mb-5 mt-5">
-            <h1 class="text-center mb-5">Từ khóa tìm kiếm: <span style="color: brown;" class="fw-bold text-uppercase">
+        <div class="container mb-5 mt-2">
+            <h1 class="text-center">Từ khóa tìm kiếm: <span style="color: brown;" class="fw-bold text-uppercase">
                     {{ content }}
                 </span></h1>
 
@@ -29,35 +29,36 @@
                     Không có sản phẩm nào phù hợp
                 </span>
             </h2>
+            <div class="w-100 d-flex justify-content-end mb-3">
+
+                <select class="form-select w-25" aria-label="Default select example">
+                    <option selected>Sắp xếp</option>
+                    <option value="1">Giá tăng dần</option>
+                    <option value="2">Giá giảm dần</option>
+                    <option value="3">A -> Z</option>
+                    <option value="4">Z -> A</option>
+
+                </select>
+            </div>
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
                 v-if="products.length > 0">
 
-                <div v-for="(product, index) in products" :key="product.proId"
-                    class="example-2 card card-tag mb-5 me-5">
-                    <div class="wrapper" :style="`background: url(${images[index].base64})`">
-                        <div class="header">
-                            <!-- <div class="date text-white">
-                                <span class="day">12</span>
-                                <span class="month">Aug</span>
-                                <span class="year">2016</span>
-                            </div>
-                            <ul class="menu-content">
-                                <li><a href="#"><i class="text-white fa-solid fa-cart-shopping"></i></a></li>
-                                <li><a href="#" class="text-white"><i class="text-white fa fa-comment"
-                                            aria-hidden="true"></i></a></li>
-                            </ul> -->
-                        </div>
-                        <div class="data">
-                            <div class="content">
-                                <span v-if="brands[index] != undefined" class="author text-uppercase">{{
-                                    brands[index].name }}</span>
-                                <h1 class="title"><a href="#">{{ product.name }}</a></h1>
-                                <p class="text" style="overflow: hidden;">{{ product.description }}</p>
-                                <a :href="'http://localhost:5173/products/' + product.proId" class="button">
-                                    Xem thêm</a>
-                            </div>
-                        </div>
+                <div v-for="(product, index) in products" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 18rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 300px; background: url(${images[index].base64}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span v-if="brands[index] != undefined" class="author text-uppercase fw-bold text-secondary">{{
+                            brands[index].name }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px;" @click="pushToWithId('products', product.proId)">{{
+                            product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
                     </div>
                 </div>
             </div>
@@ -146,7 +147,8 @@ const products = ref([{
     created_at: '',
     updated_at: '',
     maintain: '',
-    note: ''
+    note: '',
+    unitPrice: 0
 }])
 
 type productType = {
@@ -160,7 +162,8 @@ type productType = {
     created_at: string,
     updated_at: string,
     maintain: string,
-    note: string
+    note: string,
+    unitPrice: number
 }
 const images = ref([{
     imageId: 0,
@@ -179,7 +182,7 @@ const tags = ref([] as tagType[])
 
 function filterProduct(products: productType[]) {
     return products.filter((p) => {
-        return p.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1
+        return (p.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1) || (p.description.toLowerCase().indexOf(content.value.toLowerCase()) != -1)
     })
 }
 
@@ -205,6 +208,7 @@ function pushToWithId(name: string, id: number) {
         params: { id: id }
     })
 }
+
 onMounted(async () => {
     try {
         content.value = route.params.content.toString();
@@ -485,5 +489,11 @@ a {
 .tag-button:hover {
     background-color: black;
     color: white;
+}
+
+.product-name:hover {
+    cursor: pointer;
+    color: #f18f90;
+    ;
 }
 </style>

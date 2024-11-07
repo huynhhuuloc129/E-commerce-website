@@ -428,7 +428,7 @@
                 <div v-else class="d-flex justify-content-between">
                     <div class="dropdown">
                         <button class="btn btn-light dropdown-toggle me-2" type="button" id="dropdownMenuButton"
-                            data-mdb-toggle="dropdown" aria-expanded="false">
+                            data-mdb-toggle="dropdown" aria-expanded="false" @click="pushToPersonal">
 
                             <img v-if="currentUser != null && currentUser.avatar != null && currentUser.avatar != ''"
                                 :src="currentUser.avatar" height="25px" width="25px" alt="">
@@ -455,7 +455,7 @@
                                 style="background-color: #fbbfc0;">
                                 {{ sProducts.length }}
                             </span>
-                            <i class="fa-solid fa-cart-shopping" style="color: #fbbfc0"></i>
+                            <i class="fa-solid fa-cart-shopping" style="color: #d19b9c"></i>
                         </button>
 
                         <div id="dropdown-cart" class="dropdown-menu w-25 rounded"
@@ -490,7 +490,7 @@
                                     </div>
                                 </div>
 
-                                <button @click="removeSelectedProduct(index)" class="btn btn-light"><i
+                                <button @click="removeSelectedProduct(index)" class="btn btn-light" style="border-radius: 0;"><i
                                         class="fa-solid fa-x"></i></button>
                             </div>
 
@@ -597,6 +597,10 @@ function pushToSearchPage(e: any, content: string) {
 function pushToLogin(e: any) {
     e.preventDefault();
     router.push({ name: "login" });
+}
+function pushToPersonal(e: any) {
+    e.preventDefault();
+    router.push({ name: "personal" });
 }
 function pushToCart(e: any) {
     e.preventDefault();

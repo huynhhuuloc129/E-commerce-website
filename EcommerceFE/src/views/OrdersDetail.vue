@@ -5,32 +5,38 @@
         <ul class="nav nav-tabs " id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                    role="tab" aria-controls="home" aria-selected="true" style="color: black;"  @click="currentType = 99">Tất cả</button>
+                    role="tab" aria-controls="home" aria-selected="true" style="color: black;"
+                    @click="currentType = 99">Tất cả</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                    role="tab" aria-controls="profile" aria-selected="false" style="color: black;" @click="currentType = 0">Chờ thanh
+                    role="tab" aria-controls="profile" aria-selected="false" style="color: black;"
+                    @click="currentType = 0">Chờ thanh
                     toán</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"  @click="currentType = 1">Chờ xác nhận</button>
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
+                    @click="currentType = 1">Chờ xác nhận</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"  @click="currentType = 2">Hoàn thành</button>
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
+                    @click="currentType = 2">Hoàn thành</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"  @click="currentType = 3">Đã hủy</button>
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
+                    @click="currentType = 3">Đã hủy</button>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-           
+
         </div>
     </div>
     <div style="width: 100vw;" class="mb-5">
-        <div v-if="filterOrders()!.length == 0" class="d-flex flex-column justify-content-center align-items-center mb-5">
+        <div v-if="filterOrders()!.length == 0"
+            class="d-flex flex-column justify-content-center align-items-center mb-5">
             <h4 class="mt-5 text-center">Hiện tại chưa có đơn hàng nào</h4>
             <button class="w-25 btn btn-primary" style="border-radius: 0; background-color: #fbbfc0; border: 0;">
                 <a href="http://localhost:5173/" class="fw-bold" style="text-decoration: none; color: white;">
@@ -38,7 +44,7 @@
                 </a>
             </button>
         </div>
-        <section v-for="order in filterOrders()" :key="order.orderId" class="h-100 h-custom container mb-3">
+        <section v-for="(order, ind) in filterOrders()" :key="order.orderId" class="h-100 h-custom container mb-3">
             <div class="container h-100"
                 style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -118,7 +124,7 @@
 
                                         <div class="d-flex justify-content-between" style="font-weight: 500;">
                                             <p class="mb-0">Tổng cộng:</p>
-                                            <p class="mb-0">{{ (order.totalPrice +
+                                            <p class="mb-0 text-danger fw-bold">{{ (order.totalPrice +
                                                 order.shippingPrice).toLocaleString("it-IT", {
                                                     style: "currency",
                                                     currency: "VND",
@@ -140,11 +146,15 @@
                                             </p>
                                         </div>
 
-                                        <div v-if="order.confirm == 0" class="mt-4">
+                                        <div v-if="order.cancel == 1" class="text-danger fw-bold">
+                                            Đơn hàng đã bị hủy
+                                        </div>
+
+                                        <div v-if="order.confirm == 0 && order.cancel == 0" class="mt-4">
                                             <span class="text-info fw-bold">Đang chờ admin duyệt</span>
                                         </div>
 
-                                        <div v-else>
+                                        <div v-if="order.confirm == 1 && order.cancel == 0">
                                             <button
                                                 @click="addToPayment(order.orderId, order.totalPrice + order.shippingPrice, order.productNames)"
                                                 v-if="order.paid == 0" type="button" data-mdb-button-init
@@ -157,6 +167,8 @@
                                             <div v-else class="text-success fw-bold"> Đã thanh toán</div>
 
                                         </div>
+                                        <button v-if="order.paid == 0 && order.cancel == 0" @click="cancelOrder(ind)"
+                                            class="btn btn-danger mt-3" style="border-radius:  0;">Hủy đơn</button>
                                     </div>
                                 </div>
 
@@ -178,6 +190,7 @@ import { checkLogin } from '@/utilities/utilities';
 import accountServices from '@/services/account.services';
 import paymentServices from '@/services/payment.services';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
 const cookies = useCookies();
 const token = cookies.cookies.get("Token");
@@ -220,7 +233,8 @@ let orders = ref([{
     proId: 0,
     productNames: [] as string[],
     imageBase64: [] as string[],
-    confirm: 0
+    confirm: 0,
+    cancel: 0
 }])
 
 async function addToPayment(id: number, amount: number, descriptions: string[]) {
@@ -241,16 +255,43 @@ async function addToPayment(id: number, amount: number, descriptions: string[]) 
         console.log(error)
     }
 }
+
+async function cancelOrder(idx: number) {
+
+    try {
+        let resp = await orderServices.cancel(orders.value[idx].orderId)
+
+        orders.value[idx].cancel = 1
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Hủy đơn hàng thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    } catch (error) {
+        console.log(error)
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Hủy đơn hàng thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    }
+}
+
 const currentType = ref(99)
 function filterOrders() {
     if (currentType.value == 0) { // cho thanh toan
-        return orders.value.filter((o) => o.paid == 0)
+        return orders.value.filter((o) => o.paid == 0 && o.confirm == 1 && o.cancel == 0)
     } else if (currentType.value == 1) { // cho duyet
-        return orders.value.filter((o) => o.confirm == 0)
+        return orders.value.filter((o) => o.confirm == 0 && o.cancel == 0)
     } else if (currentType.value == 2) { // da hoan thanh
-        return orders.value.filter((o) => o.paid == 1)
+        return orders.value.filter((o) => o.paid == 1 && o.cancel == 0)
     } else if (currentType.value == 3) { // da huy
-        console.log(1)
+        return orders.value.filter((o) => o.cancel == 1)
     } else {
         return orders.value
     }
@@ -290,7 +331,8 @@ onMounted(async () => {
                 proId: data.proId,
                 productNames: data.productNames.split(','), // Convert string to array of strings
                 imageBase64: data.imageBase64.split('||'),
-                confirm: data.confirm
+                confirm: data.confirm,
+                cancel: data.cancel
             });
         }
 

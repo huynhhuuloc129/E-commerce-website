@@ -3,7 +3,8 @@
         <!-- Login 11 - Bootstrap Brain Component -->
         <section id="login-section" class=" py-md-5 d-flex justify-content-center archivo-medium" style="width: 100vw;">
             <div id="login-container" class="">
-                <button class="btn btn-primary fw-bold" style="background-color: #fbbfc0;" @click="pushToHome($event)">
+                <button class="btn btn-primary fw-bold"
+                    style="background-color: #fbbfc0; border-radius: 0px; border: none;" @click="pushToHome($event)">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                         width="20" height="20" viewBox="0 0 1080 1080" xml:space="preserve">
                         <desc>Created with Fabric.js 5.2.4</desc>
@@ -73,7 +74,8 @@
                                         <div class="col-12">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary btn-lg"
-                                                    style="background-color: #fbbfc0;" type="submit">Đăng nhập</button>
+                                                    style="background-color: #fbbfc0; border-radius: 0px; border: none;"
+                                                    type="submit">Đăng nhập</button>
                                             </div>
                                         </div>
                                     </div>

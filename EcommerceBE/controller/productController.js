@@ -1,6 +1,21 @@
 exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM product', (err, rows) => {
+        connection.query(`SELECT 
+                p.*,
+                t.unitPrice AS unitPrice
+            FROM 
+                Product p
+            LEFT JOIN 
+                Type t ON p.proId = t.productId
+            INNER JOIN (
+                SELECT 
+                    productId,
+                    MIN(typeId) AS first_typeId
+                FROM 
+                    Type
+                GROUP BY 
+                    productId
+            ) ft ON t.typeId = ft.first_typeId;`, (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
