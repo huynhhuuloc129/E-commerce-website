@@ -1210,3 +1210,19 @@ INSERT INTO Review (productId, accountId, content, star) VALUES (2, 2, '"Sản p
 
 INSERT INTO SelectedProduct() VALUES() ;
 
+INSERT INTO Brand (name) VALUES ('Ôliv');
+INSERT INTO Brand (name) VALUES ('Nguyên Xuân');
+INSERT INTO Brand (name) VALUES ('Sunsilk');
+INSERT INTO Brand (name) VALUES ('Purité');
+INSERT INTO Brand (name) VALUES ('Fresh');
+INSERT INTO Brand (name) VALUES ('Dove');
+INSERT INTO Brand (name) VALUES ('Pantene');
+INSERT INTO Brand (name) VALUES ('Tsubaki');
+INSERT INTO Brand (name) VALUES ('Lifebuoy');
+ INSERT INTO Brand (name) VALUES ('Romano');
+
+ INSERT INTO Brand (name) VALUES ('Bioré');
+ INSERT INTO Brand (name) VALUES ('Oxy');
+ INSERT INTO Brand (name) VALUES ('Hada Labo');
+ INSERT INTO Brand (name) VALUES ('Hazeline');
+

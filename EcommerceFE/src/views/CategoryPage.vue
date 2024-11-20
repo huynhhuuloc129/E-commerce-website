@@ -9,13 +9,13 @@
 
             <h1 class="mb-5">
                 <span v-if="products.length != 0">
-                    Các sản phẩm của nhãn hiệu
+                    Các sản phẩm của loại 
                 </span>
                 <span v-else>
-                    Không có sản phẩm nào của nhãn hiệu
+                    Không có sản phẩm nào thuộc loại 
                 </span>
                 <span style="color: brown;" class="fw-bold text-uppercase">
-                    {{ brand.name }}
+                    {{ category.name }}
                 </span>
             </h1>
 
@@ -40,7 +40,7 @@
                     </div>
                     <div class="card-body text-start">
                         <div> <span class="author text-uppercase fw-bold text-secondary">{{
-                            brand.name }}</span></div>
+                            product.brandName }}</span></div>
                         <div class="fw-bold product-name" style="height: 45px; overflow: hidden;"
                             @click="pushToWithId('products', product.proId)">{{
                                 product.name }}</div>
@@ -53,17 +53,6 @@
                 </div>
             </div>
 
-
-            <h2 class="mt-5">Các nhãn hiệu phổ biến</h2>
-            <div class="container mt-2 d-flex justify-content-center flex-wrap align-items-center">
-                <button v-for="brand in brands" :key="brand.brandId"
-                    class="fw-bold btn btn-light text-uppercase me-3 mt-2 mb-2"
-                    @click="pushToWithId('brand', brand.brandId)" style="color: #fbbfc0;">
-                    <h5 class="fw-bold ">
-                        {{ brand.name }}
-                    </h5>
-                </button>
-            </div>
         </div>
     </div>
 </template>
@@ -74,6 +63,7 @@ import { onMounted, ref, watch } from 'vue';
 import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
 import typeServices from '@/services/type.services';
+import categoryServices from '@/services/category.services';
 
 const route = useRoute();
 const router = useRouter()
@@ -81,37 +71,32 @@ const router = useRouter()
 const id = ref(0)
 
 
-const brand = ref({
-    brandId: 0,
-    name: '',
-    created_at: '',
-    updated_at: '',
-    logo: ''
-})
-
-const brands = ref([{
-    brandId: 0,
-    name: '',
-    created_at: '',
-    updated_at: '',
-    logo: ''
-}])
-
-const products = ref([{
-    proId: 0,
+const category = ref({
     catId: 0,
-    brandId: 0,
     name: '',
     description: '',
-    unit: '',
-    guide: '',
-    created_at: '',
-    updated_at: '',
-    maintain: '',
-    note: '',
-    image: '',
-    unitPrice: 0
-}])
+    created_at: "",
+    updated_at: ""
+})
+
+type productDetail = {
+    proId: number,
+    catId: number,
+    brandId: number,
+    name: string,
+    description: string,
+    unit: string,
+    guide: string,
+    created_at: string,
+    updated_at: string,
+    maintain: string,
+    note: string,
+    unitPrice: number,
+    brandName: string,
+    image: string
+}
+
+const products = ref([] as productDetail[])
 
 function pushToWithId(name: string, id: number) {
     router.push({
@@ -149,26 +134,11 @@ watch(sortType, () => {
 onMounted(async () => {
     try {
         id.value = Number(route.params.id);
-        let respBrand = await brandServices.getOne(id.value);
+        let respProdCate = await productServices.getAllByCategoryIdNoLimit(id.value);
+        products.value = respProdCate.data.products
 
-        brand.value = respBrand.data.brand[0];
-
-        let respProducts = await productServices.getAllByBrandId(brand.value.brandId);
-        products.value = respProducts.data.products;
-
-        for (let i = 0; i < products.value.length; i++) {
-
-            let respTypes = await typeServices.getAllByProductId(products.value[i].proId)
-            products.value[i].unitPrice = respTypes.data.type[0].unitPrice
-
-
-
-        }
-
-        console.log(products.value)
-
-        let respBrands = await brandServices.getTop10();
-        brands.value = respBrands.data.brand;
+        let respCate = await categoryServices.getOne(id.value)
+        category.value = respCate.data.category[0]
 
     } catch (error) {
         console.log(error)

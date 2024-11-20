@@ -70,6 +70,217 @@ exports.getAllByBrandId = async (req, res) => {
     }
 };
 
+
+exports.getTopSales = async (req, res) => {
+    try {
+        connection.query(`SELECT 
+            p.*, 
+            i.base64 AS image,
+            b.name AS brandName,
+            b.brandId,
+            t.typeId,
+            t.unitPrice,
+            COALESCE(s.totalSales, 0) AS totalSales
+        FROM product p
+        LEFT JOIN (
+            SELECT img.imageId, img.base64, img.belongId
+            FROM image img
+            WHERE img.imageId = (
+                SELECT MIN(imageId) 
+                FROM image 
+                WHERE belongId = img.belongId
+            )
+        ) i ON i.belongId = CONCAT('product', p.proId)
+        JOIN brand b ON p.brandId = b.brandId
+        LEFT JOIN (
+            SELECT t1.typeId, t1.productId, t1.unitPrice
+            FROM type t1
+            WHERE t1.typeId = (
+                SELECT MIN(typeId)
+                FROM type 
+                WHERE productId = t1.productId
+            )
+        ) t ON t.productId = p.proId
+        LEFT JOIN (
+            SELECT sp.proId, SUM(sp.quantitySelected) AS totalSales
+            FROM selectedproduct sp
+            WHERE sp.block = 1
+            GROUP BY sp.proId
+        ) s ON s.proId = p.proId
+        ORDER BY s.totalSales DESC
+        LIMIT 20;`, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    products: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+
+
+exports.getAllByCategoryId = async (req, res) => {
+    try {
+        connection.query(`SELECT 
+                p.*, 
+                i.base64 AS image,
+                b.name AS brandName,
+                b.brandId,
+                t.typeId,
+                t.unitPrice
+            FROM product p
+            LEFT JOIN (
+                SELECT imageId, base64, belongId
+                FROM image img
+                WHERE img.imageId = (
+                    SELECT MIN(imageId) 
+                    FROM image 
+                    WHERE belongId = img.belongId
+                )
+            ) i ON i.belongId = CONCAT('product', p.proId)
+            JOIN brand b ON p.brandId = b.brandId
+            LEFT JOIN (
+                SELECT typeId, productId, unitPrice
+                FROM type t1
+                WHERE t1.typeId = (
+                    SELECT MIN(typeId)
+                    FROM type 
+                    WHERE productId = t1.productId
+                )
+            ) t ON t.productId = p.proId
+            WHERE p.catId = ${req.params.id}
+            LIMIT 10;`, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    products: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+
+exports.getAllDetailByBrandId = async (req, res) => {
+    try {
+        connection.query(`SELECT 
+                p.*, 
+                i.base64 AS image,
+                b.name AS brandName,
+                b.brandId,
+                t.typeId,
+                t.unitPrice
+            FROM product p
+            LEFT JOIN (
+                SELECT imageId, base64, belongId
+                FROM image img
+                WHERE img.imageId = (
+                    SELECT MIN(imageId) 
+                    FROM image 
+                    WHERE belongId = img.belongId
+                )
+            ) i ON i.belongId = CONCAT('product', p.proId)
+            JOIN brand b ON p.brandId = b.brandId
+            LEFT JOIN (
+                SELECT typeId, productId, unitPrice
+                FROM type t1
+                WHERE t1.typeId = (
+                    SELECT MIN(typeId)
+                    FROM type 
+                    WHERE productId = t1.productId
+                )
+            ) t ON t.productId = p.proId
+            WHERE p.brandId = ${req.params.id}
+            LIMIT 20;`, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    products: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+
+exports.getAllByCategoryIdNoLimit = async (req, res) => {
+    try {
+        connection.query(`SELECT 
+                p.*, 
+                i.base64 AS image,
+                b.name AS brandName,
+                b.brandId,
+                t.typeId,
+                t.unitPrice
+            FROM product p
+            LEFT JOIN (
+                SELECT imageId, base64, belongId
+                FROM image img
+                WHERE img.imageId = (
+                    SELECT MIN(imageId) 
+                    FROM image 
+                    WHERE belongId = img.belongId
+                )
+            ) i ON i.belongId = CONCAT('product', p.proId)
+            JOIN brand b ON p.brandId = b.brandId
+            LEFT JOIN (
+                SELECT typeId, productId, unitPrice
+                FROM type t1
+                WHERE t1.typeId = (
+                    SELECT MIN(typeId)
+                    FROM type 
+                    WHERE productId = t1.productId
+                )
+            ) t ON t.productId = p.proId
+            WHERE p.catId = ${req.params.id};`, (err, rows) => {
+            if (err) throw err;
+
+            console.log('Data received from Db:');
+            res.status(200).json({
+                status: 'success',
+                total: rows.length,
+                data: {
+                    products: rows,
+                },
+            });
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.getOne = async (req, res) => {
     try {
         connection.query('SELECT * FROM product WHERE proId = ?', req.params.id, (err, row) => {
@@ -372,7 +583,7 @@ exports.create = async (req, res) => {
 
                     for (let i = 0; i < req.body.componentIds.length; i++) {
                         let newProductComp = {
-                            productId: req.params.id, 
+                            productId: row.insertId, 
                             componentId: req.body.componentIds[i]
                         };
             

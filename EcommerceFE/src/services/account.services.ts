@@ -97,6 +97,14 @@ class AccountService {
         handlingError(err);
     })
   }
+
+  async updatePassword(data: any, ) {
+    return await axios.patch(`http://localhost:3000/api/accounts/password`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
 }
 
 export default new AccountService();

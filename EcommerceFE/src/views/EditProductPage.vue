@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="fw-bold" for="selectBrand">Nhãn hàng</label>
+                            <label class="fw-bold" for="selectBrand">Nhãn hiệu</label>
                             <select v-model="editProduct.brandId" id="selectBrand" class="form-select "
                                 aria-label="Default select example">
                                 <option v-for="brand in brands" :key="brand.brandId" :value="brand.brandId">
@@ -33,13 +33,13 @@
 
                         <!-- Name -->
                         <div class="mb-3">
-                            <label for="name" class="fw-bold form-label">Tên:</label>
+                            <label for="name" class="fw-bold form-label">Tên (*):</label>
                             <input v-model="editProduct.name" type="text" class="form-control" id="name" required>
                         </div>
 
                         <!-- description -->
                         <div class="mb-3">
-                            <label for="description" class="fw-bold form-label">Mô tả sản phẩm:</label>
+                            <label for="description" class="fw-bold form-label">Mô tả sản phẩm (*):</label>
                             <div class="d-flex align-items-center">
                                 <textarea v-model="editProduct.description" class="form-control" id="description"
                                     required></textarea>
@@ -49,7 +49,7 @@
                         <div class="d-flex">
                             <div class="mb-3 w-75">
                                 <label for="guide" class="fw-bold form-label">Hướng dẫn sử dụng (viết theo định
-                                    dạng Bước 1.,Bước 2.,Bước 3., ...):</label>
+                                    dạng Bước 1.,Bước 2.,Bước 3., ...) (*):</label>
                                 <div class="d-flex align-items-center">
                                     <textarea v-model="editProduct.guide" class="form-control" id="guide"
                                         required> </textarea>
@@ -57,14 +57,14 @@
                             </div>
 
                             <div class="mb-3 w-25">
-                                <label for="unit" class="fw-bold form-label">Đơn vị bán:</label>
+                                <label for="unit" class="fw-bold form-label" >Đơn vị bán (*):</label>
                                 <input v-model="editProduct.unit" type="text" id="unit" class="form-control" required>
                             </div>
                         </div>
 
 
                         <div class="mb-3">
-                            <label for="maintain" class="fw-bold form-label">Bảo quản: </label>
+                            <label for="maintain" class="fw-bold form-label">Bảo quản (*): </label>
                             <div class="d-flex align-items-center">
                                 <textarea v-model="editProduct.maintain" class="form-control" id="maintain"
                                     required> </textarea>
@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="note" class="fw-bold form-label">Lưu ý khi sử dụng:</label>
+                            <label for="note" class="fw-bold form-label">Lưu ý khi sử dụng (*):</label>
                             <div class="d-flex align-items-center">
                                 <textarea v-model="editProduct.note" class="form-control" id="note"
                                     required> </textarea>
@@ -160,7 +160,6 @@
 </template>
 
 <script setup lang="ts">
-import { checkLogin, calculateTimeElapse } from '@/utilities/utilities';
 import categoryServices from '@/services/category.services';
 import tagServices from '@/services/tag.services';
 import { useRoute, useRouter } from 'vue-router'
@@ -168,29 +167,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import brandServices from '@/services/brand.services';
-import imageServices from '@/services/image.services';
 import productServices from '@/services/product.sevices';
 import componentServices from '@/services/component.services';
 
 
 const route = useRoute();
-const router = useRouter()
 
 const id = ref(0)
 
-const reviews = ref([{
-    reviewId: 0,
-    productId: 0,
-    accountId: 0,
-    content: '',
-    star: 0,
-    created_at: '',
-    updated_at: '',
-    name: '',
-    email: '',
-    avatar: '',
-    productName: ''
-}])
 
 const tags = ref([{
     tagId: 0,
@@ -292,7 +276,9 @@ async function onEditProduct(e: any) {
             (currentProduct.value.base64s != null && currentProduct.value.base64s.length > 0)) {
             editProduct.value.images = currentProduct.value.base64s.split(',')
         }
-
+        if (editProduct.value.guide == undefined || editProduct.value.guide == "" || editProduct.value.note == undefined || editProduct.value.note == "" || editProduct.value.maintain == undefined || editProduct.value.maintain == "" || editProduct.value.description == undefined || editProduct.value.description == "" || editProduct.value.name == undefined || editProduct.value.name == "") {
+            throw "Vui lòng nhập đầy đủ thông tin quan trọng!"
+        }
         await productServices.update(currentProduct.value.proId, editProduct.value)
 
         Swal.fire({
@@ -315,20 +301,6 @@ async function onEditProduct(e: any) {
         });
     }
 }
-
-function addMoreInput() {
-    editProduct.value.types.push({
-        name: '',
-        quantityInStock: 0,
-        unitPrice: 0,
-    });
-}
-
-// Function to remove input by index
-function removeInput(index: number) {
-    editProduct.value.types.splice(index, 1);
-}
-
 
 onMounted(async () => {
     try {

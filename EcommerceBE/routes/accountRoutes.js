@@ -13,6 +13,9 @@ router
   .route('/login')
   .post(accController.login);
 router
+  .route('/password')
+  .patch(accController.changePassword);
+router
   .route('/google')
   .post(accController.loginGoogle);
 router

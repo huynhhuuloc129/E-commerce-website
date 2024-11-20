@@ -18,5 +18,16 @@ router
 router
     .route('/brand/:id')
     .get(prodController.getAllByBrandId);
-
+router
+    .route('/topsale/:id')
+    .get(prodController.getTopSales);
+router
+    .route('/detailbrand/:id')
+    .get(prodController.getAllDetailByBrandId);
+router
+    .route('/category/:id')
+    .get(prodController.getAllByCategoryId);
+router
+    .route('/categorynolimit/:id')
+    .get(prodController.getAllByCategoryIdNoLimit);
 module.exports = router;

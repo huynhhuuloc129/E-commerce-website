@@ -26,8 +26,9 @@
                 <div>
                     <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
 
-                        <div class="carousel-inner">
-                            <div :class="['carousel-item', typeSelection == 0 ? 'active' : '']" data-bs-interval="10000">
+                        <div class="carousel-inner mt-3">
+                            <div :class="['carousel-item', typeSelection == 0 ? 'active' : '']"
+                                data-bs-interval="10000">
                                 <img :src="singleImage.base64" class="d-block image-product" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
 
@@ -35,17 +36,17 @@
                             </div>
 
                             <div v-for="(image, index) in images" :key="image.imageId"
-                                :class="['carousel-item', index + 1 === typeSelection  ? 'active' : '']">
+                                :class="['carousel-item', index + 1 === typeSelection ? 'active' : '']">
                                 <img :src="image.base64" class="d-block image-product" alt="...">
                             </div>
                         </div>
-                        <button v-if="images.length > 1" class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
-                            data-bs-slide="prev">
+                        <button v-if="images.length > 0" class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExampleDark" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button v-if="images.length > 1" class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
-                            data-bs-slide="next">
+                        <button v-if="images.length > 0" class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExampleDark" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -56,7 +57,8 @@
                         <div id="type-section" class="d-flex flex-wrap align-items-center">
                             <h6 class="fw-bold me-3" for="selectType">Loại:</h6>
 
-                            <div class="btn-group mb-3 d-flex flex-wrap" role="group" aria-label="Basic radio toggle button group">
+                            <div class="btn-group mb-3 d-flex flex-wrap" role="group"
+                                aria-label="Basic radio toggle button group">
                                 <div class="mb-2" v-for="(type, index) in types" :key="type.typeId">
                                     <input v-model="typeSelection" :value="index" type="radio" class="btn-check"
                                         name="typeSelection" :id="'btnradio' + index" autocomplete="off">
@@ -80,7 +82,7 @@
                     </div>
                 </div>
 
-                <div class="w-50 ms-3">
+                <div class="w-50 ms-3 mt-3">
                     <h2 class="fw-bold">Thông tin sản phẩm </h2>
                     <div class="collapse-item d-flex justify-content-between w-100 align-items-center ">
                         <a class="collapse-btn fw-bold " data-bs-toggle="collapse" href="#collapseExample" role="button"
@@ -107,7 +109,7 @@
                     </div>
 
 
-                    <div class="collapse w-100" id="collapse1">
+                    <div class="collapse show w-100" id="collapse1">
                         <div class="" v-for="comp in components" :key="comp.componentId">
                             <span class="fw-bold">
                                 {{ comp.name }}:
@@ -135,11 +137,11 @@
                 </div>
             </div>
             <div class="container">
-                <h6 class="text-end w-100" v-if="types[typeSelection].unitPrice != null">Đơn giá: {{
+                <h6 class="text-end w-100" v-if="types[typeSelection].unitPrice != null">Đơn giá: <span class="fw-bold text-danger">{{
                     types[typeSelection].unitPrice.toLocaleString("it-IT", {
                         style: "currency",
                         currency: "VND",
-                    }) }}</h6>
+                    }) }}</span></h6>
 
 
                 <div class="d-flex justify-content-end w-100 mt-3">
@@ -152,107 +154,74 @@
                 </div>
             </div>
 
-            <div class="container mb-5" style="margin-top: 100px;">
+            <div class="container mb-5" style="margin-top: 0px;">
                 <button v-for="tag in tagsBelong" :key="tag.tagId" class="text-uppercase tag-button me-3 mt-2"
                     @click="pushToWithId('tag', tag.tagId)">
                     {{ tag.name }}
                 </button>
             </div>
-            <hr class="w-100">
+            <hr class="w-100"  v-if="productsRecommended.length > 1">
 
-            <div class="d-flex flex-column align-items-center justify-content-center mb-5 m-5">
-                <h4 class="text-uppercase">Các sản phẩm cùng nhãn hàng</h4>
+            <div class="text-center align-items-center justify-content-center mb-5 m-5" v-if="productsRecommended.length > 1">
+                <h4 class="text-uppercase">Các sản phẩm cùng nhãn hiệu</h4>
 
-                <div id="recommenderCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
+                <div id="recommenderCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                    <div class="carousel-inner" v-if="recommendedLength > 0">
                         <div class="carousel-item active">
-                            <div class="d-flex justify-content-between">
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 1</h5>
-                                        <p class="card-text">Description of the first recommended item.</p>
+                            <div class="d-flex  justify-content-center">
+                                <div v-for="index in recommendedLength" :key="'product'+index" class="card me-2 mb-2"
+                                    style="width: 260px; overflow: hidden;">
+                                    <div
+                                        :style="`height: 227px; background: url(${productsRecommended[index-1].image}); background-size: cover; background-repeat: no-repeat;`">
+                                    </div>
+                                    <div class="card-body text-start">
+                                        <div> <span class="author text-uppercase fw-bold text-secondary">{{
+                                            productsRecommended[index-1].brandName }}</span></div>
+                                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden;"
+                                            @click="pushToWithId('products', productsRecommended[index-1].proId)">{{
+                                                productsRecommended[index-1].name }}</div>
+                                        <div class=" fw-bold text-danger">{{
+                                            productsRecommended[index-1].unitPrice.toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</div>
                                     </div>
                                 </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 2</h5>
-                                        <p class="card-text">Description of the second recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 3</h5>
-                                        <p class="card-text">Description of the third recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 4</h5>
-                                        <p class="card-text">Description of the fourth recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 5</h5>
-                                        <p class="card-text">Description of the fifth recommended item.</p>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
 
                         <div class="carousel-item">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex  justify-content-center">
+                                <div v-for="index in recommendedLength" :key="'product'+index" class="card me-2 mb-2"
+                                    style="width: 260px; overflow: hidden;">
+                                    <div
+                                        :style="`height: 227px; background: url(${productsRecommended[index+ recommendedLength -1].image}); background-size: cover; background-repeat: no-repeat;`">
+                                    </div>
+                                    <div class="card-body text-start">
+                                        <div> <span class="author text-uppercase fw-bold text-secondary">{{
+                                            productsRecommended[index+ recommendedLength-1].brandName }}</span></div>
+                                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden;"
+                                            @click="pushToWithId('products', productsRecommended[index+ recommendedLength-1].proId)">{{
+                                                productsRecommended[index+ recommendedLength-1].name }}</div>
+                                        <div class=" fw-bold text-danger">{{
+                                            productsRecommended[index+ recommendedLength-1].unitPrice.toLocaleString("it-IT", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            }) }}</div>
+                                    </div>
+                                </div>
 
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 6</h5>
-                                        <p class="card-text">Description of the sixth recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 7</h5>
-                                        <p class="card-text">Description of the seventh recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 8</h5>
-                                        <p class="card-text">Description of the eighth recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 9</h5>
-                                        <p class="card-text">Description of the ninth recommended item.</p>
-                                    </div>
-                                </div>
-                                <div class="card me-2">
-                                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Recommendation 10</h5>
-                                        <p class="card-text">Description of the tenth recommended item.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#recommenderCarousel"
+                    <button style="z-index: 9;;" class="carousel-control-prev" type="button" data-bs-target="#recommenderCarousel"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#recommenderCarousel"
+                    <button style="z-index: 9;" class="carousel-control-next" type="button" data-bs-target="#recommenderCarousel"
                         data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
@@ -683,6 +652,26 @@ const newOrder = ref({
     sellingPrice: 0,
 })
 
+type productDetail = {
+    proId: number,
+    catId: number,
+    brandId: number,
+    name: string,
+    description: string,
+    unit: string,
+    guide: string,
+    created_at: string,
+    updated_at: string,
+    maintain: string,
+    note: string,
+    unitPrice: number,
+    brandName: string,
+    image: string
+}
+
+const productsRecommended = ref([] as productDetail[])
+const recommendedLength = ref(0)
+
 async function addOrder(e: any) {
     e.preventDefault();
     try {
@@ -732,6 +721,21 @@ async function addOrder(e: any) {
         });
     }
 }
+
+async function fetchRecommendedProducts() {
+    let respProdBrand = await productServices.getAllDetailByBrandId(product.value.brandId);
+    
+    let shuffledProducts = respProdBrand.data.products.sort(() => Math.random() - 0.5);
+    const index = shuffledProducts.findIndex((prod: any) => prod.proId == product.value.proId);
+    if (index !== -1) {
+        shuffledProducts.splice(index, 1)
+    }
+
+    productsRecommended.value = shuffledProducts; // Giới hạn số lượng nếu cần
+    recommendedLength.value = Math.floor(Math.min(productsRecommended.value.length / 2, 8));
+}
+
+
 onMounted(async () => {
     try {
         // get current user
@@ -748,7 +752,6 @@ onMounted(async () => {
         productGuide.value = product.value.guide.split('\nBước ')
         productGuide.value[0] = productGuide.value[0].replace('Bước 1', '1')
 
-        console.log(product.value)
 
         if (product.value.proId != 0) {
             // get brand
@@ -784,7 +787,6 @@ onMounted(async () => {
 
                 respComps.push(respComponent.data.component[0])
             }
-            console.log(product_components.value)
 
             components.value = respComps;
             // get review
@@ -814,11 +816,7 @@ onMounted(async () => {
             let respImages = await imageServices.getAllByBelongId('product' + product.value.proId)
             images.value = respImages.data.image;
             singleImage.value = images.value[0];
-
             images.value.splice(0, 1)
-
-
-
             // get orders
             orderReviews.value = []
             let respOrders = await orderServices.getDetailByAccountId(currentUser.value.accountId)
@@ -849,10 +847,10 @@ onMounted(async () => {
                     confirm: data.confirm
                 });
 
-                console.log(orderReviews.value)
+                // get all recommended
             }
+            await fetchRecommendedProducts(); 
         }
-
     } catch (error) {
         console.log(error);
     }
@@ -989,10 +987,17 @@ onMounted(async () => {
 
 .image-product {
     width: 600px;
-    height: 600px;
+    height: auto;
 }
 
-#carouselExampleDark, #type-section {
+#carouselExampleDark,
+#type-section {
     max-width: 600px;
+}
+
+.product-name:hover {
+    cursor: pointer;
+    color: #f18f90;
+    ;
 }
 </style>

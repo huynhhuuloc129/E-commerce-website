@@ -31,7 +31,7 @@
             </h2>
             <div class="w-100 d-flex justify-content-end mb-3">
 
-                <select class="form-select w-25" aria-label="Default select example">
+                <select v-model="sortType" class="form-select w-25" aria-label="Default select example">
                     <option selected>Sắp xếp</option>
                     <option value="1">Giá tăng dần</option>
                     <option value="2">Giá giảm dần</option>
@@ -44,16 +44,18 @@
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
                 v-if="products.length > 0">
 
-                <div v-for="(product, index) in products" :key="product.proId" class="card me-2 mb-2"
+                <div v-for="(product) in products" :key="product.proId" class="card me-2 mb-2"
                     style="width: 18rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                     <div
-                        :style="`height: 300px; background: url(${images[index].base64}); background-size: cover; background-repeat: no-repeat;`">
+                        :style="`height: 300px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
                     </div>
                     <div class="card-body text-start">
-                        <div> <span v-if="brands[index] != undefined" class="author text-uppercase fw-bold text-secondary">{{
-                            brands[index].name }}</span></div>
-                        <div class="fw-bold product-name" style="height: 45px;" @click="pushToWithId('products', product.proId)">{{
-                            product.name }}</div>
+                        <div> <span v-if="product.brandName != undefined"
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    product.brandName }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden"
+                            @click="pushToWithId('products', product.proId)">{{
+                                product.name }}</div>
                         <div class=" fw-bold text-danger">{{
                             product.unitPrice.toLocaleString("it-IT", {
                                 style: "currency",
@@ -67,7 +69,7 @@
 
                 <h2>
                     <span>
-                        Các nhãn hàng phù hợp
+                        Các nhãn hiệu phù hợp
                     </span>
                 </h2>
                 <div class="container mt-2 d-flex justify-content-center flex-wrap align-items-center">
@@ -83,7 +85,7 @@
             <div class="mt-5" v-else>
                 <h2>
                     <span>
-                        Không có nhãn hàng nào phù hợp
+                        Không có nhãn hiệu nào phù hợp
                     </span>
                 </h2>
             </div>
@@ -113,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
@@ -134,7 +136,6 @@ type brandType = {
     logo: string
 }
 
-const brands = ref([] as brandType[])
 const allBrand = ref([] as brandType[])
 const products = ref([{
     proId: 0,
@@ -148,7 +149,9 @@ const products = ref([{
     updated_at: '',
     maintain: '',
     note: '',
-    unitPrice: 0
+    unitPrice: 0,
+    brandName: "",
+    image: ""
 }])
 
 type productType = {
@@ -163,15 +166,11 @@ type productType = {
     updated_at: string,
     maintain: string,
     note: string,
-    unitPrice: number
+    unitPrice: number,
+    brandName: string,
+    image: string
 }
-const images = ref([{
-    imageId: 0,
-    created_at: '',
-    updated_at: '',
-    base64: '',
-    belongId: ''
-}])
+
 type tagType = {
     tagId: number,
     name: string,
@@ -179,10 +178,35 @@ type tagType = {
     updated_at: string
 }
 const tags = ref([] as tagType[])
+const sortType = ref(0)
+
+watch(sortType, () => {
+    if (sortType.value == 1) {
+        products.value.sort((a, b) => {
+            if (a.unitPrice > b.unitPrice) return 1
+            else return -1
+        })
+    } else if (sortType.value == 2) {
+        products.value.sort((a, b) => {
+            if (a.unitPrice < b.unitPrice) return 1
+            else return -1
+        })
+    } else if (sortType.value == 3) {
+        products.value.sort((a, b) => {
+            if (a.name > b.name) return 1
+            else return -1
+        })
+    } else if (sortType.value == 4) {
+        products.value.sort((a, b) => {
+            if (a.name < b.name) return 1
+            else return -1
+        })
+    }
+})
 
 function filterProduct(products: productType[]) {
     return products.filter((p) => {
-        return (p.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1) || (p.description.toLowerCase().indexOf(content.value.toLowerCase()) != -1)
+        return (p.name.toLowerCase().indexOf(content.value.toLowerCase()) != -1) || (p.description.toLowerCase().indexOf(content.value.toLowerCase()) != -1 ) 
     })
 }
 
@@ -218,19 +242,15 @@ onMounted(async () => {
 
         products.value = filterProduct(respProducts.data.products)
 
-        let respBrands = []
-        let respImgs = []
+
 
         for (let i = 0; i < products.value.length; i++) {
             let respBrand = await brandServices.getOne(products.value[i].brandId)
-
-            respBrands.push(respBrand.data.brand[0])
+            products.value[i].brandName = respBrand.data.brand[0].name
 
             let respImage = await imageServices.getAllByBelongIdLimit1(products.value[i].proId)
-            respImgs.push(respImage.data.image[0])
+            products.value[i].image = respImage.data.image[0].base64
         }
-        images.value = respImgs
-        brands.value = respBrands;
 
         // get all brands
         let respAllBrand = await brandServices.getAll();

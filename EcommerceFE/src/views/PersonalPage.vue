@@ -106,6 +106,25 @@
                                 </div>
                                 <!-- Profile Picture -->
                             </form>
+                            <form @submit="changePassword" class="">
+                                <div>
+                                    <label class="fw-bold" for="oldPassword">Mật khẩu cũ: </label>
+                                    <input v-model="oldPassword" type="text" id="oldPassword" class="form-control"
+                                        required>
+                                </div>
+                                <div class="mt-3">
+                                    <label class="fw-bold" for="oldPassword">Mật khẩu mới: </label>
+                                    <input v-model="newPassword" type="text" id="oldPassword" class="form-control"
+                                        required>
+                                </div>
+                                <div class="mt-3">
+                                    <label class="fw-bold" for="oldPassword">Nhập lại mật khẩu: </label>
+                                    <input v-model="newRepeatPassword" type="text" id="oldPassword" class="form-control"
+                                        required>
+                                </div>
+
+                                <button type="submit" class="mb-3 mt-3 btn btn-primary">Đổi mật khẩu</button>
+                            </form>
                         </div>
                         <div class="mb-3 d-flex flex-column text-center mt-3 me-5">
                             <div class="d-flex flex-column">
@@ -125,16 +144,18 @@
                         </div>
 
 
-                        <!-- Save Button -->
 
                     </div>
+
                 </div>
                 <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab"
                     style="width: 80vw">
-                    <div  v-if="orders.length == 0" class="d-flex flex-column justify-content-center align-items-center">
+                    <div v-if="orders.length == 0" class="d-flex flex-column justify-content-center align-items-center">
                         <h4 class="mt-5 text-center">Hiện tại chưa có đơn hàng nào</h4>
-                        <button class="w-25 btn btn-primary" style="border-radius: 0; background-color: #fbbfc0; border: 0;">
-                            <a href="http://localhost:5173/" class="fw-bold" style="text-decoration: none; color: white;">
+                        <button class="w-25 btn btn-primary"
+                            style="border-radius: 0; background-color: #fbbfc0; border: 0;">
+                            <a href="http://localhost:5173/" class="fw-bold"
+                                style="text-decoration: none; color: white;">
                                 Mua ngay
                             </a>
                         </button>
@@ -360,8 +381,55 @@ let orders = ref([{
 var updateUser = async (e: any) => {
     e.preventDefault();
     try {
-        if (currentUser.value.birthDate == undefined || currentUser.value.birthDate == ""){
+        if (currentUser.value.birthDate == undefined || currentUser.value.birthDate == "") {
             currentUser.value.birthDate = "2002-10-10"
+        }
+        await accountServices.update(currentUser.value.accountId, {
+            accountId: currentUser.value.accountId,
+            name: currentUser.value.name,
+            email: currentUser.value.email,
+            phone: currentUser.value.phone,
+            birthDate: currentUser.value.birthDate.slice(0, 10),
+            billingAddress: currentUser.value.billingAddress
+        })
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Cập nhật tài khoản thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Cập nhật tài khoản thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    }
+
+}
+
+const oldPassword = ref('')
+const newPassword = ref('')
+const newRepeatPassword = ref('')
+
+
+var changePassword = async (e: any) => {
+    e.preventDefault();
+    try {
+        if (newPassword.value != newRepeatPassword.value) {
+            Swal.fire({
+                title: "Thất bại!",
+                text: "Mật khẩu mới không trùng khớp",
+                icon: "error",
+                confirmButtonText: "OK",
+                timer: 1500
+            });
+            return;
         }
         await accountServices.update(currentUser.value.accountId, {
             accountId: currentUser.value.accountId,

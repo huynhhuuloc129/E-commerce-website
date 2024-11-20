@@ -3,16 +3,23 @@ const axios = require('axios');
 
 exports.ask = async (req, res) => {
     let myTable = `Dữ liệu của tôi bao gồm các bảng sau:
-1. brand: brandId (int), name (varchar), created_at (timestampt), updated_at(timestampt), logo (varchar)
-2. category: catid (int), name (varchar), created_at (timestampt), updated_at(timestampt), description (varchar)
-2. component: componentId (int), name (varchar), created_at (timestampt), updated_at(timestampt), description (varchar)
-3. product: proId (int), catId (int), brandId (int), name (varchar), created_at (timestampt), updated_at(timestampt), description (varchar), unit (varchar), guide(text), maintain (text), note (text)
-4. product_component: productComponentId (int), productId (int), componentId (int),created_at (timestampt), updated_at(timestampt)
-5. product_tag: productTagId (int), productId (int), tagId (int),created_at (timestampt), updated_at(timestampt)
-6. tag: tagId (int), name(varchar), created_at (timestampt), updated_at(timestampt)
-7. type: typeId (int), name(varchar), productId(int), unitPrice(int), quantityInStock(int) ,created_at (timestampt), updated_at(timestampt)
-    
-Hãy dựa trên các bảng trên trả lời câu hỏi sau đây bằng viết câu lệnh sql ngắn nhất có thể (không format), nếu các bảng không có ở trên thì trả lời rằng nguời dùng không có quyền truy cập vào các bảng đó, nếu hỏi ngoài lề thì trả lời bình thường: 
+1. brand: brandId (int), name (varchar), created_at (timestampt), updated_at (timestampt), logo (varchar)
+2. category: catid (int), name (varchar), created_at (timestampt), updated_at (timestampt), description (varchar)
+3. component: componentId (int), name (varchar), created_at (timestampt), updated_at (timestampt), description (varchar)
+4. product: proId (int), catId (int), brandId (int), name (varchar), created_at (timestampt), updated_at (timestampt), description (varchar), unit (varchar), guide(text), maintain (text), note (text)
+5. product_component: productComponentId (int), productId (int), componentId (int), created_at (timestampt), updated_at (timestampt)
+6. product_tag: productTagId (int), productId (int), tagId (int), created_at (timestampt), updated_at (timestampt)
+7. tag: tagId (int), name(varchar), created_at (timestampt), updated_at(timestampt)
+8. type: typeId (int), name(varchar), productId(int), unitPrice(int), quantityInStock(int), created_at (timestampt), updated_at (timestampt)
+9. review: reviewId (int), productId (int), accountId (int), content (varchar), star (int), created_at (timestampt), updated_at (timestampt)
+10. selectedproduct: selectProductId (int), quantitySelected (int), sellingPrice(int), created_at (timestampt), updated_at (timestampt), proId (int), orderId(int), accountId(int), typeId (int), block (tinyInt) (block = 1 có nghĩa là sản phẩm đã được đặt hàng, = 0 là còn đang nằm trong giỏ hàng)
+11. orders: orderId (int), created_at (timestampt), updated_at (timestampt), accountId (int), totalPrice (int), shippingPrice(int), shippingAddress (varchar), shipped(tinyInt), shippedDate(varchar), shipmentTracking (varchar), paid(tinyInt), confirm(tinyInt) - Nếu confirm == 0 là chưa được admin duyệt đơn, =1 là đã duyệt, cancel (int) Nếu cancel == 0 là đơn chưa hủy, =1 là đã hủy
+
+
+Khi nhận được câu hỏi, hãy thực hiện như sau:
+- Nếu câu hỏi liên quan đến các yêu cầu truy vấn hay các bảng trên và yêu cầu câu lệnh SQL, hãy trả về câu lệnh SQL ngắn nhất có thể, không cần định dạng.
+- Nếu câu hỏi liên quan đến một bảng không nằm trong danh sách trên, hãy trả lời tương tự như "Hệ thống không tồn tại bảng này." nhưng thân thiện hơn.
+- Nếu câu hỏi không liên quan đến SQL hoặc là một câu hỏi thông thường (ví dụ: "Hello"), hãy trả lời như một Gemini thông thường nhưng không cần định dạng.
 `
 
     const userQuery = myTable + req.body.query;

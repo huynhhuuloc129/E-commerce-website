@@ -14,23 +14,21 @@
             <div class="width25 mt-3">
                 <h5>Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm <span class="fw-bold text-capitalize">{{
                     brands[0].name }}</span></h5>
-                <h1>Dưỡng da chuẩn khoa học</h1>
+                <h1>Dưỡng môi chuẩn khoa học</h1>
             </div>
 
             <ul class="d-flex  ">
                 <li v-for="index in 5" :key="'firstPro' + index" class="ul-item card card-product"
-                    @click="pushToProduct($event, firstProducts[index].proId)">
-                    <div class="card-body text-center" v-if="firstProducts[index] != null">
+                    @click="pushToProduct($event, firstProducts[index-1].proId)">
+                    <div class="card-body text-center" v-if="firstProducts[index-1] != null">
 
-                        <img :src="firstProducts[index].image" alt="" height="150px" width="">
+                        <img :src="firstProducts[index-1].image" alt="" height="150px" width="">
 
-                        <div class="mb-3 fw-bold small">{{ firstProducts[index].name }}</div>
+                        <div class="mb-3 fw-bold small">{{ firstProducts[index-1].name }}</div>
                         <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
-                            {{ firstProducts[index].description }}
+                            {{ firstProducts[index-1].description }}
                         </div>
-                        <!-- <div class="mt-2">
-                            VND 429,000đ
-                        </div> -->
+
                         <div class="mt-5 fw-bold text-uppercase">
                             Xem chi tiết
                         </div>
@@ -59,14 +57,14 @@
 
             <ul class="d-flex  ">
                 <li v-for="index in 5" :key="'secondPro' + index" class="ul-item card card-product"
-                    @click="pushToProduct($event, secondProducts[index].proId)">
-                    <div class="card-body text-center" v-if="secondProducts[index] != null">
+                    @click="pushToProduct($event, secondProducts[index-1].proId)">
+                    <div class="card-body text-center" v-if="secondProducts[index-1] != null">
 
-                        <img :src="secondProducts[index].image" alt="" height="150px" width="">
+                        <img :src="secondProducts[index-1].image" alt="" height="150px" width="">
 
-                        <div class="mb-3 fw-bold small">{{ secondProducts[index].name }}</div>
+                        <div class="mb-3 fw-bold small">{{ secondProducts[index-1].name }}</div>
                         <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
-                            {{ secondProducts[index].description }}
+                            {{ secondProducts[index-1].description }}
                         </div>
                         <!-- <div class="mt-2">
     VND 429,000đ
@@ -92,30 +90,26 @@
         <img id="cover3" src="../assets/Cover3.png">
         <div class="container mt-5">
 
-            <ul class="d-flex  justify-content-between align-items-center">
-                <li v-for="index in 5" :key="'thirdPro' + index" class="ul-item card card-product"
-                    @click="pushToProduct($event, thirdProducts[index].proId)">
-                    <div class="card-body text-center" v-if="thirdProducts[index] != null">
+            <ul class="d-flex  justify-content-around align-items-center">
+                <li v-for="index in Math.min(thirdProducts.length, 5)" :key="'thirdPro' + index" class="ul-item card card-product"
+                    @click="pushToProduct($event, thirdProducts[index-1].proId)">
+                    <div class="card-body text-center" v-if="thirdProducts[index-1] != null">
 
-                        <img :src="thirdProducts[index].image" alt="" height="150px" width="">
+                        <img  :src="thirdProducts[index-1].image" alt="" height="150px" width="">
 
-                        <div class="mb-3 fw-bold small">{{ thirdProducts[index].name }}</div>
+                        <div class="mb-3 fw-bold small">{{ thirdProducts[index-1].name }}</div>
                         <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
-                            {{ thirdProducts[index].description }}
+                            {{ thirdProducts[index-1].description }}
                         </div>
-                        <!-- <div class="mt-2">
-    VND 429,000đ
-</div> -->
+      
                         <div class="mt-5 fw-bold text-uppercase">
                             Xem chi tiết
                         </div>
                     </div>
-
-
                 </li>
             </ul>
 
-            <div class="container justify-content-center text-center mb-5" v-if="brands[2] != null">
+            <div class="container justify-content-center text-center " v-if="brands[2] != null">
                 <a :href="'http://localhost:5173/brand/' + brands[2].brandId"
                     class="container  text-uppercase fw-bold linkToBrand">
                     Khám phá tất cả sản phẩm từ <span class="fw-bold">{{ brands[2].name }}</span>
@@ -124,34 +118,134 @@
             </div>
         </div>
 
-        <h4 class="text-center mt-5">
-            L'Oreal Paris - Nhãn hàng Mỹ phẩm hàng đầu đến từ Pháp
-        </h4>
-
-        <div id="card-type" class="container">
-
-            <div class="card card-hover-item"
-                style="background-image: url('https://images.unsplash.com/photo-1479660656269-197ebb83b540?dpr=2&auto=compress,format&fit=crop&w=1199&h=798&q=80&cs=tinysrgb&crop=')">
-                <h1 class="card-header card-hover-header">Canyons</h1>
-                <p class="card-content card-hover-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <div id="card-type" class="mt-5" style="background-color: #fbbfc0; padding: 60px 0 60px 0;">
+            <div class="card card-hover-item" @click="pushToCategory($event, 2)"
+                style="background-image: url('https://images.unsplash.com/photo-1610844228349-76b56e6ac462?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+                <h1 class="card-header card-hover-header">Dưỡng môi</h1>
             </div>
-            <div class="card card-hover-item"
-                style="background-image: url('https://images.unsplash.com/photo-1479659929431-4342107adfc1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=')">
-                <h1 class="card-header card-hover-header">Beaches</h1>
-                <p class="card-content card-hover-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            
+            <div class="card card-hover-item text-white" @click="pushToCategory($event, 4)"
+                style="background-image: url('https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=2491&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+                <h1 class="card-header card-hover-header">Dưỡng da</h1>
             </div>
-            <div class="card card-hover-item"
-                style="background-image: url('https://images.unsplash.com/photo-1479644025832-60dabb8be2a1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=')">
-                <h1 class="card-header card-hover-header">Trees</h1>
-                <p class="card-content card-hover-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-            <div class="card card-hover-item"
-                style="background-image: url('https://images.unsplash.com/photo-1479621051492-5a6f9bd9e51a?dpr=2&auto=compress,format&fit=crop&w=1199&h=811&q=80&cs=tinysrgb&crop=')">
-                <h1 class="card-header card-hover-header">Lakes</h1>
-                <p class="card-content card-hover-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+           
+            <div class="card card-hover-item" @click="pushToCategory($event, 3)"
+                style="background-image: url('https://images.unsplash.com/photo-1585751119414-ef2636f8aede?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+                <h1 class="card-header card-hover-header">Chăm sóc tóc</h1>
             </div>
         </div>
 
+        <div class="container mt-5">
+            <h4 class="text-uppercase">Các sản phẩm dưỡng môi</h4>
+
+            <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
+                v-if="productsByCategory1.length > 0">
+
+                <div v-for="(product) in productsByCategory1" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 15rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 205px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span v-if="product.brandName != undefined"
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    product.brandName }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden"
+                            @click="pushToProduct($event, product.proId)">{{
+                                product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <h4 class="text-uppercase">Các sản phẩm dưỡng da</h4>
+
+            <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
+                v-if="productsByCategory2.length > 0">
+
+                <div v-for="(product) in productsByCategory2" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 15rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 205px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span v-if="product.brandName != undefined"
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    product.brandName }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden"
+                            @click="pushToProduct($event, product.proId)">{{
+                                product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 mb-5">
+            <h4 class="text-uppercase">Các sản phẩm chăm sóc tóc</h4>
+
+            <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
+                v-if="productsByCategory3.length > 0">
+
+                <div v-for="(product) in productsByCategory3" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 15rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 205px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span v-if="product.brandName != undefined"
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    product.brandName }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden"
+                            @click="pushToProduct($event, product.proId)">{{
+                                product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 mb-5">
+            <h4 class="text-uppercase">Các sản phẩm bán chạy nhất</h4>
+
+            <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
+                v-if="topSaleProducts.length > 0">
+
+                <div v-for="(product) in topSaleProducts" :key="product.proId" class="card me-2 mb-2"
+                    style="width: 15rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                    <div
+                        :style="`height: 205px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
+                    </div>
+                    <div class="card-body text-start">
+                        <div> <span v-if="product.brandName != undefined"
+                                class="author text-uppercase fw-bold text-secondary">{{
+                                    product.brandName }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden"
+                            @click="pushToProduct($event, product.proId)">{{
+                                product.name }}</div>
+                        <div class=" fw-bold text-danger">{{
+                            product.unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -192,9 +286,53 @@ const firstProducts = ref([] as productType[])
 const secondProducts = ref([] as productType[])
 const thirdProducts = ref([] as productType[])
 
+type productDetail = {
+    proId: number,
+    catId: number,
+    brandId: number,
+    name: string,
+    description: string,
+    unit: string,
+    guide: string,
+    created_at: string,
+    updated_at: string,
+    maintain: string,
+    note: string,
+    unitPrice: number,
+    brandName: string,
+    image: string
+}
+
+const productsByCategory1 = ref([] as productDetail[])
+const productsByCategory2 = ref([] as productDetail[])
+const productsByCategory3 = ref([] as productDetail[])
+
+const topSaleProducts = ref([{
+    proId: 0,
+    catId: 0,
+    brandId: 0,
+    name: "",
+    description: "",
+    unit: "",
+    guide: "",
+    created_at: "",
+    updated_at: "",
+    maintain: "",
+    note: "",
+    unitPrice: 0,
+    brandName: "",
+    image: "",
+    totalSales: 0
+}])
+
 function pushToProduct(e: any, id: number) {
     e.preventDefault();
     router.push({ name: "products", params: { id: id } });
+}
+
+function pushToCategory(e: any, id: number) {
+    e.preventDefault();
+    router.push({ name: "category", params: { id: id } });
 }
 
 onMounted(async () => {
@@ -210,8 +348,6 @@ onMounted(async () => {
         firstProducts.value = respPro1.data.products
         secondProducts.value = respPro2.data.products
         thirdProducts.value = respPro3.data.products
-
-
 
         for (let i = 0; i < 5; i++) {
             if (firstProducts.value[i] != null) {
@@ -229,6 +365,18 @@ onMounted(async () => {
 
         }
 
+
+        let respProdCate = await productServices.getAllByCategoryId(2);
+        productsByCategory1.value = respProdCate.data.products
+
+        respProdCate = await productServices.getAllByCategoryId(3);
+        productsByCategory2.value = respProdCate.data.products
+
+        respProdCate = await productServices.getAllByCategoryId(4);
+        productsByCategory3.value = respProdCate.data.products
+
+        let respTopSales = await productServices.getTopSale();
+        topSaleProducts.value = respTopSales.data.products
     } catch (error) {
         console.log(error)
     }
@@ -377,6 +525,7 @@ onMounted(async () => {
 }
 
 .card-hover-item:hover {
+    cursor: pointer;
     transform: scale(1.05);
 }
 
@@ -388,9 +537,11 @@ onMounted(async () => {
 .card-hover-content {
     font-size: 16px;
 }
-.card-product{
+
+.card-product {
     box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 }
+
 #cover {
 
     border-top: 1px solid black;
@@ -407,8 +558,9 @@ onMounted(async () => {
 }
 
 .ul-item {
+    overflow: hidden;
     transition: 0.3s;
-
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     margin-left: 20px;
     list-style-type: none;
     border: none;
@@ -430,5 +582,10 @@ onMounted(async () => {
 
 .linkToBrand:hover {
     text-decoration: underline;
+}
+.product-name:hover {
+    cursor: pointer;
+    color: #f18f90;
+    ;
 }
 </style>

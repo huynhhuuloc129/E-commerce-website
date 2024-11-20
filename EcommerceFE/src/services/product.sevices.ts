@@ -25,6 +25,42 @@ class ProductService {
     }
   }
 
+  async getAllDetailByBrandId(id: number) {
+    try {
+      const products = await this.api.get("/products/detailbrand/"+ id);
+      return products.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getTopSale() {
+    try {
+      const products = await this.api.get("/products/topsale/random");
+      return products.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getAllByCategoryId(id: number) {
+    try {
+      const products = await this.api.get("/products/category/"+ id);
+      return products.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
+  async getAllByCategoryIdNoLimit(id: number) {
+    try {
+      const products = await this.api.get("/products/categorynolimit/"+ id);
+      return products.data;
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
   async getOne(id: number) {
     try {
       const products = await this.api.get("/products/" + id);

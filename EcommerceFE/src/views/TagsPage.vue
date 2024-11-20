@@ -19,18 +19,28 @@
                 </span>
             </h1>
 
+            <div class="w-100 d-flex justify-content-end mb-3">
+
+                <select v-model="sortType" class="form-select w-25" aria-label="Default select example">
+                    <option value="1">Giá tăng dần</option>
+                    <option value="2">Giá giảm dần</option>
+                    <option value="3">A -> Z</option>
+                    <option value="4">Z -> A</option>
+                </select>
+            </div>
+
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center">
 
-                <div v-for="(product, index) in products" :key="product.proId" class="card me-2 mb-2"
+                <div v-for="(product) in products" :key="product.proId" class="card me-2 mb-2"
                     style="width: 18rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
                     <div
-                        :style="`height: 300px; background: url(${images[index].base64}); background-size: cover; background-repeat: no-repeat;`">
+                        :style="`height: 300px; background: url(${product.image}); background-size: cover; background-repeat: no-repeat;`">
                     </div>
                     <div class="card-body text-start">
-                        <div> <span v-if="brands[index] != undefined"
+                        <div> <span v-if="product.brandName != undefined"
                                 class="author text-uppercase fw-bold text-secondary">{{
-                                    brands[index].name }}</span></div>
-                        <div class="fw-bold product-name" style="height: 45px;"
+                                    product.brandName }}</span></div>
+                        <div class="fw-bold product-name" style="height: 45px; overflow: hidden;"
                             @click="pushToWithId('products', product.proId)">{{
                                 product.name }}</div>
                         <div class=" fw-bold text-danger">{{
@@ -60,7 +70,7 @@ import product_tagServices from '@/services/product_tag.services';
 import tagServices from '@/services/tag.services';
 
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import productServices from '@/services/product.sevices';
 import brandServices from '@/services/brand.services';
 import imageServices from '@/services/image.services';
@@ -96,13 +106,6 @@ const product_tags = ref([
     }
 ])
 
-const brands = ref([{
-    brandId: 0,
-    name: '',
-    created_at: '',
-    updated_at: '',
-    logo: ''
-}])
 
 const products = ref([{
     proId: 0,
@@ -116,14 +119,9 @@ const products = ref([{
     updated_at: '',
     maintain: '',
     note: '',
-    unitPrice: 0
-}])
-const images = ref([{
-    imageId: 0,
-    created_at: '',
-    updated_at: '',
-    base64: '',
-    belongId: ''
+    unitPrice: 0,
+    brandName: "",
+    image: ""
 }])
 
 function pushToWithId(name: string, id: number) {
@@ -132,7 +130,31 @@ function pushToWithId(name: string, id: number) {
         params: { id: id }
     })
 }
+const sortType = ref(0)
 
+watch(sortType, () => {
+    if (sortType.value == 1) {
+        products.value.sort((a, b) => {
+            if (a.unitPrice > b.unitPrice) return 1
+            else return -1
+        })
+    } else if (sortType.value == 2) {
+        products.value.sort((a, b) => {
+            if (a.unitPrice < b.unitPrice) return 1
+            else return -1
+        })
+    } else if (sortType.value == 3) {
+        products.value.sort((a, b) => {
+            if (a.name > b.name) return 1
+            else return -1
+        })
+    } else if (sortType.value == 4) {
+        products.value.sort((a, b) => {
+            if (a.name < b.name) return 1
+            else return -1
+        })
+    }
+})
 onMounted(async () => {
     try {
         id.value = Number(route.params.id);
@@ -144,36 +166,28 @@ onMounted(async () => {
         product_tags.value = respProductTags.data.product_tag;
 
         let respProducts = []
-        let respImgs = []
         for (let i = 0; i < product_tags.value.length; i++) {
             let respProduct = await productServices.getOne(product_tags.value[i].productId)
 
             let respTypes = await typeServices.getAllByProductId(respProduct.data.products[0].proId)
             respProduct.data.products[0].unitPrice = respTypes.data.type[0].unitPrice
-
             let respImage = await imageServices.getAllByBelongIdLimit1(respProduct.data.products[0].proId)
-            respImgs.push(respImage.data.image[0])
 
+            respProduct.data.products[0].image = respImage.data.image[0].base64
             respProducts.push(respProduct.data.products[0])
 
         }
         products.value = respProducts;
-        images.value = respImgs
 
-        let respBrands = []
         for (let i = 0; i < products.value.length; i++) {
             let respBrand = await brandServices.getOne(products.value[i].brandId)
-
-            respBrands.push(respBrand.data.brand[0])
+            products.value[i].brandName = respBrand.data.brand[0].name
         }
-
-        brands.value = respBrands;
-
+        
         // get top 25 tag
         let respTags = await tagServices.getTop();
         tags.value = respTags.data.tag;
 
-        console.log(images.value)
     } catch (error) {
         console.log(error)
     }
@@ -393,6 +407,7 @@ a {
     background-color: black;
     color: white;
 }
+
 .product-name:hover {
     cursor: pointer;
     color: #f18f90;

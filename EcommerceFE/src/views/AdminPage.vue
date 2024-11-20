@@ -581,7 +581,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="fw-bold" for="selectBrand">Nhãn hàng</label>
+                                    <label class="fw-bold" for="selectBrand">Nhãn hiệu</label>
                                     <select v-model="newProduct.brandId" id="selectBrand" class="form-select "
                                         aria-label="Default select example">
                                         <option v-for="brand in brands" :key="brand.brandId" :value="brand.brandId">
@@ -756,7 +756,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="order in orders" :key="order.orderId">
+                                    <tr v-for="(order, index) in orders" :key="order.orderId">
                                         <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
                                         <td>{{ order.orderId }}</td>
                                         <td>{{ order.accountName }}</td>
@@ -773,7 +773,7 @@
                                         <td>
                                             <a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
                                                 href="" data-bs-toggle="modal" data-bs-target="#detailOrder"
-                                                @click="getOneDetailOrder(order.orderId)">
+                                                @click="getOneDetailOrder(order.orderId, index)">
                                                 Chi tiết
                                             </a>
                                         </td>
@@ -919,6 +919,10 @@
                                                                 class="btn btn-primary mt-3"
                                                                 @click="confirmOrder($event, orderDetail)">Duyệt
                                                                 đơn</button>
+                                                            <button v-if="orderDetail.confirm == 0"
+                                                                class="btn btn-danger ms-2 mt-3"
+                                                                @click="deleteOrder($event, orderDetail)">Xóa
+                                                                đơn</button>
                                                         </div>
                                                     </div>
 
@@ -950,7 +954,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="order in unconfirmOrders" :key="order.orderId">
+                                    <tr v-for="(order, index) in unconfirmOrders" :key="order.orderId">
                                         <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
                                         <td>{{ order.orderId }}</td>
                                         <td>{{ order.accountName }}</td>
@@ -966,7 +970,7 @@
                                         <td>
                                             <a class="btn btn-sm" style="background-color: #fbbfc0; color: white"
                                                 href="" data-bs-toggle="modal" data-bs-target="#detailOrder"
-                                                @click="getOneDetailOrder(order.orderId)">
+                                                @click="getOneDetailOrder(order.orderId, index)">
                                                 Chi tiết
                                             </a>
                                         </td>
@@ -1315,6 +1319,31 @@ function VisibleTags() {
     return tags.value.slice(0, tagVisibles.value)
 }
 
+const choosenOrder = ref(0)
+async function deleteOrder(e: any, orderDetail: any) {
+    e.preventDefault();
+    try {
+        await orderServices.delete(orderDetail.orderId)
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Xóa đơn hàng thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+        unconfirmOrders.value.splice(choosenOrder.value, 1)
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Xóa đơn hàng thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    }
+}
 
 async function confirmOrder(e: any, orderDetail: any) {
     e.preventDefault();
@@ -1662,7 +1691,7 @@ function countToday() {
     }
 }
 
-async function getOneDetailOrder(orderId: number) {
+async function getOneDetailOrder(orderId: number, index: number) {
     try {
         let respOrderDetail = await orderServices.getDetailByOrderId(orderId)
         let data = respOrderDetail.data.order[0];
@@ -1691,6 +1720,7 @@ async function getOneDetailOrder(orderId: number) {
             confirm: data.confirm
         };
 
+        choosenOrder.value = index
     } catch (error) {
         console.log(error)
     }

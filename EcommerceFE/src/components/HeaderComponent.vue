@@ -249,7 +249,7 @@
 
                 <button class="header-item fw-bold text-uppercase btn border-0 " type="button" id="dropdownMenuButton4"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    Chăm sóc, nhuộm tóc
+                    Chăm sóc tóc
                 </button>
 
                 <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton4">
@@ -381,7 +381,7 @@
 
                 <button class="header-item fw-bold text-uppercase btn border-0 " type="button" id="dropdownMenuButton1"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    Nhãn hàng
+                    Nhãn hiệu
                 </button>
 
                 <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton1">
@@ -436,12 +436,12 @@
 
                         </button>
                         <ul class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="http://localhost:5173/personal">Tài khoản cá nhân</a>
+                            <li><a class="dropdown-item" href="http://localhost:5173/personal"><i class="fa-solid fa-user"></i> Tài khoản</a>
                             </li>
                             <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
-                                    href="http://localhost:5173/admin">Admin</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:5173/orders">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#" @click="signOut">Đăng xuất</a></li>
+                                    href="http://localhost:5173/admin"><i class="fa-solid fa-gear"></i> Admin</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:5173/orders"><i class="fa-solid fa-list"></i> Đơn mua</a></li>
+                            <li><a class="dropdown-item" href="#" @click="signOut"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
 

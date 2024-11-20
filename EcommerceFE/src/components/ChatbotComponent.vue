@@ -1,8 +1,9 @@
 <template>
-    <div class="chatbot-container">
+    <div class="chatbot-container" style="z-index: 1;">
         <!-- Plus Icon Button -->
-        <button @click="toggleChatbot" class="btn chatbot-btn" style="background-color: #fbbfc0; color: white;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-robot"
+        <button @click="toggleChatbot" class="btn chatbot-btn"
+            style="background-color: #d19b9c; color: white; width: 70px; height: 70px; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-robot"
                 viewBox="0 0 16 16">
                 <path
                     d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135" />
@@ -12,7 +13,7 @@
         </button>
 
         <!-- Chatbot Pop-up -->
-        <div v-if="showChatbot" class="chatbot-popup card">
+        <div v-if="showChatbot" class="chatbot-popup card mb-3">
             <div class="card-header d-flex justify-content-between">
                 <h5 class="mb-0">Chatbot</h5>
                 <button @click="toggleChatbot" class="btn-close"></button>
@@ -27,7 +28,7 @@
                         <img v-if="message.sender === 'bot'" src="@/assets/chatbot-avatar.jpg" class="avatar"
                             alt="avatar" />
                         <img v-else :src="userAvatar" class="avatar" alt="avatar">
-                       <pre class="message-text">{{message.text}}</pre>
+                        <pre class="message-text">{{ message.text }}</pre>
                     </div>
                 </div>
             </div>
@@ -84,9 +85,9 @@ async function sendMessage() {
         let query = userInput.value
         userInput.value = '';
 
-        messages.value.push({ sender: 'user', text: query});
+        messages.value.push({ sender: 'user', text: query });
 
-        let resp = await chatbotServices.ask({ query: query})
+        let resp = await chatbotServices.ask({ query: query })
 
         console.log(resp.data.message)
 
@@ -134,7 +135,7 @@ onMounted(async () => {
     position: fixed;
     bottom: 80px;
     right: 20px;
-    width: 300px;
+    width: 400px;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -166,11 +167,15 @@ onMounted(async () => {
 
 .message-text {
     font-family: "Archivo", sans-serif;
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;     
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
     background-color: #f1f1f1;
     padding: 10px;
     border-radius: 8px;
