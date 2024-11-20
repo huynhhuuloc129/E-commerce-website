@@ -382,7 +382,7 @@ exports.login = async (req, res) => {
 exports.changePassword = async (req, res) => {
     try {
         
-        if (req.body && req.body.username && req.body.accountId && req.body.newPassword) {
+        if (req.body && req.body.username && req.body.accountId && req.body.newPassword && req.body.password) {
             user = {}
 
             connection.query('SELECT * FROM account WHERE accountId = ?', req.body.accountId, async (err, row) => {

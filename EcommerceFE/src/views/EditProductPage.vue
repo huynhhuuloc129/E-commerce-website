@@ -169,6 +169,8 @@ import Swal from 'sweetalert2';
 import brandServices from '@/services/brand.services';
 import productServices from '@/services/product.sevices';
 import componentServices from '@/services/component.services';
+import { checkLogin } from '@/utilities/utilities';
+const router = useRouter();
 
 
 const route = useRoute();
@@ -304,6 +306,17 @@ async function onEditProduct(e: any) {
 
 onMounted(async () => {
     try {
+        if (!checkLogin()) {
+            Swal.fire({
+                title: "Chưa đăng nhập!",
+                text: "Vui lòng đăng nhập để xem thông tin",
+                icon: "error",
+                confirmButtonText: "OK",
+                timer: 1500
+            });
+
+            router.push({ name: "home" });
+        }
 
         id.value = Number(route.params.id);
         let respCurrentProduct = await productServices.getOneDetail(id.value)

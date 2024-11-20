@@ -1,7 +1,7 @@
 <template>
     <div class="mb-5" style="height: 150px; background-color: #fbbfc0;">
     </div>
-    <div class=" bg-white d-flex p-0 mb-5" style="width: 100vw;">
+    <div id="whole-section" class=" bg-white d-flex p-0 mb-5" style="width: 100vw;">
         <nav id="sidebarMenu" style="z-index: 0" class="bg-white sticky-top">
             <div class="position-sticky">
                 <div ref="fragment" class="list-group list-group-flush mx-3 mt-4">
@@ -1142,6 +1142,10 @@ import brandServices from '@/services/brand.services';
 import productServices from '@/services/product.sevices';
 import orderServices from '@/services/order.services';
 import componentServices from '@/services/component.services';
+import { checkLogin } from "@/utilities/utilities";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const plByMonth = ref([
     { name: 'Jan', pl: 0, avg: 0, inc: 0 },
@@ -1211,21 +1215,6 @@ const orders = ref([{
     cancel: 0
 }])
 const unconfirmOrders = ref([{
-    orderId: 0,
-    created_at: "",
-    updated_at: "",
-    accountId: 0,
-    totalPrice: 0,
-    shippingPrice: 0,
-    shippingAddress: "",
-    shipped: 0,
-    shippedDate: "",
-    shipmentTracking: "",
-    paid: 0,
-    accountName: "",
-    confirm: 0
-}])
-const confirmOrders = ref([{
     orderId: 0,
     created_at: "",
     updated_at: "",
@@ -1728,6 +1717,17 @@ async function getOneDetailOrder(orderId: number, index: number) {
 const doneCalculate = ref(false)
 onMounted(async () => {
     try {
+        if (!checkLogin()) {
+            Swal.fire({
+                title: "Chưa đăng nhập!",
+                text: "Vui lòng đăng nhập để xem thông tin",
+                icon: "error",
+                confirmButtonText: "OK",
+                timer: 1500
+            });
+
+            router.push({ name: "home" });
+        }
         // get all orders
         let respOrders = await orderServices.getAllConfirmed();
         orders.value = respOrders.data.order
@@ -1797,5 +1797,10 @@ onMounted(async () => {
 
 .linkp:hover {
     text-decoration: underline;
+}
+@media only screen and (max-width: 700px) {
+    #whole-section{
+        flex-direction: column;
+    }
 }
 </style>

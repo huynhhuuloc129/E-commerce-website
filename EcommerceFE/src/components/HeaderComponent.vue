@@ -10,13 +10,13 @@
                 </svg>
             </button>
         </form>
-        <h1 class="text-center fw-bold mb-4 text-uppercase"><a id="header-title" href="http://localhost:5173">Sunny
+        <h1 id="header-h1" class="fw-bold mb-4 text-uppercase"><a id="header-title" href="http://localhost:5173">Sunny
                 Cosmetic</a>
         </h1>
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-evenly container">
 
-                <button class="header-item fw-bold text-uppercase btn border-0 " type="button" @click="pushToHome">
+                <button id="home-button" class="header-item fw-bold text-uppercase btn border-0 " type="button" @click="pushToHome">
                     Trang chủ
                 </button>
 
@@ -610,10 +610,11 @@ function pushToHome(e: any) {
     e.preventDefault();
     router.push({ name: "home" });
 }
-function signOut() {
+function signOut(e: any) {
+    e.preventDefault();
     document.cookie = "Token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    window.location.reload();
     router.push({ name: "home" });
-
 }
 
 async function getAllSProducts() {
@@ -758,7 +759,9 @@ onMounted(async () => {
     padding: 25px;
     background-color: none;
 }
-
+#header-h1{
+    text-align: center;
+}
 #header:hover {
     color: black;
     background-color: white;
@@ -857,5 +860,34 @@ onMounted(async () => {
 
 #dropdown-cart {
     min-width: 400px;
+}
+@media only screen and (max-width: 1100px) {
+    #header {
+        color: white;
+        position: absolute;
+        transition: 0.3s;
+        padding: 25px;
+        background-color: none;
+    }
+    #text-search-input {
+        color: white;
+        width: 100px;
+        transition: 0.3s;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid white;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    #header-h1{
+        text-align: left
+    }
+    #home-button{
+        display: none;
+    }
+    #header {
+        padding: 20px 5px 20px 5px;
+    }
 }
 </style>

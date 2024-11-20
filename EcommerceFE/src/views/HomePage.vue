@@ -1,28 +1,28 @@
 <template>
-    <div style="overflow: hidden;">
+    <div id="video-section" style="overflow: hidden;">
 
         <video autoplay muted loop id="wallpaperVideo">
             <source src="@/assets/videoWallpaper.mp4" type="video/mp4">
         </video>
     </div>
 
-    <div style="height: 100vh;"></div>
+    <div id="height-section" ></div>
 
     <div class="archivo-medium">
         <img id="cover" src="../assets/Cover.png">
-        <div class="container d-flex justify-content-between mt-5 ">
+        <div class="container first-product d-flex justify-content-between mt-5 ">
             <div class="width25 mt-3">
-                <h5>Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm <span class="fw-bold text-capitalize">{{
+                <h5 class="text-homepage">Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm <span class="fw-bold text-capitalize">{{
                     brands[0].name }}</span></h5>
                 <h1>Dưỡng môi chuẩn khoa học</h1>
             </div>
 
-            <ul class="d-flex  ">
+            <ul  class="d-flex product-section ">
                 <li v-for="index in 5" :key="'firstPro' + index" class="ul-item card card-product"
                     @click="pushToProduct($event, firstProducts[index-1].proId)">
                     <div class="card-body text-center" v-if="firstProducts[index-1] != null">
 
-                        <img :src="firstProducts[index-1].image" alt="" height="150px" width="">
+                        <img class="product-img" :src="firstProducts[index-1].image" alt=""  width="">
 
                         <div class="mb-3 fw-bold small">{{ firstProducts[index-1].name }}</div>
                         <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
@@ -48,19 +48,19 @@
         </div>
 
         <img id="cover2" src="../assets/Cover2.png">
-        <div class="container d-flex justify-content-between mt-5">
+        <div class="container first-product d-flex justify-content-between mt-5">
             <div class="width25 mt-3">
-                <h5>Giàu thành phần dưỡng da, tạo cảm giác dễ chịu trên da</h5>
+                <h5 class="text-homepage">Giàu thành phần dưỡng da, tạo cảm giác dễ chịu trên da</h5>
                 <h1>Trang điểm phong cách <span class="fw-bold text-capitalize" v-if="brands[1] != null">{{
                     brands[1].name }}</span></h1>
             </div>
 
-            <ul class="d-flex  ">
+            <ul class="d-flex product-section ">
                 <li v-for="index in 5" :key="'secondPro' + index" class="ul-item card card-product"
                     @click="pushToProduct($event, secondProducts[index-1].proId)">
                     <div class="card-body text-center" v-if="secondProducts[index-1] != null">
 
-                        <img :src="secondProducts[index-1].image" alt="" height="150px" width="">
+                        <img class="product-img" :src="secondProducts[index-1].image" alt=""  width="">
 
                         <div class="mb-3 fw-bold small">{{ secondProducts[index-1].name }}</div>
                         <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
@@ -90,12 +90,12 @@
         <img id="cover3" src="../assets/Cover3.png">
         <div class="container mt-5">
 
-            <ul class="d-flex  justify-content-around align-items-center">
+            <ul class="d-flex third-product justify-content-around align-items-center">
                 <li v-for="index in Math.min(thirdProducts.length, 5)" :key="'thirdPro' + index" class="ul-item card card-product"
                     @click="pushToProduct($event, thirdProducts[index-1].proId)">
                     <div class="card-body text-center" v-if="thirdProducts[index-1] != null">
 
-                        <img  :src="thirdProducts[index-1].image" alt="" height="150px" width="">
+                        <img class="product-img" :src="thirdProducts[index-1].image" alt="" width="">
 
                         <div class="mb-3 fw-bold small">{{ thirdProducts[index-1].name }}</div>
                         <div class="text-truncate text-wrap fw-bold" style="height: 70px;">
@@ -587,5 +587,47 @@ onMounted(async () => {
     cursor: pointer;
     color: #f18f90;
     ;
+}
+#height-section{
+    height: 100vh;
+}
+.product-img{
+    height: 150px;
+}
+
+@media only screen and (max-width: 1600px) {
+    #height-section{
+        height: 50vh;
+    }
+}
+@media only screen and (max-width: 830px) {
+    #height-section{
+        height: 25vh;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .product-img{
+        height: 100px;
+    }
+}
+@media only screen and (max-width: 760px) {
+    .text-homepage{
+        display: none;
+    }
+    .product-section{
+        margin: 0 !important;
+        padding: 0 0 5px 0;
+        
+    }
+    .card-body{
+        font-weight: small;
+    }
+    .first-product{
+        max-width: 760px;
+    }
+    .third-product{
+        max-width: 760px;
+        
+    }
 }
 </style>

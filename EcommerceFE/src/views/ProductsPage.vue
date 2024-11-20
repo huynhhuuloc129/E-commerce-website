@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="container align-items-center d-flex  justify-content-center mb-3 w-100">
+            <div id="product-section" class="container align-items-center d-flex  justify-content-center mb-3 w-100">
                 <div>
                     <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
 
@@ -999,5 +999,10 @@ onMounted(async () => {
     cursor: pointer;
     color: #f18f90;
     ;
+}
+@media only screen and (max-width: 1000px) {
+    #product-section{
+        flex-direction: column;
+    }
 }
 </style>

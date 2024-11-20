@@ -6,10 +6,9 @@
 
 
 
-        <div class="d-flex" style="margin: 0; background-color: white;">
+        <div id="whole-section" class="d-flex" style="margin: 0; background-color: white;">
             <nav id="sidebarMenu" style="z-index: 0" class="bg-white sticky-top">
                 <div class="position-sticky">
-                    <PrintPage ref="frame" />
                     <div ref="fragment" class="list-group list-group-flush mx-3 mt-4">
                         <a href="#" class="list-group-item list-group-item-action py-2 ripple active"
                             aria-current="true" data-bs-toggle="tab" data-bs-target="#personal">
@@ -109,17 +108,17 @@
                             <form @submit="changePassword" class="">
                                 <div>
                                     <label class="fw-bold" for="oldPassword">Mật khẩu cũ: </label>
-                                    <input v-model="oldPassword" type="text" id="oldPassword" class="form-control"
+                                    <input v-model="oldPassword" type="password" id="oldPassword" class="form-control"
                                         required>
                                 </div>
                                 <div class="mt-3">
-                                    <label class="fw-bold" for="oldPassword">Mật khẩu mới: </label>
-                                    <input v-model="newPassword" type="text" id="oldPassword" class="form-control"
+                                    <label class="fw-bold" for="newPassword">Mật khẩu mới: </label>
+                                    <input v-model="newPassword" type="password" id="newPassword" class="form-control"
                                         required>
                                 </div>
                                 <div class="mt-3">
-                                    <label class="fw-bold" for="oldPassword">Nhập lại mật khẩu: </label>
-                                    <input v-model="newRepeatPassword" type="text" id="oldPassword" class="form-control"
+                                    <label class="fw-bold" for="newRepeatPassword">Nhập lại mật khẩu: </label>
+                                    <input v-model="newRepeatPassword" type="password" id="newRepeatPassword" class="form-control"
                                         required>
                                 </div>
 
@@ -416,8 +415,6 @@ var updateUser = async (e: any) => {
 const oldPassword = ref('')
 const newPassword = ref('')
 const newRepeatPassword = ref('')
-
-
 var changePassword = async (e: any) => {
     e.preventDefault();
     try {
@@ -431,27 +428,26 @@ var changePassword = async (e: any) => {
             });
             return;
         }
-        await accountServices.update(currentUser.value.accountId, {
+        await accountServices.updatePassword({
+            username: currentUser.value.username,
             accountId: currentUser.value.accountId,
-            name: currentUser.value.name,
-            email: currentUser.value.email,
-            phone: currentUser.value.phone,
-            birthDate: currentUser.value.birthDate.slice(0, 10),
-            billingAddress: currentUser.value.billingAddress
+            newPassword: newPassword.value,
+            password: oldPassword.value
         })
 
         Swal.fire({
             title: "Thành công!",
-            text: "Cập nhật tài khoản thành công!",
+            text: "Cập nhật mật khẩu tài khoản thành công!",
             icon: "success",
             confirmButtonText: "OK",
             timer: 1500
         });
+
     } catch (error) {
 
         Swal.fire({
             title: "Thất bại!",
-            text: "Cập nhật tài khoản thất bại! Error: " + error,
+            text: "Cập nhật mật khẩu tài khoản thất bại! Error: " + error,
             icon: "error",
             confirmButtonText: "OK",
             timer: 1500
@@ -549,5 +545,10 @@ onMounted(async () => {
 
 .linkp:hover {
     text-decoration: underline;
+}
+@media only screen and (max-width: 700px) {
+    #whole-section{
+        flex-direction: column;
+    }
 }
 </style>

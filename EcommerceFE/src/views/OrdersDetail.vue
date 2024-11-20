@@ -304,6 +304,16 @@ onMounted(async () => {
         if (checkLogin()) {
             let resp = await accountServices.getMe(token);
             currentUser.value = resp.data.account[0];
+        } else {
+            Swal.fire({
+                title: "Chưa đăng nhập!",
+                text: "Vui lòng đăng nhập để xem thông tin",
+                icon: "error",
+                confirmButtonText: "OK",
+                timer: 1500
+            });
+
+            router.push({ name: "home" });
         }
 
         let respOrders = await orderServices.getDetailByAccountId(currentUser.value.accountId)

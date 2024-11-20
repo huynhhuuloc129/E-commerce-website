@@ -221,4 +221,9 @@ onMounted(() => {
     border: 1px solid #fbbfc0;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+@media only screen and (max-width: 1500px) {
+    #register-container{
+        width: 90vw;
+    }
+}
 </style>
