@@ -14,5 +14,7 @@ router
 router
   .route('/account/:id')
   .get(selectedProductController.getAllByAccountIdInCart)
-
+router
+  .route('/quantity/:id')
+  .patch(selectedProductController.updateQuantity)
 module.exports = router;

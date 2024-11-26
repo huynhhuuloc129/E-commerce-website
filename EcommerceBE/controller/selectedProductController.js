@@ -161,3 +161,30 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+exports.updateQuantity = async (req, res) => {
+    try {
+
+        let sql = `UPDATE selectedproduct SET
+            quantitySelected = ${req.body.number}
+        WHERE selectedProductId = ${req.params.id}`
+
+        connection.query(sql, (err, row) => {
+            if (err) {
+                console.log(err)
+                return;
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Update Successfully.'
+                });
+            }
+        )
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};

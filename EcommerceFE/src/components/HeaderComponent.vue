@@ -1,5 +1,5 @@
 <template>
-    <div id="header" class="w-100 text-center archivo-bold">
+    <div id="header" class="w-100 text-center archivo-bold fixed-top">
         <form @submit="pushToSearchPage($event, searchContent)" id="search-input">
             <input type="text" v-model="searchContent" id="text-search-input" placeholder="Tìm sản phẩm">
             <button type="submit" style="background-color: transparent; border: 0px;">
@@ -440,7 +440,7 @@
                             </li>
                             <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
                                     href="http://localhost:5173/admin"><i class="fa-solid fa-gear"></i> Admin</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:5173/orders"><i class="fa-solid fa-list"></i> Đơn mua</a></li>
+                            <li v-if="currentUser.username != 'admin'"><a class="dropdown-item" href="http://localhost:5173/orders"><i class="fa-solid fa-list"></i> Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#" @click="signOut"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
@@ -453,25 +453,25 @@
                             @click="pushToCart">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
                                 style="background-color: #fbbfc0;">
-                                {{ sProducts.length }}
+                                {{ cartState.products.length }}
                             </span>
                             <i class="fa-solid fa-cart-shopping" style="color: #d19b9c"></i>
                         </button>
 
                         <div id="dropdown-cart" class="dropdown-menu w-25 rounded"
                             aria-labelledby="dropdownMenuButtonCart">
-                            <span v-if="sProducts.length > 0" class="ms-3">
+                            <span v-if="cartState.products.length > 0" class="ms-3">
                                 Sản phẩm mới thêm
                             </span>
                             <span v-else class="ms-3">
                                 Chưa có sản phẩm nào
                             </span>
 
-                            <div v-for="(sProduct, index) in sProducts" :key="sProduct.selectedProductId"
+                            <div v-for="(sProduct, index) in cartState.products" :key="sProduct.selectedProductId"
                                 class="cart-product ps-3 d-flex justify-content-between">
 
                                 <div class="d-flex">
-                                    <img :src="images[index].base64" class="me-2" height="auto" width="90" alt="">
+                                    <img v-if="cartState.images[index] != undefined" :src="cartState.images[index].base64" class="me-2" height="auto" width="90" alt="">
                                     <div class="d-flex flex-column">
 
                                         <a class="text-wrap cart-items"
@@ -547,26 +547,6 @@ const currentUser = ref({
     created_at: null,
     updated_at: null,
 });
-const images = ref([{
-    imageId: 0,
-    created_at: '',
-    updated_at: '',
-    base64: '',
-    belongId: ''
-}])
-const sProducts = ref([{
-    selectedProductId: 0,
-    quantitySelected: 0,
-    sellingPrice: 0,
-    created_at: '',
-    updated_at: '',
-    proId: 0,
-    orderId: 0,
-    accountId: 0,
-    typeId: 0,
-    block: 0,
-    name: ''
-}])
 
 const brands = ref([
     {
@@ -576,14 +556,6 @@ const brands = ref([
         updated_at: ''
     }
 ])
-
-const categories = ref([{
-    catId: 0,
-    name: '',
-    description: '',
-    created_at: '',
-    updated_at: ''
-}])
 
 function pushToSignUp(e: any) {
     e.preventDefault();
@@ -617,34 +589,13 @@ function signOut(e: any) {
     router.push({ name: "home" });
 }
 
-async function getAllSProducts() {
-    try {
-
-        // get selected product
-        let respSProducts = await selectedProductServices.getAllByAccountIdInCart(currentUser.value.accountId);
-        sProducts.value = respSProducts.data.sProducts
-
-        let respImgs = []
-        for (let i = 0; i < sProducts.value.length; i++) {
-
-
-            let respImage = await imageServices.getAllByBelongIdLimit1(sProducts.value[i].proId)
-            respImgs.push(respImage.data.image[0])
-        }
-        images.value = respImgs
-    } catch (error) {
-        console.log(error)
-    }
-
-}
+import { cartState, updateCartState, getAllSProducts } from '../utilities/cartStore';
 
 async function removeSelectedProduct(index: number) {
     try {
+        await selectedProductServices.delete(cartState.products[index].selectedProductId)
 
-
-        await selectedProductServices.delete(sProducts.value[index].selectedProductId)
-
-        sProducts.value.splice(index, 1)
+        await getAllSProducts(currentUser.value.accountId)
     } catch (error) {
         console.log(error)
     }
@@ -702,7 +653,7 @@ onMounted(async () => {
         let resp = await accountServices.getMe(token);
         currentUser.value = resp.data.account[0];
 
-        await getAllSProducts()
+        await getAllSProducts(currentUser.value.accountId)
 
     } catch (error) {
         console.log(error);
@@ -754,10 +705,10 @@ onMounted(async () => {
 
 #header {
     color: white;
-    position: absolute;
     transition: 0.3s;
-    padding: 25px;
-    background-color: none;
+    padding: 18px;
+    background-color: #fbbfc0;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 #header-h1{
     text-align: center;
@@ -793,8 +744,8 @@ onMounted(async () => {
     border: 1px 0 0 0;
     border-radius: 0px;
     width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 }
-
 #header-title {
     text-decoration: none;
     color: white;
@@ -854,8 +805,7 @@ onMounted(async () => {
 }
 
 .dropdown-menu{
-    right: 10px
-
+    right: 10px;
 }
 
 #dropdown-cart {

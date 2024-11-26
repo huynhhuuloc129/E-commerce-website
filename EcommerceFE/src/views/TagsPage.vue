@@ -366,35 +366,6 @@ a {
     opacity: 1;
 }
 
-
-#header {
-    color: black;
-    background-color: white;
-
-    #text-search-input {
-        color: black;
-        border-bottom: 1px solid black;
-    }
-
-    #text-search-input::placeholder {
-        color: black;
-    }
-
-    #search-button {
-        color: black;
-    }
-
-    .header-item {
-        color: black;
-    }
-
-    #header-title {
-        color: black;
-        text-decoration: none;
-        background-color: transparent;
-    }
-}
-
 .tag-button {
     font-size: small;
     font-weight: bold;

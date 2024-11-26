@@ -9,11 +9,19 @@ class OrderService {
   }
   async getAll() {
     try {
-      const sp = await this.api.get("/seclted-products");
+      const sp = await this.api.get("/selected-products");
       return sp.data;
     } catch (err) {
       handlingError(err);
     }
+  }
+
+  async updateQuantity(id: number, data:any) {
+    return await axios.patch(`http://localhost:3000/api/selected-products/quantity/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
   }
 
   async getAllByAccountIdInCart(id: number) {

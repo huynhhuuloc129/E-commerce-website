@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-3" style="height: 150px; background-color: #fbbfc0;">
+    <div class="mb-3" style="height: 145px; background-color: #fbbfc0;">
     </div>
     <div class="container justify-content-center align-items-center mb-5">
         <ul class="nav nav-tabs " id="myTab" role="tablist">
@@ -44,7 +44,7 @@
                 </a>
             </button>
         </div>
-        <section v-for="(order, ind) in filterOrders()" :key="order.orderId" class="h-100 h-custom container mb-3">
+        <section v-for="(order) in filterOrders()" :key="order.orderId" class="h-100 h-custom container mb-3">
             <div class="container h-100"
                 style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -138,6 +138,18 @@
                                             </p>
                                         </div>
 
+                                        <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                            <p class="mb-0">Phương thức thanh toán:</p>
+                                            <p class="mb-0">
+                                                {{ order.paymentType }}
+                                            </p>
+                                        </div>
+                                        <div v-if="order.note!=undefined && order.note.length> 0" class="d-flex justify-content-between" style="font-weight: 500;">
+                                            <p class="mb-0">Ghi chú:</p>
+                                            <p class="mb-0">
+                                                {{ order.note }}
+                                            </p>
+                                        </div>
                                         <div v-if="order.shipmentTracking != ''"
                                             class="d-flex justify-content-between mb-4" style="font-weight: 500;">
                                             <p class="mb-0">Tình trang đơn hàng:</p>
@@ -157,18 +169,30 @@
                                         <div v-if="order.confirm == 1 && order.cancel == 0">
                                             <button
                                                 @click="addToPayment(order.orderId, order.totalPrice + order.shippingPrice, order.productNames)"
-                                                v-if="order.paid == 0" type="button" data-mdb-button-init
-                                                data-mdb-ripple-init class="btn btn-primary btn-block btn-lg"
-                                                style="border-radius: 0px; background-color: #fbbfc0; border: 0;">
+                                                v-if="order.paid == 0 && order.paymentType == 'Chuyển khoản'" type="button" data-mdb-button-init
+                                                data-mdb-ripple-init class="btn btn-danger btn-block btn-lg"
+                                                style="border-radius: 0px;  border: 0;">
                                                 <div class="d-flex justify-content-between">
                                                     <span>Thanh toán</span>
                                                 </div>
                                             </button>
-                                            <div v-else class="text-success fw-bold"> Đã thanh toán</div>
+                                            <div v-if="order.paid == 1"
+                                                class="d-flex flex-column justify-content-end text-end align-items-end">
+                                                <span class="text-success fw-bold">
+                                                    Đã thanh toán
+                                                </span>
+                                                <button type="button" class="btn btn-primary fw-bold w-50 bg-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#reviewModal"
+                                                    style="border-radius: 0px;  border: 0px;"
+                                                    @click="choosenOrder = order; initReviewVariable(order.productIds.length)">
+                                                    Đánh giá
+                                                </button>
+                                            </div>
 
                                         </div>
-                                        <button v-if="order.paid == 0 && order.cancel == 0" @click="cancelOrder(ind)"
-                                            class="btn btn-danger mt-3" style="border-radius:  0;">Hủy đơn</button>
+                                        <button v-if="order.paid == 0 && order.cancel == 0 && order.paymentType == 'Chuyển khoản'"
+                                            @click="cancelOrder(order.orderId)" class="btn btn-dark mt-3"
+                                            style="border-radius:  0;">Hủy đơn</button>
                                     </div>
                                 </div>
 
@@ -179,6 +203,133 @@
                 </div>
             </div>
         </section>
+
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">Đánh giá sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2" v-for="(productId, index) in choosenOrder.productIds" :key="productId">
+                            <div class="row d-flex justify-content-center w-100">
+                                <div class="">
+                                    <div class="card">
+                                        <div class=" p-4">
+                                            <div class="d-flex">
+                                                <img class="me-3" :src="choosenOrder.imageBase64[index]" height="50"
+                                                    width="50" alt="">
+
+                                                <div>
+                                                    <h6 class="fw-bold">{{ choosenOrder.productNames[index] }}</h6>
+                                                    <div>{{ choosenOrder.typeNames[index] }}</div>
+                                                </div>
+                                            </div>
+                                            <hr>
+
+                                            <div class="d-flex flex-start w-100">
+                                                <img class="rounded-circle shadow-1-strong me-3"
+                                                    v-if="checkLogin() == true && currentUser.avatar != ''"
+                                                    :src="currentUser.avatar" alt="avatar" width="50" height="50" />
+                                                <img v-else src="https://placehold.co/65x65" alt=""
+                                                    class="rounded-circle shadow-1-strong me-3" width="65" height="65">
+                                                <div class="w-100">
+
+                                                    <h6>{{ currentUser.name }}</h6>
+                                                    <div class="">
+                                                        <div class="d-flex align-items-center justify-content-start ">
+                                                            <div class="row justify-content-center">
+
+                                                                <!-- star rating -->
+                                                                <div class="rating-wrapper">
+
+                                                                    <!-- star 5 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'5-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="5">
+                                                                    <label :for="'5-star-rating' + index"
+                                                                        class="star-rating">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 4 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'4-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="4">
+                                                                    <label :for="'4-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 3 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'3-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="3">
+                                                                    <label :for="'3-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 2 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'2-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="2">
+                                                                    <label :for="'2-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 1 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'1-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="1">
+                                                                    <label :for="'1-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div data-mdb-input-init class="form-outline"
+                                                        v-if="reviews[index] != undefined">
+                                                        <textarea class="form-control" id="textAreaExample" rows="2"
+                                                            v-model="reviews[index].content"></textarea>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mt-3"
+                                                        v-if="reviews[index] != undefined">
+                                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                                            class="btn btn-dark"
+                                                            @click="reviews[index].content = ''">Xóa</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            style="border-radius: 0px; border: 0px;">Hủy</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            style="border-radius: 0px;  border: 0px;"
+                            @click="modifyReview">Đánh giá</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -189,6 +340,7 @@ import { useCookies } from 'vue3-cookies';
 import { checkLogin } from '@/utilities/utilities';
 import accountServices from '@/services/account.services';
 import paymentServices from '@/services/payment.services';
+import reviewServices from '@/services/review.services';
 import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
 
@@ -210,7 +362,6 @@ const currentUser = ref({
     created_at: null,
     updated_at: null,
 });
-
 
 let orders = ref([{
     orderId: 0,
@@ -234,7 +385,9 @@ let orders = ref([{
     productNames: [] as string[],
     imageBase64: [] as string[],
     confirm: 0,
-    cancel: 0
+    cancel: 0,
+    paymentType: "",
+    note: ""
 }])
 
 async function addToPayment(id: number, amount: number, descriptions: string[]) {
@@ -256,13 +409,15 @@ async function addToPayment(id: number, amount: number, descriptions: string[]) 
     }
 }
 
-async function cancelOrder(idx: number) {
+async function cancelOrder(id: number) {
 
     try {
-        let resp = await orderServices.cancel(orders.value[idx].orderId)
+        await orderServices.cancel(id)
 
-        orders.value[idx].cancel = 1
-
+        for (let i = 0; i < orders.value.length; i++) {
+            if (orders.value[i].orderId == id)
+                orders.value[i].cancel = 1
+        }
         Swal.fire({
             title: "Thành công!",
             text: "Hủy đơn hàng thành công!",
@@ -294,6 +449,119 @@ function filterOrders() {
         return orders.value.filter((o) => o.cancel == 1)
     } else {
         return orders.value
+    }
+}
+const reviews = ref([{
+    reviewId: 0,
+    productId: 0,
+    accountId: 0,
+    content: '',
+    star: 0,
+    created_at: '',
+    updated_at: '',
+    name: '',
+    email: '',
+    avatar: ''
+}])
+const starNums = ref([] as number[])
+const choosenOrder = ref({
+    orderId: 0,
+    created_at: "",
+    updated_at: "",
+    quantitySelected: [] as number[],
+    sellingPrices: [] as number[],
+    accountId: 0,
+    totalPrice: 0,
+    shippingPrice: 0,
+    shipped: 0,
+    shippedDate: "",
+    shipmentTracking: "",
+    shippingAddress: "",
+    paid: 0,
+    selectedProductIds: [] as number[],
+    typeIds: [] as number[],
+    typeNames: [] as string[],
+    productIds: [] as number[],
+    proId: 0,
+    productNames: [] as string[],
+    imageBase64: [] as string[],
+    confirm: 0,
+    cancel: 0
+})
+async function modifyReview(e: any) {
+    e.preventDefault();
+
+    try {
+        for (let i = 0; i < starNums.value.length; i++) {
+            if (starNums.value[i] == 0) {
+                throw ("Vui lòng chọn số sao")
+            }
+
+            if (reviews.value[i].accountId == 0) {
+
+                await reviewServices.create({
+                    productId: choosenOrder.value.productIds[i],
+                    accountId: currentUser.value.accountId,
+                    content: reviews.value[i].content,
+                    star: starNums.value[i]
+                })
+            } else { //update existed review
+                await reviewServices.update(reviews.value[i].reviewId, {
+                    content: reviews.value[i].content,
+                    star: starNums.value[i]
+                })
+            }
+        }
+        // add new review
+
+        Swal.fire({
+            title: "Thành công!",
+            text: "Chỉnh sửa nhận xét thành công!",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+
+        // window.location.reload();
+    } catch (error) {
+        Swal.fire({
+            title: "Lỗi!",
+            text: "Đã có lỗi xảy ra! " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+        console.log(error)
+    }
+}
+
+async function initReviewVariable(length: number) {
+    console.log(length)
+    starNums.value = []
+    reviews.value = []
+    for (let i = 0; i < length; i++) {
+        let respReview = await reviewServices.getAllByProductIdAndAccountId(choosenOrder.value.productIds[i], currentUser.value.accountId)
+        let review = respReview.data.review[0];
+        if (review == undefined) {
+            review = {
+                reviewId: 0,
+                productId: 0,
+                accountId: 0,
+                content: '',
+                star: 0,
+                created_at: '',
+                updated_at: '',
+                name: '',
+                email: '',
+                avatar: ''
+            }
+            starNums.value.push(0)
+
+        } else {
+            starNums.value.push(review.star)
+        }
+        reviews.value.push(review)
+
     }
 }
 
@@ -342,7 +610,9 @@ onMounted(async () => {
                 productNames: data.productNames.split(','), // Convert string to array of strings
                 imageBase64: data.imageBase64.split('||'),
                 confirm: data.confirm,
-                cancel: data.cancel
+                cancel: data.cancel,
+                paymentType: data.paymentType,
+                note: data.note
             });
         }
 
@@ -361,5 +631,31 @@ onMounted(async () => {
 
 .linkp:hover {
     text-decoration: underline;
+}
+
+.rating-wrapper {
+    direction: rtl !important;
+
+    .star-rating {
+        color: rgba(198, 206, 237, .8);
+        cursor: pointer;
+        display: inline-flex;
+        font-size: 1.5rem;
+        transition: color 0.5s;
+    }
+
+    .rating-input {
+        display: none;
+    }
+
+    .star-rating:hover,
+    .star-rating:hover~.star-rating,
+    .rating-input:checked~.star-rating {
+        color: #F4BB47;
+    }
+}
+
+.active {
+    font-weight: bold;
 }
 </style>

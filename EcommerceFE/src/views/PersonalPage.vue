@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-5" style="height: 150px; background-color: #fbbfc0;">
+    <div class="mb-5" style="height: 145px; background-color: #fbbfc0;">
     </div>
 
     <div style="width: 100vw;" class="mb-5">

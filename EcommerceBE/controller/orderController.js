@@ -166,14 +166,14 @@ exports.getDetailsByAccountId = async (req, res) => {
         let sql = ` 
                 SELECT 
                     o.*,
-                    GROUP_CONCAT(DISTINCT sp.selectedProductId) AS selectedProductIds, -- Concatenate selectedProductIds
-                    GROUP_CONCAT(DISTINCT sp.typeId) AS typeIds, -- Optionally concatenate typeIds
-                    GROUP_CONCAT(DISTINCT sp.quantitySelected) AS quantitiesSelected, -- Optionally concatenate quantitiesSelected
-                    GROUP_CONCAT(DISTINCT sp.sellingPrice) AS sellingPrices, -- Optionally concatenate sellingPrices
-                    GROUP_CONCAT(DISTINCT t.name) AS typeNames, -- Concatenate type names
-                    GROUP_CONCAT(DISTINCT p.proId) AS productIds, -- Concatenate productIds
-                    GROUP_CONCAT(DISTINCT p.name) AS productNames, -- Optionally concatenate product names
-                    GROUP_CONCAT(DISTINCT i.base64 SEPARATOR '||') AS imageBase64 -- Concatenate base64 images
+                    GROUP_CONCAT(DISTINCT sp.selectedProductId ORDER BY sp.selectedProductId ASC) AS selectedProductIds, -- Đồng bộ thứ tự
+                    GROUP_CONCAT(DISTINCT sp.typeId ORDER BY sp.typeId ASC) AS typeIds, -- Đồng bộ với selectedProductIds
+                    GROUP_CONCAT(DISTINCT sp.quantitySelected ORDER BY sp.typeId ASC) AS quantitiesSelected, -- Đồng bộ theo typeIds
+                    GROUP_CONCAT(DISTINCT sp.sellingPrice ORDER BY sp.typeId ASC) AS sellingPrices, -- Đồng bộ theo typeIds
+                    GROUP_CONCAT(DISTINCT t.name ORDER BY sp.typeId ASC) AS typeNames, -- Đồng bộ với typeIds
+                    GROUP_CONCAT(DISTINCT p.proId ORDER BY p.proId ASC) AS productIds, -- Đồng bộ với imageBase64
+                    GROUP_CONCAT(DISTINCT p.name ORDER BY p.proId ASC) AS productNames, -- Đồng bộ với productIds
+                    GROUP_CONCAT(DISTINCT i.base64 ORDER BY p.proId ASC SEPARATOR '||') AS imageBase64 -- Đồng bộ với productIds
                 FROM orders o
                 JOIN selectedProduct sp ON o.orderId = sp.orderId
                 JOIN type t ON sp.typeId = t.typeId
@@ -188,8 +188,8 @@ exports.getDetailsByAccountId = async (req, res) => {
                     )
                 ) i ON i.belongId = CONCAT('product', p.proId)
                 WHERE o.accountId = ${req.params.id}
-                GROUP BY o.orderId -- Group by orderId to consolidate results per order
-                ORDER BY o.orderId DESC`
+                GROUP BY o.orderId -- Group by orderId để gộp kết quả theo đơn hàng
+                ORDER BY o.orderId DESC;`
         connection.query(`SET SESSION group_concat_max_len = 100000000`, (err, rows) => {
             if (err) throw err;
         });
@@ -270,7 +270,9 @@ exports.create = async (req, res) => {
                 'shippedDate': req.body.shippedDate,
                 'shipmentTracking': req.body.shipmentTracking,
                 'paid': req.body.paid,
-                'confirm': req.body.confirm            
+                'confirm': req.body.confirm,
+                'paymentType': req.body.paymentType,
+                'note': req.body.note        
             }
 
             connection.query('INSERT INTO orders SET ?', newOrder, (err, row) => {

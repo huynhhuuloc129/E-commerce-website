@@ -12,9 +12,9 @@
         <img id="cover" src="../assets/Cover.png">
         <div class="container first-product d-flex justify-content-between mt-5 ">
             <div class="width25 mt-3">
-                <h5 class="text-homepage">Sản phẩm được nghiên cứu và phát triển từ phòng thí nghiệm <span class="fw-bold text-capitalize">{{
-                    brands[0].name }}</span></h5>
-                <h1>Dưỡng môi chuẩn khoa học</h1>
+                <h5 class="text-homepage">Giàu thành phần dưỡng da, tạo cảm giác dễ chịu trên da</h5>
+                <h1>Trang điểm phong cách <span class="fw-bold text-capitalize" v-if="brands[0] != null">{{
+                    brands[0].name }}</span></h1>
             </div>
 
             <ul  class="d-flex product-section ">
@@ -136,7 +136,7 @@
         </div>
 
         <div class="container mt-5">
-            <h4 class="text-uppercase">Các sản phẩm dưỡng môi</h4>
+            <h4 class="text-uppercase">Các sản phẩm trang điểm</h4>
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
                 v-if="productsByCategory1.length > 0">
@@ -164,7 +164,7 @@
         </div>
 
         <div class="container mt-5">
-            <h4 class="text-uppercase">Các sản phẩm dưỡng da</h4>
+            <h4 class="text-uppercase">Các sản phẩm chăm sóc tóc</h4>
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
                 v-if="productsByCategory2.length > 0">
@@ -192,7 +192,7 @@
         </div>
 
         <div class="container mt-5 mb-5">
-            <h4 class="text-uppercase">Các sản phẩm chăm sóc tóc</h4>
+            <h4 class="text-uppercase">Các sản phẩm dưỡng da</h4>
 
             <div class="text-center w-100 justify-content-center d-flex flex-wrap align-items-center"
                 v-if="productsByCategory3.length > 0">

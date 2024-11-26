@@ -32,7 +32,6 @@
             <div class="w-100 d-flex justify-content-end mb-3">
 
                 <select v-model="sortType" class="form-select w-25" aria-label="Default select example">
-                    <option selected>Sắp xếp</option>
                     <option value="1">Giá tăng dần</option>
                     <option value="2">Giá giảm dần</option>
                     <option value="3">A -> Z</option>
@@ -467,35 +466,6 @@ a {
 .example-2 .button:hover::after {
     transform: translate(5px, -50%);
     opacity: 1;
-}
-
-
-#header {
-    color: black;
-    background-color: white;
-
-    #text-search-input {
-        color: black;
-        border-bottom: 1px solid black;
-    }
-
-    #text-search-input::placeholder {
-        color: black;
-    }
-
-    #search-button {
-        color: black;
-    }
-
-    .header-item {
-        color: black;
-    }
-
-    #header-title {
-        color: black;
-        text-decoration: none;
-        background-color: transparent;
-    }
 }
 
 .tag-button {

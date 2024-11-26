@@ -137,19 +137,19 @@
                 </div>
             </div>
             <div class="container">
-                <h6 class="text-end w-100" v-if="types[typeSelection].unitPrice != null">Đơn giá: <span class="fw-bold text-danger">{{
-                    types[typeSelection].unitPrice.toLocaleString("it-IT", {
-                        style: "currency",
-                        currency: "VND",
-                    }) }}</span></h6>
+                <h6 class="text-end w-100" v-if="types[typeSelection].unitPrice != null">Đơn giá: <span
+                        class="fw-bold text-danger">{{
+                            types[typeSelection].unitPrice.toLocaleString("it-IT", {
+                                style: "currency",
+                                currency: "VND",
+                            }) }}</span></h6>
 
 
                 <div class="d-flex justify-content-end w-100 mt-3">
-                    <button :disabled="!checkLogin()" class="cart-button me-3" @click="addToCart"><i
-                            class="fa-solid fa-cart-shopping"></i> Thêm
-                        vào
-                        giỏ hàng</button>
-                    <button :disabled="!checkLogin()" class="buy-button" @click="addOrder">Mua ngay</button>
+                    <button :disabled="!checkLogin() || currentUser.username == 'admin'" class="cart-button me-3" @click="addToCart"><i
+                            class="fa-solid fa-cart-shopping"></i>
+                        Thêm vào giỏ hàng</button>
+                    <button :disabled="!checkLogin() || currentUser.username == 'admin'" class="buy-button" @click="addOrder">Mua ngay</button>
 
                 </div>
             </div>
@@ -160,28 +160,29 @@
                     {{ tag.name }}
                 </button>
             </div>
-            <hr class="w-100"  v-if="productsRecommended.length > 1">
+            <hr class="w-100" v-if="productsRecommended.length > 1">
 
-            <div class="text-center align-items-center justify-content-center mb-5 m-5" v-if="productsRecommended.length > 1">
+            <div class="text-center align-items-center justify-content-center mb-5 m-5"
+                v-if="productsRecommended.length > 1">
                 <h4 class="text-uppercase">Các sản phẩm cùng nhãn hiệu</h4>
 
                 <div id="recommenderCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel">
                     <div class="carousel-inner" v-if="recommendedLength > 0">
                         <div class="carousel-item active">
                             <div class="d-flex  justify-content-center">
-                                <div v-for="index in recommendedLength" :key="'product'+index" class="card me-2 mb-2"
+                                <div v-for="index in recommendedLength" :key="'product' + index" class="card me-2 mb-2"
                                     style="width: 260px; overflow: hidden;">
                                     <div
-                                        :style="`height: 227px; background: url(${productsRecommended[index-1].image}); background-size: cover; background-repeat: no-repeat;`">
+                                        :style="`height: 227px; background: url(${productsRecommended[index - 1].image}); background-size: cover; background-repeat: no-repeat;`">
                                     </div>
                                     <div class="card-body text-start">
                                         <div> <span class="author text-uppercase fw-bold text-secondary">{{
-                                            productsRecommended[index-1].brandName }}</span></div>
+                                            productsRecommended[index - 1].brandName }}</span></div>
                                         <div class="fw-bold product-name" style="height: 45px; overflow: hidden;"
-                                            @click="pushToWithId('products', productsRecommended[index-1].proId)">{{
-                                                productsRecommended[index-1].name }}</div>
+                                            @click="pushToWithId('products', productsRecommended[index - 1].proId)">{{
+                                                productsRecommended[index - 1].name }}</div>
                                         <div class=" fw-bold text-danger">{{
-                                            productsRecommended[index-1].unitPrice.toLocaleString("it-IT", {
+                                            productsRecommended[index - 1].unitPrice.toLocaleString("it-IT", {
                                                 style: "currency",
                                                 currency: "VND",
                                             }) }}</div>
@@ -193,22 +194,25 @@
 
                         <div class="carousel-item">
                             <div class="d-flex  justify-content-center">
-                                <div v-for="index in recommendedLength" :key="'product'+index" class="card me-2 mb-2"
+                                <div v-for="index in recommendedLength" :key="'product' + index" class="card me-2 mb-2"
                                     style="width: 260px; overflow: hidden;">
                                     <div
-                                        :style="`height: 227px; background: url(${productsRecommended[index+ recommendedLength -1].image}); background-size: cover; background-repeat: no-repeat;`">
+                                        :style="`height: 227px; background: url(${productsRecommended[index + recommendedLength - 1].image}); background-size: cover; background-repeat: no-repeat;`">
                                     </div>
                                     <div class="card-body text-start">
                                         <div> <span class="author text-uppercase fw-bold text-secondary">{{
-                                            productsRecommended[index+ recommendedLength-1].brandName }}</span></div>
+                                            productsRecommended[index + recommendedLength - 1].brandName }}</span>
+                                        </div>
                                         <div class="fw-bold product-name" style="height: 45px; overflow: hidden;"
-                                            @click="pushToWithId('products', productsRecommended[index+ recommendedLength-1].proId)">{{
-                                                productsRecommended[index+ recommendedLength-1].name }}</div>
+                                            @click="pushToWithId('products', productsRecommended[index + recommendedLength - 1].proId)">
+                                            {{
+                                                productsRecommended[index + recommendedLength - 1].name }}</div>
                                         <div class=" fw-bold text-danger">{{
-                                            productsRecommended[index+ recommendedLength-1].unitPrice.toLocaleString("it-IT", {
-                                                style: "currency",
-                                                currency: "VND",
-                                            }) }}</div>
+                                            productsRecommended[index +
+                                                recommendedLength - 1].unitPrice.toLocaleString("it-IT", {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                }) }}</div>
                                     </div>
                                 </div>
 
@@ -216,13 +220,13 @@
                         </div>
                     </div>
 
-                    <button style="z-index: 9;;" class="carousel-control-prev" type="button" data-bs-target="#recommenderCarousel"
-                        data-bs-slide="prev">
+                    <button style="z-index: 9;;" class="carousel-control-prev" type="button"
+                        data-bs-target="#recommenderCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button style="z-index: 9;" class="carousel-control-next" type="button" data-bs-target="#recommenderCarousel"
-                        data-bs-slide="next">
+                    <button style="z-index: 9;" class="carousel-control-next" type="button"
+                        data-bs-target="#recommenderCarousel" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -236,7 +240,7 @@
                 <h5 v-if="reviews.length == 0">Hiện chưa có đánh giá nào cho sản phẩm này</h5>
             </div>
 
-            <section v-if="checkLogin() && checkBought()">
+            <section v-if="checkLogin() && checkBought() && currentUser.username != 'admin'">
                 <div class=" text-body">
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-10 col-lg-8 col-xl-6">
@@ -385,6 +389,7 @@ import componentServices from '@/services/component.services';
 import imageServices from '@/services/image.services';
 import orderServices from '@/services/order.services';
 import productComponentServices from '@/services/productComponent.services';
+import { getAllSProducts } from '@/utilities/cartStore';
 const id = ref(0);
 
 const cookies = useCookies();
@@ -584,6 +589,7 @@ async function addToCart() {
             timer: 1500
         });
 
+        await getAllSProducts(currentUser.value.accountId);
     } catch (error) {
         Swal.fire({
             title: "Lỗi!",
@@ -724,7 +730,7 @@ async function addOrder(e: any) {
 
 async function fetchRecommendedProducts() {
     let respProdBrand = await productServices.getAllDetailByBrandId(product.value.brandId);
-    
+
     let shuffledProducts = respProdBrand.data.products.sort(() => Math.random() - 0.5);
     const index = shuffledProducts.findIndex((prod: any) => prod.proId == product.value.proId);
     if (index !== -1) {
@@ -849,7 +855,7 @@ onMounted(async () => {
 
                 // get all recommended
             }
-            await fetchRecommendedProducts(); 
+            await fetchRecommendedProducts();
         }
     } catch (error) {
         console.log(error);
@@ -879,34 +885,6 @@ onMounted(async () => {
     .star-rating:hover~.star-rating,
     .rating-input:checked~.star-rating {
         color: #F4BB47;
-    }
-}
-
-#header {
-    color: black;
-    background-color: white;
-
-    #text-search-input {
-        color: black;
-        border-bottom: 1px solid black;
-    }
-
-    #text-search-input::placeholder {
-        color: black;
-    }
-
-    #search-button {
-        color: black;
-    }
-
-    .header-item {
-        color: black;
-    }
-
-    #header-title {
-        color: black;
-        text-decoration: none;
-        background-color: transparent;
     }
 }
 
@@ -1000,8 +978,9 @@ onMounted(async () => {
     color: #f18f90;
     ;
 }
+
 @media only screen and (max-width: 1000px) {
-    #product-section{
+    #product-section {
         flex-direction: column;
     }
 }
