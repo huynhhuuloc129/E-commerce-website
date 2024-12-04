@@ -61,17 +61,6 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="row justify-content-between">
-
-                                                <div class="col-6">
-                                                    <div class="">
-                                                        <a href="#!" class="link-secondary text-decoration-none">Quên
-                                                            mật khẩu?</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary btn-lg"
                                                     style="background-color: #fbbfc0; border-radius: 0px; border: none;"

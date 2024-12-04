@@ -113,14 +113,14 @@ exports.getDetailsByOrderId = async (req, res) => {
         let sql = ` 
                 SELECT 
                     o.*,
-                    GROUP_CONCAT(DISTINCT sp.selectedProductId) AS selectedProductIds, -- Concatenate selectedProductIds
-                    GROUP_CONCAT(DISTINCT sp.typeId) AS typeIds, -- Optionally concatenate typeIds
-                    GROUP_CONCAT(DISTINCT sp.quantitySelected) AS quantitiesSelected, -- Optionally concatenate quantitiesSelected
-                    GROUP_CONCAT(DISTINCT sp.sellingPrice) AS sellingPrices, -- Optionally concatenate sellingPrices
-                    GROUP_CONCAT(DISTINCT t.name) AS typeNames, -- Concatenate type names
-                    GROUP_CONCAT(DISTINCT p.proId) AS productIds, -- Concatenate productIds
-                    GROUP_CONCAT(DISTINCT p.name) AS productNames, -- Optionally concatenate product names
-                    GROUP_CONCAT(DISTINCT i.base64 SEPARATOR '||') AS imageBase64 -- Concatenate base64 images
+                    GROUP_CONCAT(sp.selectedProductId) AS selectedProductIds, -- Concatenate selectedProductIds
+                    GROUP_CONCAT(sp.typeId) AS typeIds, -- Optionally concatenate typeIds
+                    GROUP_CONCAT(sp.quantitySelected) AS quantitiesSelected, -- Optionally concatenate quantitiesSelected
+                    GROUP_CONCAT(sp.sellingPrice) AS sellingPrices, -- Optionally concatenate sellingPrices
+                    GROUP_CONCAT(t.name) AS typeNames, -- Concatenate type names
+                    GROUP_CONCAT(p.proId) AS productIds, -- Concatenate productIds
+                    GROUP_CONCAT(p.name) AS productNames, -- Optionally concatenate product names
+                    GROUP_CONCAT(i.base64 SEPARATOR '||') AS imageBase64 -- Concatenate base64 images
                 FROM orders o
                 JOIN selectedProduct sp ON o.orderId = sp.orderId
                 JOIN type t ON sp.typeId = t.typeId
@@ -166,14 +166,14 @@ exports.getDetailsByAccountId = async (req, res) => {
         let sql = ` 
                 SELECT 
                     o.*,
-                    GROUP_CONCAT(DISTINCT sp.selectedProductId ORDER BY sp.selectedProductId ASC) AS selectedProductIds, -- Đồng bộ thứ tự
-                    GROUP_CONCAT(DISTINCT sp.typeId ORDER BY sp.typeId ASC) AS typeIds, -- Đồng bộ với selectedProductIds
-                    GROUP_CONCAT(DISTINCT sp.quantitySelected ORDER BY sp.typeId ASC) AS quantitiesSelected, -- Đồng bộ theo typeIds
-                    GROUP_CONCAT(DISTINCT sp.sellingPrice ORDER BY sp.typeId ASC) AS sellingPrices, -- Đồng bộ theo typeIds
-                    GROUP_CONCAT(DISTINCT t.name ORDER BY sp.typeId ASC) AS typeNames, -- Đồng bộ với typeIds
-                    GROUP_CONCAT(DISTINCT p.proId ORDER BY p.proId ASC) AS productIds, -- Đồng bộ với imageBase64
-                    GROUP_CONCAT(DISTINCT p.name ORDER BY p.proId ASC) AS productNames, -- Đồng bộ với productIds
-                    GROUP_CONCAT(DISTINCT i.base64 ORDER BY p.proId ASC SEPARATOR '||') AS imageBase64 -- Đồng bộ với productIds
+                    GROUP_CONCAT( sp.selectedProductId ORDER BY sp.selectedProductId ASC) AS selectedProductIds, -- Đồng bộ thứ tự
+                    GROUP_CONCAT( sp.typeId ORDER BY sp.typeId ASC) AS typeIds, -- Đồng bộ với selectedProductIds
+                    GROUP_CONCAT( sp.quantitySelected ORDER BY sp.typeId ASC) AS quantitiesSelected, -- Đồng bộ theo typeIds
+                    GROUP_CONCAT( sp.sellingPrice ORDER BY sp.typeId ASC) AS sellingPrices, -- Đồng bộ theo typeIds
+                    GROUP_CONCAT( t.name ORDER BY sp.typeId ASC) AS typeNames, -- Đồng bộ với typeIds
+                    GROUP_CONCAT( p.proId ORDER BY p.proId ASC) AS productIds, -- Đồng bộ với imageBase64
+                    GROUP_CONCAT( p.name ORDER BY p.proId ASC) AS productNames, -- Đồng bộ với productIds
+                    GROUP_CONCAT( i.base64 ORDER BY p.proId ASC SEPARATOR '||') AS imageBase64 -- Đồng bộ với productIds
                 FROM orders o
                 JOIN selectedProduct sp ON o.orderId = sp.orderId
                 JOIN type t ON sp.typeId = t.typeId
@@ -406,11 +406,103 @@ exports.delete = async (req, res) => {
 };
 
 
+exports.checkReviewed = async (req, res) => {
+    try {
+
+        let sql = `
+        SELECT 
+            sp.selectedProductId,
+            sp.proId,
+            CASE 
+                WHEN r.reviewId IS NOT NULL THEN 1
+                ELSE 0
+            END AS review_status
+        FROM orders o
+        JOIN selectedproduct sp ON o.orderId = sp.orderId
+        LEFT JOIN review r ON sp.proId = r.productId AND sp.accountId = r.accountId
+        WHERE o.orderId = ${req.params.id} AND o.accountId = ${req.body.accountId};`
+
+        connection.query(sql, (err, row) => {
+            if (err) {
+                console.log(err)
+                return;
+            } else
+                res.status(200).json({
+                    status: true,
+                    data: row
+                });
+        }
+        )
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+
+exports.updateShipmentTracking = async (req, res) => {
+    try {
+
+        let sql = `UPDATE orders SET
+           shipmentTracking = '${req.body.shipmentTracking}'
+        WHERE orderId = ${req.params.id}`
+
+        connection.query(sql, (err, row) => {
+            if (err) {
+                console.log(err)
+                return;
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Update Successfully.'
+                });
+        }
+        )
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
+exports.updatePaid = async (req, res) => {
+    try {
+
+        let sql = `UPDATE orders SET
+           paid = ${req.body.paid}
+        WHERE orderId = ${req.params.id}`
+
+        connection.query(sql, (err, row) => {
+            if (err) {
+                console.log(err)
+                return;
+            } else
+                res.status(200).json({
+                    status: true,
+                    title: 'Update Successfully.'
+                });
+        }
+        )
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};
+
 exports.update = async (req, res) => {
     try {
 
         let sql = `UPDATE orders SET
-           confirm = 1
+           confirm = 1,
+           shipmentTracking = 'Đang chờ giao hàng'
         WHERE orderId = ${req.params.id}`
 
         connection.query(sql, (err, row) => {

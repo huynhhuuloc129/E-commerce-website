@@ -22,6 +22,27 @@ class OrderService {
         handlingError(err);
     })
   }
+  async checkReview(id: number, data: any) {
+    return await axios.patch(`http://localhost:3000/api/orders/review/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
+  async updatePaid(id: number, data: any) {
+    return await axios.patch(`http://localhost:3000/api/orders/paid/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
+  async updateShipment(id: number, data: any) {
+    return await axios.patch(`http://localhost:3000/api/orders/shipment/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
+  }
   async getAllConfirmed() {
     try {
       const orders = await this.api.get("/orders/confirm/detail");

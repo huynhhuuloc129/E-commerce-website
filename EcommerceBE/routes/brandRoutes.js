@@ -10,6 +10,7 @@ router
 router
     .route('/:id')
     .get(brandController.getOne)
+    .patch(brandController.update)
     .delete(brandController.delete);
 router
     .route('/top/10')

@@ -9,6 +9,11 @@
                     @click="currentType = 99">Tất cả</button>
             </li>
             <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
+                    @click="currentType = 1">Chờ xác nhận</button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
                     role="tab" aria-controls="profile" aria-selected="false" style="color: black;"
                     @click="currentType = 0">Chờ thanh
@@ -17,13 +22,19 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
                     role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
-                    @click="currentType = 1">Chờ xác nhận</button>
+                    @click="currentType = 5">Đang chờ giao hàng</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
                     role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
-                    @click="currentType = 2">Hoàn thành</button>
+                    @click="currentType = 4">Đang vận chuyển</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
+                    @click="currentType = 6">Đã nhận được hàng</button>
+            </li>
+
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
                     role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
@@ -51,6 +62,27 @@
                     <div class="col">
 
                         <div class="table-responsive">
+                            <div class="m-2 fw-bold">#{{ order.orderId }}</div>
+                            <div class="mb-3">
+
+                                <div class="text-capitalize fw-bold" for="addressShip ">Địa chỉ
+                                    nhận hàng: <span> {{ currentUser.billingAddress }}
+                                    </span>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="me-5">
+                                        <div class="fw-bold">
+                                            Tên: <span>{{ currentUser.name }}</span>
+                                        </div>
+                                        <div class="fw-bold">
+                                            SĐT: <span>{{ currentUser.phone }}</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                    </div>
+
+                                </div>
+                            </div>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -79,8 +111,8 @@
                                             <p class="mb-0" style="font-weight: 500;">Thỏi</p>
                                         </td>
                                         <td class="align-middle">
-                                            <div class="d-flex flex-row">
-                                                <input disabled id="form1" min="0" name="quantity"
+                                            <div class="d-flex flex-row" v-if="index < order.quantitySelected.length">
+                                                <input disabled id="form1" min="1" name="quantity"
                                                     :value="order.quantitySelected[index]" type="number"
                                                     class="form-control form-control-sm" style="width: 50px;" />
                                             </div>
@@ -100,13 +132,13 @@
                             </table>
                         </div>
                         <div class="mb-5 mb-lg-0">
-                            <div class=" p-4 pt-0 d-flex justify-content-end">
+                            <div class="p-4 pt-0 d-flex justify-content-end">
 
                                 <div class="row w-50 text-end">
                                     <div class="col-lg-4 col-xl-3 w-100">
                                         <div class="d-flex justify-content-between" style="font-weight: 500;">
-                                            <p class="mb-2">Tổng giá:</p>
-                                            <p class="mb-2">{{ (order.totalPrice).toLocaleString("it-IT", {
+                                            <p class="mb-1">Tổng giá:</p>
+                                            <p class="mb-1">{{ (order.totalPrice).toLocaleString("it-IT", {
                                                 style: "currency",
                                                 currency: "VND",
                                             }) }}</p>
@@ -144,15 +176,16 @@
                                                 {{ order.paymentType }}
                                             </p>
                                         </div>
-                                        <div v-if="order.note!=undefined && order.note.length> 0" class="d-flex justify-content-between" style="font-weight: 500;">
+                                        <div v-if="order.note != undefined && order.note.length > 0"
+                                            class="d-flex justify-content-between" style="font-weight: 500;">
                                             <p class="mb-0">Ghi chú:</p>
                                             <p class="mb-0">
                                                 {{ order.note }}
                                             </p>
                                         </div>
-                                        <div v-if="order.shipmentTracking != ''"
-                                            class="d-flex justify-content-between mb-4" style="font-weight: 500;">
-                                            <p class="mb-0">Tình trang đơn hàng:</p>
+                                        <div v-if="order.shipmentTracking != ''" class="d-flex justify-content-between"
+                                            style="font-weight: 500;">
+                                            <p class="mb-0">Tình trạng đơn hàng:</p>
                                             <p class="mb-0">
                                                 {{ order.shipmentTracking }}
                                             </p>
@@ -162,26 +195,32 @@
                                             Đơn hàng đã bị hủy
                                         </div>
 
-                                        <div v-if="order.confirm == 0 && order.cancel == 0" class="mt-4">
+                                        <div v-if="order.confirm == 0 && order.cancel == 0" class="mt-3">
                                             <span class="text-info fw-bold">Đang chờ admin duyệt</span>
                                         </div>
 
                                         <div v-if="order.confirm == 1 && order.cancel == 0">
                                             <button
                                                 @click="addToPayment(order.orderId, order.totalPrice + order.shippingPrice, order.productNames)"
-                                                v-if="order.paid == 0 && order.paymentType == 'Chuyển khoản'" type="button" data-mdb-button-init
-                                                data-mdb-ripple-init class="btn btn-danger btn-block btn-lg"
+                                                v-if="order.paid == 0 && order.paymentType == 'Thanh toán online'"
+                                                type="button" data-mdb-button-init data-mdb-ripple-init
+                                                class="btn btn-danger btn-block btn-lg"
                                                 style="border-radius: 0px;  border: 0;">
                                                 <div class="d-flex justify-content-between">
                                                     <span>Thanh toán</span>
                                                 </div>
                                             </button>
-                                            <div v-if="order.paid == 1"
+
+                                            <div v-if="order.paid == 1 && order.paymentType == 'Thanh toán online'"
                                                 class="d-flex flex-column justify-content-end text-end align-items-end">
-                                                <span class="text-success fw-bold">
-                                                    Đã thanh toán
-                                                </span>
-                                                <button type="button" class="btn btn-primary fw-bold w-50 bg-danger"
+                                                <button @click="updateShipmentTracking(order.orderId)"
+                                                    v-if="order.shipmentTracking != 'Đã nhận được hàng'"
+                                                    class="btn btn-outline-danger">
+                                                    Đã nhận được hàng
+                                                </button>
+                                                <button
+                                                    v-if="reviewCheckMap.get(order.orderId) == false && order.shipmentTracking == 'Đã nhận được hàng'"
+                                                    type="button" class="btn btn-primary fw-bold w-50 bg-danger"
                                                     data-bs-toggle="modal" data-bs-target="#reviewModal"
                                                     style="border-radius: 0px;  border: 0px;"
                                                     @click="choosenOrder = order; initReviewVariable(order.productIds.length)">
@@ -189,9 +228,28 @@
                                                 </button>
                                             </div>
 
+                                            <div v-if="order.paymentType == 'Thanh toán khi nhận hàng'">
+
+                                                <button @click="updateShipmentTracking(order.orderId)"
+                                                    v-if="order.shipmentTracking == 'Đang vận chuyển'"
+                                                    class="btn btn-outline-danger">
+                                                    Đã nhận được hàng
+                                                </button>
+                                                <button
+                                                    v-if="reviewCheckMap.get(order.orderId) == false && order.shipmentTracking == 'Đã nhận được hàng'"
+                                                    type="button" class="btn btn-primary fw-bold w-50 bg-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#reviewModal"
+                                                    style="border-radius: 0px;  border: 0px;"
+                                                    @click="choosenOrder = order; initReviewVariable(order.productIds.length)">
+                                                    Đánh giá
+                                                </button>
+                                            </div>
+
+
                                         </div>
-                                        <button v-if="order.paid == 0 && order.cancel == 0 && order.paymentType == 'Chuyển khoản'"
-                                            @click="cancelOrder(order.orderId)" class="btn btn-dark mt-3"
+                                        <button
+                                            v-if="(order.paid == 0 && order.cancel == 0 && order.paymentType == 'Thanh toán online') || (order.confirm == 0 && order.cancel == 0 && order.paymentType == 'Thanh toán khi nhận hàng')"
+                                            @click="cancelOrder(order.orderId)" class="btn btn-dark mt-1"
                                             style="border-radius:  0;">Hủy đơn</button>
                                     </div>
                                 </div>
@@ -323,8 +381,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             style="border-radius: 0px; border: 0px;">Hủy</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                            style="border-radius: 0px;  border: 0px;"
-                            @click="modifyReview">Đánh giá</button>
+                            style="border-radius: 0px;  border: 0px;" @click="modifyReview">Đánh giá</button>
                     </div>
 
                 </div>
@@ -440,13 +497,19 @@ async function cancelOrder(id: number) {
 const currentType = ref(99)
 function filterOrders() {
     if (currentType.value == 0) { // cho thanh toan
-        return orders.value.filter((o) => o.paid == 0 && o.confirm == 1 && o.cancel == 0)
+        return orders.value.filter((o) => o.paid == 0 && o.confirm == 1 && o.cancel == 0 && o.paymentType == "Thanh toán online")
     } else if (currentType.value == 1) { // cho duyet
         return orders.value.filter((o) => o.confirm == 0 && o.cancel == 0)
     } else if (currentType.value == 2) { // da hoan thanh
-        return orders.value.filter((o) => o.paid == 1 && o.cancel == 0)
+        return orders.value.filter((o) => o.paid == 1 && o.cancel == 0 && o.shipmentTracking != "Đang vận chuyển")
     } else if (currentType.value == 3) { // da huy
         return orders.value.filter((o) => o.cancel == 1)
+    } else if (currentType.value == 4) { // dang van chuyen
+        return orders.value.filter((o) => o.shipmentTracking == "Đang vận chuyển")
+    } else if (currentType.value == 5) { // dang cho van chuyen
+        return orders.value.filter((o) => o.shipmentTracking == "Đang chờ giao hàng")
+    } else if (currentType.value == 6) { // Đã cho van chuyen
+        return orders.value.filter((o) => o.shipmentTracking == "Đã nhận được hàng")
     } else {
         return orders.value
     }
@@ -488,11 +551,13 @@ const choosenOrder = ref({
     confirm: 0,
     cancel: 0
 })
+
 async function modifyReview(e: any) {
     e.preventDefault();
 
     try {
         for (let i = 0; i < starNums.value.length; i++) {
+
             if (starNums.value[i] == 0) {
                 throw ("Vui lòng chọn số sao")
             }
@@ -505,14 +570,18 @@ async function modifyReview(e: any) {
                     content: reviews.value[i].content,
                     star: starNums.value[i]
                 })
+
             } else { //update existed review
+
                 await reviewServices.update(reviews.value[i].reviewId, {
                     content: reviews.value[i].content,
                     star: starNums.value[i]
                 })
+
             }
         }
         // add new review
+        reviewCheckMap.value.set(choosenOrder.value.orderId, true)
 
         Swal.fire({
             title: "Thành công!",
@@ -536,7 +605,6 @@ async function modifyReview(e: any) {
 }
 
 async function initReviewVariable(length: number) {
-    console.log(length)
     starNums.value = []
     reviews.value = []
     for (let i = 0; i < length; i++) {
@@ -565,6 +633,31 @@ async function initReviewVariable(length: number) {
     }
 }
 
+
+async function updateShipmentTracking(orderId: number) {
+    try {
+
+        await orderServices.updateShipment(orderId, {
+            shipmentTracking: "Đã nhận được hàng"
+        })
+
+        orders.value.forEach(e => {
+            if (e.orderId == orderId)
+                e.shipmentTracking = "Đã nhận được hàng"
+        });
+    } catch (error) {
+
+        Swal.fire({
+            title: "Thất bại!",
+            text: "Xóa loại thất bại! Error: " + error,
+            icon: "error",
+            confirmButtonText: "OK",
+            timer: 1500
+        });
+    }
+}
+
+const reviewCheckMap = ref(new Map<number, boolean>());
 onMounted(async () => {
     try {
         orders.value = [];
@@ -573,14 +666,6 @@ onMounted(async () => {
             let resp = await accountServices.getMe(token);
             currentUser.value = resp.data.account[0];
         } else {
-            Swal.fire({
-                title: "Chưa đăng nhập!",
-                text: "Vui lòng đăng nhập để xem thông tin",
-                icon: "error",
-                confirmButtonText: "OK",
-                timer: 1500
-            });
-
             router.push({ name: "home" });
         }
 
@@ -614,6 +699,20 @@ onMounted(async () => {
                 paymentType: data.paymentType,
                 note: data.note
             });
+        }
+
+        for (let i = 0; i < orders.value.length; i++) {
+
+            let respCheckReview = await orderServices.checkReview(orders.value[i].orderId, {
+                accountId: currentUser.value.accountId
+            })
+
+            reviewCheckMap.value.set(orders.value[i].orderId, true);
+
+            for (let j = 0; j < respCheckReview.data.length; j++) {
+                if (respCheckReview.data[j].review_status == 0)
+                    reviewCheckMap.value.set(orders.value[i].orderId, false);
+            }
         }
 
     } catch (error) {

@@ -74,7 +74,7 @@ exports.create = async (req, res) => {
     try {
         if (req.body && req.body.proId && req.body.typeId && req.body.quantitySelected && req.body.sellingPrice && req.body.accountId) {
             let sqlSearch = `SELECT * FROM selectedproduct 
-            WHERE proId = ${req.body.proId} AND accountId = ${req.body.accountId} AND block = 0`;
+            WHERE typeId = ${req.body.typeId} AND accountId = ${req.body.accountId} AND block = 0`;
             connection.query(sqlSearch, (err, row) => {
                 if (err) throw err;
               

@@ -11,5 +11,6 @@ router
     .route('/:id')
     .get(compController.getOne)
     .delete(compController.delete)
+    .patch(compController.update)
 
 module.exports = router;

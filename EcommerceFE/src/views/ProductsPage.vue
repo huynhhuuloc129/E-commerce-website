@@ -72,10 +72,11 @@
                             <div class="d-flex align-items-center mt-3 w-50 me-5">
                                 <h6 class="fw-bold me-3">Số lượng: </h6>
                                 <input v-model="numberSelection" class="form-control w-75" type="number" min="1"
-                                    max="100">
+                                    :max="types[typeSelection].quantityInStock">
                             </div>
                             <div class="d-flex align-items-center">
-                                <h6 class="mt-2 fw-bold">Số lượng trong kho: <span>{{ quantityInStock }}</span>
+                                <h6 class="mt-2 fw-bold">Số lượng trong kho: <span>{{
+                                        types[typeSelection].quantityInStock }}</span>
                                 </h6>
                             </div>
                         </div>
@@ -146,10 +147,13 @@
 
 
                 <div class="d-flex justify-content-end w-100 mt-3">
-                    <button :disabled="!checkLogin() || currentUser.username == 'admin'" class="cart-button me-3" @click="addToCart"><i
-                            class="fa-solid fa-cart-shopping"></i>
+                    <button
+                        :disabled="!checkLogin() || currentUser.username == 'admin' || types[typeSelection].quantityInStock <= 0"
+                        class="cart-button me-3" @click="addToCart"><i class="fa-solid fa-cart-shopping"></i>
                         Thêm vào giỏ hàng</button>
-                    <button :disabled="!checkLogin() || currentUser.username == 'admin'" class="buy-button" @click="addOrder">Mua ngay</button>
+                    <button
+                        :disabled="!checkLogin() || currentUser.username == 'admin' || types[typeSelection].quantityInStock <= 0"
+                        class="buy-button" @click="addOrder">Mua ngay</button>
 
                 </div>
             </div>
@@ -240,99 +244,8 @@
                 <h5 v-if="reviews.length == 0">Hiện chưa có đánh giá nào cho sản phẩm này</h5>
             </div>
 
-            <section v-if="checkLogin() && checkBought() && currentUser.username != 'admin'">
-                <div class=" text-body">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-md-10 col-lg-8 col-xl-6">
-                            <div class="card">
-                                <div class="card-body p-4">
-                                    <div class="d-flex flex-start w-100">
-                                        <img class="rounded-circle shadow-1-strong me-3"
-                                            v-if="checkLogin() == true && currentUser.avatar != ''"
-                                            :src="currentUser.avatar" alt="avatar" width="65" height="65" />
-                                        <img v-else src="https://placehold.co/65x65" alt=""
-                                            class="rounded-circle shadow-1-strong me-3" width="65" height="65">
-                                        <div class="w-100">
-                                            <h5>Thêm bình luận</h5>
-                                            <h6>{{ currentUser.name }}</h6>
-                                            <div class="container-wrapper">
-                                                <div class="container d-flex align-items-center justify-content-start ">
-                                                    <div class="row justify-content-center">
-
-                                                        <!-- star rating -->
-                                                        <div class="rating-wrapper">
-
-                                                            <!-- star 5 -->
-                                                            <input v-model="starNum" class="rating-input" type="radio"
-                                                                id="5-star-rating" name="star-rating" value="5">
-                                                            <label for="5-star-rating" class="star-rating">
-                                                                <i class="fas fa-star d-inline-block"></i>
-                                                            </label>
-
-                                                            <!-- star 4 -->
-                                                            <input v-model="starNum" class="rating-input" type="radio"
-                                                                id="4-star-rating" name="star-rating" value="4">
-                                                            <label for="4-star-rating" class="star-rating star">
-                                                                <i class="fas fa-star d-inline-block"></i>
-                                                            </label>
-
-                                                            <!-- star 3 -->
-                                                            <input v-model="starNum" class="rating-input" type="radio"
-                                                                id="3-star-rating" name="star-rating" value="3">
-                                                            <label for="3-star-rating" class="star-rating star">
-                                                                <i class="fas fa-star d-inline-block"></i>
-                                                            </label>
-
-                                                            <!-- star 2 -->
-                                                            <input v-model="starNum" class="rating-input" type="radio"
-                                                                id="2-star-rating" name="star-rating" value="2">
-                                                            <label for="2-star-rating" class="star-rating star">
-                                                                <i class="fas fa-star d-inline-block"></i>
-                                                            </label>
-
-                                                            <!-- star 1 -->
-                                                            <input v-model="starNum" class="rating-input" type="radio"
-                                                                id="1-star-rating" name="star-rating" value="1">
-                                                            <label for="1-star-rating" class="star-rating star">
-                                                                <i class="fas fa-star d-inline-block"></i>
-                                                            </label>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div data-mdb-input-init class="form-outline">
-                                                <textarea v-model="review.content" class="form-control"
-                                                    id="textAreaExample" rows="4"></textarea>
-                                            </div>
-                                            <div class="d-flex justify-content-between mt-3">
-                                                <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                                    class="btn btn-dark" @click="review.content = ''">Xóa</button>
-                                                <button :disabled="review.content.length == 0" type="button"
-                                                    data-mdb-button-init data-mdb-ripple-init class="btn"
-                                                    style="background-color: #fbbfc0; color: white;"
-                                                    @click="modifyReview($event)">
-                                                    <span v-if="review.accountId == 0" class="fw-bold">
-                                                        Gửi
-                                                    </span>
-                                                    <span v-else>
-                                                        Cập nhật
-                                                    </span>
-                                                    <i class="fas fa-long-arrow-alt-right ms-1"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section>
-                <div class=" py-5 text-body">
+                <div class=" py-2 text-body mb-5">
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-11 col-lg-9 col-xl-7">
 
@@ -489,7 +402,6 @@ const tagsBelong = ref([
     }
 ])
 
-const starNum = ref(0)
 const review = ref({
     reviewId: 0,
     productId: 0,
@@ -516,6 +428,21 @@ const reviews = ref([{
     avatar: ''
 }])
 
+const sProducts = ref([{
+    selectedProductId: 0,
+    quantitySelected: 0,
+    sellingPrice: 0,
+    created_at: '',
+    updated_at: '',
+    proId: 0,
+    orderId: 0,
+    accountId: 0,
+    typeId: 0,
+    block: 0,
+    name: '',
+    typeName: ''
+}])
+
 function pushToWithId(name: string, id: number) {
     router.push({
         name: name,
@@ -523,57 +450,31 @@ function pushToWithId(name: string, id: number) {
     })
 }
 
-async function modifyReview(e: any) {
-    // e.preventDefault();
-
-    try {
-        if (starNum.value == 0) {
-            throw ("Vui lòng chọn số sao")
-        }
-        // add new review
-        if (review.value.accountId == 0) {
-
-            await reviewServices.create({
-                productId: product.value.proId,
-                accountId: currentUser.value.accountId,
-                content: review.value.content,
-                star: starNum.value
-            })
-        } else { //update existed review
-            await reviewServices.update(review.value.reviewId, {
-                content: review.value.content,
-                star: starNum.value
-            })
-        }
-
-        Swal.fire({
-            title: "Thành công!",
-            text: "Chỉnh sửa nhận xét thành công!",
-            icon: "success",
-            confirmButtonText: "OK",
-            timer: 1500
-        });
-
-        // window.location.reload();
-    } catch (error) {
-        Swal.fire({
-            title: "Lỗi!",
-            text: "Đã có lỗi xảy ra! " + error,
-            icon: "error",
-            confirmButtonText: "OK",
-            timer: 1500
-        });
-        console.log(error)
-    }
-}
 
 async function addToCart() {
     // e.preventDefault();
     try {
         if (numberSelection.value <= 0) throw ('Số lượng sản phẩm phải lớn hơn 0!')
-        if (numberSelection.value >= types.value[typeSelection.value].quantityInStock) throw ('Số lượng sản phẩm vượt số lượng đang có.')
+        if (numberSelection.value > types.value[typeSelection.value].quantityInStock) throw ('Số lượng sản phẩm vượt số lượng đang có.')
 
-        let resp = await selectedProductServices.create({
+        let respSProducts = await selectedProductServices.getAllByAccountIdInCart(currentUser.value.accountId)
+        sProducts.value = respSProducts.data.sProducts
+
+        for (let i=0; i< sProducts.value.length; i++) {
+            if (sProducts.value[i].proId == product.value.proId) {
+                if (numberSelection.value + sProducts.value[i].quantitySelected > types.value[typeSelection.value].quantityInStock) {
+                    Swal.fire({
+                        title: "Lỗi!",
+                        text: "Số lượng sản phẩm đã chọn và số lượng trong giỏ hàng vượt quá số lượng trong kho.",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                    return;
+                }
+            }
+        }
+
+        await selectedProductServices.create({
             quantitySelected: numberSelection.value,
             sellingPrice: types.value[typeSelection.value].unitPrice,
             typeId: types.value[typeSelection.value].typeId,
@@ -634,14 +535,6 @@ let orderReviews = ref([{
     confirm: 0
 }])
 
-function checkBought() {
-    for (let i = 0; i < orderReviews.value.length; i++) {
-        if (orderReviews.value[i].productIds.includes(product.value.proId) && orderReviews.value[i].confirm == 1)
-            return true;
-    }
-    return false
-}
-
 const newOrder = ref({
     accountId: 0,
     totalPrice: 0,
@@ -684,8 +577,8 @@ async function addOrder(e: any) {
 
         if (numberSelection.value <= 0) throw ('Số lượng sản phẩm phải lớn hơn 0!')
         if (numberSelection.value >= types.value[typeSelection.value].quantityInStock) throw ('Số lượng sản phẩm vượt số lượng đang có.')
-        if (currentUser.value.billingAddress == undefined || currentUser.value.billingAddress == "") {
-            throw "Vui lòng nhập đầy đủ thông tin cá nhân trước khi mua hàng!"
+        if (currentUser.value.billingAddress == undefined || currentUser.value.billingAddress == "" || currentUser.value.phone == undefined || currentUser.value.phone == "") {
+            throw "Vui lòng nhập đầy đủ thông tin cá nhân trước khi đặt hàng!"
         }
 
         newOrder.value = {

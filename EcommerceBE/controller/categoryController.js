@@ -135,7 +135,7 @@ exports.update = async (req, res) => {
             }
 
             let sql = `UPDATE category SET 
-                name = '${newCat.name}'
+                name = '${newCat.name}',
                 description = '${newCat.description}'
             WHERE catId = ${newCat.catId}`
 

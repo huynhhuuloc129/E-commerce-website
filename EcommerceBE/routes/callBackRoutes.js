@@ -33,8 +33,7 @@ router
   
   
               let sql = `UPDATE orders SET
-                  paid = 1,
-                  shipmentTracking = 'Đang vận chuyển'
+                  paid = 1
               WHERE orderId = ${req.params.id}`
   
               connection.query(sql, (err, row) => {

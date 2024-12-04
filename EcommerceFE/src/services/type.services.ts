@@ -50,8 +50,8 @@ class TypeService {
     }
   }
 
-  async update(id: number, name: string, ) {
-    return await axios.patch(`http://localhost:3000/api/types/${id}`, {name: name}).then((res) => {
+  async update(id: number, data: any) {
+    return await axios.patch(`http://localhost:3000/api/types/${id}`, data).then((res) => {
     return res.data;
     }).catch((err) => {
         handlingError(err);

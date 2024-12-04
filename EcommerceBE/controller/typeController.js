@@ -150,17 +150,20 @@ exports.delete = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        if (req.body && req.body.name) {
+        if (req.body && req.body.name && req.body.unitPrice && req.body.quantityInStock) {
 
             const newType = {
-                'typeId': req.body.id,
+                'typeId': req.params.id,
                 'name': req.body.name,
-                'unitPrice': req.body.unitPrice
+                'unitPrice': req.body.unitPrice,
+                'quantityInStock': req.body.quantityInStock
+
             }
 
             let sql = `UPDATE type SET 
                 name = '${newType.name}',
-                unitPrice = '${newType.unitPrice}'
+                unitPrice = '${newType.unitPrice}',
+                quantityInStock = '${newType.quantityInStock}'
             WHERE typeId = ${newType.typeId}`
 
             connection.query(sql, (err, row) => {

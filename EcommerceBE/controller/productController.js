@@ -314,7 +314,7 @@ exports.getOneDetails = async (req, res) => {
                 typeData.typeIds,
                 GROUP_CONCAT(DISTINCT t.tagId) AS tagIds,  -- You can keep DISTINCT here if you want unique tagIds
                 GROUP_CONCAT(DISTINCT i.imageId) AS imageIds, -- Use DISTINCT if you want unique imageIds
-                GROUP_CONCAT(DISTINCT i.base64) AS base64s, 
+                GROUP_CONCAT(DISTINCT i.base64 SEPARATOR '|') AS base64s, 
                 GROUP_CONCAT(DISTINCT c.componentId) AS componentIds
             FROM product p
             -- Subquery to aggregate types

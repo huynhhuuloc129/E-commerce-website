@@ -65,10 +65,11 @@
                                     currency: "VND",
                                 }) }}</span></div>
                     </div>
-                    <button class="btn btn-danger px-4 py-2 fw-bold text-uppercase"
+                    <button :disabled="sProducts.length <= 0" class="btn btn-danger px-4 py-2 fw-bold text-uppercase"
                         style="border-radius: 0px; color: white;" data-bs-toggle="modal"
                         data-bs-target="#confirmOrderModal">
-                        Tiến hành đặt hàng</button>
+                        Tiến hành đặt hàng
+                    </button>
                 </div>
             </div>
         </div>
@@ -86,19 +87,19 @@
                     <section class="h-100 h-custom container mb-3">
                         <div class="mb-3">
 
-                            <div class="text-capitalize fw-bold" style="font-size: 22px;" for="addressShip ">Địa chỉ
-                                nhận hàng</div>
+                            <div class="text-capitalize fw-bold" for="addressShip ">Địa chỉ
+                                nhận hàng: <span>{{ currentUser.billingAddress }}</span></div>
                             <div class="d-flex">
                                 <div class="me-5">
                                     <div class="fw-bold">
-                                        Tên: {{ currentUser.name }}
+                                        Tên: <span>{{ currentUser.name }}</span>
                                     </div>
                                     <div class="fw-bold">
-                                        SĐT: {{ currentUser.phone }}
+                                        SĐT: <span>{{ currentUser.phone }}</span>
                                     </div>
                                 </div>
                                 <div>
-                                    {{ currentUser.billingAddress }}
+                                    
                                 </div>
 
                             </div>
@@ -173,7 +174,7 @@
                                             <label for="typePayment">Phương thức thanh toán</label>
                                             <select v-model="typePayment" name="typePayment" class="form-select"
                                                 aria-label="Default select example">
-                                                <option value="Chuyển khoản">Chuyển khoản</option>
+                                                <option value="Thanh toán online">Thanh toán online</option>
                                                 <option value="Thanh toán khi nhận hàng">Thanh toán khi nhận hàng
                                                 </option>
                                             </select>
@@ -311,6 +312,8 @@ async function removeSelectedProduct(index: number) {
         await selectedProductServices.delete(sProducts.value[index].selectedProductId)
 
         sProducts.value.splice(index, 1)
+        images.value.splice(index, 1)
+
     } catch (error) {
         console.log(error)
     }
@@ -364,12 +367,12 @@ async function editQuantity(number: number, original: number, index: number, e: 
 }
 
 const noteOrder = ref("")
-const typePayment = ref("Chuyển khoản")
+const typePayment = ref("Thanh toán online")
 
 async function addOrder(e: any) {
     e.preventDefault();
     try {
-        if (currentUser.value.billingAddress == undefined || currentUser.value.billingAddress == "") {
+        if (currentUser.value.billingAddress == undefined || currentUser.value.billingAddress == "" || currentUser.value.phone == undefined || currentUser.value.phone == "") {
             throw "Vui lòng nhập đầy đủ thông tin cá nhân trước khi đặt hàng!"
         }
 

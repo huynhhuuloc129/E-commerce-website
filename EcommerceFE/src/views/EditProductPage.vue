@@ -57,7 +57,7 @@
                             </div>
 
                             <div class="mb-3 w-25">
-                                <label for="unit" class="fw-bold form-label" >Đơn vị bán (*):</label>
+                                <label for="unit" class="fw-bold form-label">Đơn vị bán (*):</label>
                                 <input v-model="editProduct.unit" type="text" id="unit" class="form-control" required>
                             </div>
                         </div>
@@ -87,22 +87,22 @@
 
                                     <div class="w-50">
                                         <label v-if="index == 0" for="type" class="fw-bold form-label">Loại:</label>
-                                        <input disabled v-model="editProduct.types[index].name" type="text" id="type"
+                                        <input v-model="editProduct.types[index].name" type="text" id="type"
                                             class="form-control" required>
                                     </div>
 
                                     <div class="w-25">
                                         <label v-if="index == 0" for="count" class="fw-bold form-label">Số
                                             lượng:</label>
-                                        <input disabled v-model="editProduct.types[index].quantityInStock" type="number"
+                                        <input v-model="editProduct.types[index].quantityInStock" type="number"
                                             id="count" min="0" class="form-control" required>
                                     </div>
 
                                     <div class="w-25">
                                         <label v-if="index == 0" for="price" class="fw-bold form-label">Giá
                                             loại:</label>
-                                        <input disabled v-model="editProduct.types[index].unitPrice" type="number"
-                                            id="price" min="0" class="form-control" required>
+                                        <input v-model="editProduct.types[index].unitPrice" type="number" id="price"
+                                            min="0" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -132,8 +132,9 @@
                             </div>
                             <div class="d-flex flex-wrap" id="component-wrap">
                                 <div class="me-2 mb-2" v-for="component in components" :key="component.componentId">
-                                    <input type="checkbox" class="btn-check" :id="'componentEdit' + component.componentId"
-                                    v-model="editProduct.componentIds"  autocomplete="off" :value="component.componentId">
+                                    <input type="checkbox" class="btn-check"
+                                        :id="'componentEdit' + component.componentId" v-model="editProduct.componentIds"
+                                        autocomplete="off" :value="component.componentId">
                                     <label class="btn btn-outline-dark" :for="'componentEdit' + component.componentId"
                                         style="border-radius: 0px;">{{ component.name
                                         }}</label>
@@ -170,6 +171,7 @@ import brandServices from '@/services/brand.services';
 import productServices from '@/services/product.sevices';
 import componentServices from '@/services/component.services';
 import { checkLogin } from '@/utilities/utilities';
+import typeServices from '@/services/type.services';
 const router = useRouter();
 
 
@@ -223,6 +225,7 @@ const editProduct = ref({
     guide: '',
     note: '',
     types: [{
+        typeId: 0,
         name: "",
         unitPrice: 0,
         quantityInStock: 0
@@ -276,11 +279,27 @@ async function onEditProduct(e: any) {
     try {
         if ((editProduct.value.images == null || editProduct.value.images.length == 0) &&
             (currentProduct.value.base64s != null && currentProduct.value.base64s.length > 0)) {
-            editProduct.value.images = currentProduct.value.base64s.split(',')
+            editProduct.value.images = currentProduct.value.base64s.split('|')
         }
+        console.log(editProduct.value.images)
         if (editProduct.value.guide == undefined || editProduct.value.guide == "" || editProduct.value.note == undefined || editProduct.value.note == "" || editProduct.value.maintain == undefined || editProduct.value.maintain == "" || editProduct.value.description == undefined || editProduct.value.description == "" || editProduct.value.name == undefined || editProduct.value.name == "") {
             throw "Vui lòng nhập đầy đủ thông tin quan trọng!"
         }
+
+        for (let i = 0; i < editProduct.value.types.length; i++) {
+            if (editProduct.value.types[i].name == null || editProduct.value.types[i].name == '' || editProduct.value.types[i].unitPrice == 0 || editProduct.value.types[i].quantityInStock == 0) {
+                throw "Vui lòng nhập đầy đủ thông tin về loại!"
+            }
+        }
+
+        for (let i = 0; i < editProduct.value.types.length; i++) {
+            await typeServices.update(editProduct.value.types[i].typeId, {
+                name: editProduct.value.types[i].name,
+                unitPrice: editProduct.value.types[i].unitPrice,
+                quantityInStock: editProduct.value.types[i].quantityInStock
+            })
+        }
+
         await productServices.update(currentProduct.value.proId, editProduct.value)
 
         Swal.fire({
@@ -332,13 +351,14 @@ onMounted(async () => {
             guide: currentProduct.value.guide,
             note: currentProduct.value.note,
             types: currentProduct.value.typeIds ? currentProduct.value.typeIds.split(',').map((id, index) => ({
+                typeId: Number(id),
                 name: currentProduct.value.typeNames.split(',')[index] || '',
                 unitPrice: parseFloat(currentProduct.value.unitPrices.split(',')[index] || '0'),
                 quantityInStock: parseInt(currentProduct.value.quantitiesInStock.split(',')[index] || '0')
             })) : [],
-            images: currentProduct.value.imageIds ? [currentProduct.value.imageIds] : [],
+            images: currentProduct.value.base64s ? currentProduct.value.base64s.split('|') : [],
             tagIds: currentProduct.value.tagIds ? currentProduct.value.tagIds.split(',').map(Number) : [], // Convert to an array of numbers
-            componentIds: currentProduct.value.componentIds ? currentProduct.value.componentIds.split(',').map(Number): []
+            componentIds: currentProduct.value.componentIds ? currentProduct.value.componentIds.split(',').map(Number) : []
         };
 
         // get all tags

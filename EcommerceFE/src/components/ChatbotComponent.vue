@@ -1,5 +1,5 @@
 <template>
-    <div class="chatbot-container" style="z-index: 1;">
+    <div v-if="currentUser.role != 'Admin'" class="chatbot-container" style="z-index: 1;">
         <!-- Plus Icon Button -->
         <button @click="toggleChatbot" class="btn chatbot-btn"
             style="background-color: #d19b9c; color: white; width: 70px; height: 70px; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
@@ -67,6 +67,7 @@ const currentUser = ref({
     billingAddress: "",
     created_at: null,
     updated_at: null,
+    role: ""
 });
 
 const userAvatar = ref("");

@@ -14,6 +14,15 @@ router
   .route('/unconfirm/:id')
   .get(orderController.getAllUnConfirmedOrder)
 router
+  .route('/paid/:id')
+  .patch(orderController.updatePaid)
+router
+  .route('/shipment/:id')
+  .patch(orderController.updateShipmentTracking)
+router
+  .route('/review/:id')
+  .patch(orderController.checkReviewed)
+router
   .route('/:id')
   .get(orderController.getOne)
   .patch(orderController.update)

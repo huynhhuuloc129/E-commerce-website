@@ -122,3 +122,45 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+
+exports.update = async (req, res) => {
+    try {
+        if (req.body  && req.body.name && req.body.description) {
+
+            const newComp = {
+                componentId: req.params.id,
+                name: req.body.name,
+                description: req.body.description,
+            }
+
+            let sql = `UPDATE component SET
+                name = '${newComp.name}',
+                description = '${newComp.description}'
+            WHERE componentId = ${newComp.componentId}`
+
+            connection.query(sql, (err, row) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                } else
+                    res.status(200).json({
+                        status: true,
+                        title: 'Update Successfully.'
+                    });
+            }
+            )
+        } else {
+            res.status(400).json({
+                errorMessage: 'Add proper parameter first!',
+                status: false
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: err,
+        });
+    }
+};

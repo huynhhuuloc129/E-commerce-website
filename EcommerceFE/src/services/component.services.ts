@@ -39,10 +39,18 @@ class ComponentService {
 
   async delete(id: number) {
     try {
-      return await this.api.delete("/component/" + id);
+      return await this.api.delete("/components/" + id);
     } catch (err) {
       handlingError(err);
     }
+  }
+
+  async update(id: number, data: any, ) {
+    return await axios.patch(`http://localhost:3000/api/components/${id}`, data).then((res) => {
+    return res.data;
+    }).catch((err) => {
+        handlingError(err);
+    })
   }
 }
 

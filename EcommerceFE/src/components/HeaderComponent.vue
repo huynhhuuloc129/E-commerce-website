@@ -20,7 +20,7 @@
                     Trang chủ
                 </button>
 
-                <button class="header-item fw-bold text-uppercase btn border-0 " type="button" id="dropdownMenuButton2"
+                <button class="header-item fw-bold text-uppercase btn border-0" type="button" id="dropdownMenuButton2"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Dưỡng da
                 </button>
@@ -30,22 +30,17 @@
                             <h6 class="">Chăm sóc da mặt</h6>
 
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="http://localhost:5173/tag/36" class="link">
                                     Tinh chất dưỡng da
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="http://localhost:5173/tag/92" class="link">
                                     Sữa rữa mặt
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
-                                    Kem dưỡng da ban đêm
-                                </a>
-                            </div>
-                            <div class="mt-1">
-                                <a href="" class="link fw-bold">
+                                <a href="http://localhost:5173/tag/92" class="link fw-bold">
                                     XEM TOÀN BỘ SẢN PHẨM CHĂM SÓC DA MẶT
                                 </a>
                             </div>
@@ -54,22 +49,12 @@
                             <h6 class="">Tẩy trang và làm sạch</h6>
 
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="http://localhost:5173/tag/86" class="link">
                                     Micellar Water
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
-                                    Sửa rửa mặt Aura Perfect
-                                </a>
-                            </div>
-                            <div class="mt-1">
-                                <a href="" class="link">
-                                    Sửa rửa mặt Revitalift
-                                </a>
-                            </div>
-                            <div class="mt-1">
-                                <a href="" class="link fw-bold">
+                                <a href="http://localhost:5173/tag/86" class="link fw-bold">
                                     XEM TẤT CẢ SẢN PHẨM TẨY TRANG VÀ LÀM SẠCH
                                 </a>
                             </div>
@@ -171,17 +156,17 @@
                             <h6 class="">Trang điểm môi</h6>
 
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="http://localhost:5173/tag/2" class="link">
                                     Son thỏi
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link">
-                                    Son kem, son tint
+                                <a href="http://localhost:5173/tag/56" class="link">
+                                    Son kem
                                 </a>
                             </div>
                             <div class="mt-1">
-                                <a href="" class="link fw-bold">
+                                <a href="http://localhost:5173/tag/52" class="link fw-bold">
                                     XEM TOÀN BỘ TRANG ĐIỂM MÔI
                                 </a>
                             </div>
@@ -258,7 +243,7 @@
                             <h6 class="">Chăm sóc tóc</h6>
 
                             <div class="mt-1">
-                                <a href="" class="link">
+                                <a href="http://localhost:5173/tag/89" class="link">
                                     Dầu gội
                                 </a>
                             </div>
@@ -439,20 +424,20 @@
                             <li><a class="dropdown-item" href="http://localhost:5173/personal"><i class="fa-solid fa-user"></i> Tài khoản</a>
                             </li>
                             <li v-if="currentUser != null && currentUser.username == 'admin'"><a class="dropdown-item"
-                                    href="http://localhost:5173/admin"><i class="fa-solid fa-gear"></i> Admin</a></li>
+                                    href="http://localhost:5173/admin"><i class="fa-solid fa-gear"></i> Quản lý</a></li>
                             <li v-if="currentUser.username != 'admin'"><a class="dropdown-item" href="http://localhost:5173/orders"><i class="fa-solid fa-list"></i> Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#" @click="signOut"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
 
 
-                    <div class="dropdown" v-if="!$route.meta.hideCart">
+                    <div class="dropdown" v-if="!$route.meta.hideCart && currentUser.role != 'Admin'">
 
                         <button type="button" class="btn btn-light me-5 dropdown-toggle position-relative"
                             id="dropdownMenuButtonCart" data-bs-toggle="dropdown" aria-expanded="false"
                             @click="pushToCart">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
-                                style="background-color: #fbbfc0;">
+                                style="background-color: #d19b9c;">
                                 {{ cartState.products.length }}
                             </span>
                             <i class="fa-solid fa-cart-shopping" style="color: #d19b9c"></i>
@@ -546,6 +531,7 @@ const currentUser = ref({
     billingAddress: "",
     created_at: null,
     updated_at: null,
+    role: ""
 });
 
 const brands = ref([
@@ -585,8 +571,8 @@ function pushToHome(e: any) {
 function signOut(e: any) {
     e.preventDefault();
     document.cookie = "Token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    window.location.reload();
     router.push({ name: "home" });
+    window.location.reload();
 }
 
 import { cartState, updateCartState, getAllSProducts } from '../utilities/cartStore';

@@ -31,7 +31,7 @@ router
       amount: req.body.amount,
       //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
       //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-      callback_url: 'https://6d06-2001-ee0-5362-a3f0-9564-b724-f011-f0c9.ngrok-free.app/api/callback/' + req.body.id,
+      callback_url: 'https://7d64-2001-ee0-5362-a3f0-2c8f-ab09-6324-86ca.ngrok-free.app/api/callback/' + req.body.id,
       description: req.body.description,
       bank_code: '',
     };
