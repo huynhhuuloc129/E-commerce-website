@@ -2,9 +2,15 @@ import { useCookies } from "vue3-cookies";
 
 const cookies = useCookies();
 
+function isTokenExpired(token: string) {
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date()).getTime() / 1000)) >= expiry;
+  }
+
 export function checkLogin() {
     const tokenBearer = cookies.cookies.get('Token');
-    if (tokenBearer == null || tokenBearer == '') return false;
+    if (tokenBearer == null || tokenBearer == '' || isTokenExpired(tokenBearer)) return false;
+  
     return true
 };
 

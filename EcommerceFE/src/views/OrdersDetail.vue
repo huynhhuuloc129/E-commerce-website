@@ -32,7 +32,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
                     role="tab" aria-controls="contact" aria-selected="false" style="color: black;"
-                    @click="currentType = 6">Đã nhận được hàng</button>
+                    @click="currentType = 6">Thành công</button>
             </li>
 
             <li class="nav-item" role="presentation">
@@ -214,7 +214,7 @@
                                             <div v-if="order.paid == 1 && order.paymentType == 'Thanh toán online'"
                                                 class="d-flex flex-column justify-content-end text-end align-items-end">
                                                 <button @click="updateShipmentTracking(order.orderId)"
-                                                    v-if="order.shipmentTracking != 'Đã nhận được hàng'"
+                                                    v-if="order.shipmentTracking == 'Đang vận chuyển'"
                                                     class="btn btn-outline-danger">
                                                     Đã nhận được hàng
                                                 </button>
@@ -446,7 +446,7 @@ let orders = ref([{
     paymentType: "",
     note: ""
 }])
-
+import paymentVNPayServices from '@/services/paymentVNPay.services';
 async function addToPayment(id: number, amount: number, descriptions: string[]) {
     let mainDescription = "Thanh toán cho đơn hàng "
     for (let i = 0; i < descriptions.length; i++) {
@@ -455,7 +455,7 @@ async function addToPayment(id: number, amount: number, descriptions: string[]) 
     }
 
     try {
-        let resp = await paymentServices.create({
+        let resp = await paymentVNPayServices.create({
             id: id,
             amount: amount,
             description: mainDescription
@@ -505,11 +505,11 @@ function filterOrders() {
     } else if (currentType.value == 3) { // da huy
         return orders.value.filter((o) => o.cancel == 1)
     } else if (currentType.value == 4) { // dang van chuyen
-        return orders.value.filter((o) => o.shipmentTracking == "Đang vận chuyển")
+        return orders.value.filter((o) => o.shipmentTracking == "Đang vận chuyển" && o.cancel == 0)
     } else if (currentType.value == 5) { // dang cho van chuyen
-        return orders.value.filter((o) => o.shipmentTracking == "Đang chờ giao hàng")
+        return orders.value.filter((o) => o.shipmentTracking == "Đang chờ giao hàng" && o.cancel == 0)
     } else if (currentType.value == 6) { // Đã cho van chuyen
-        return orders.value.filter((o) => o.shipmentTracking == "Đã nhận được hàng")
+        return orders.value.filter((o) => o.shipmentTracking == "Đã nhận được hàng" && o.cancel == 0)
     } else {
         return orders.value
     }

@@ -4,9 +4,9 @@ const router = express.Router();
 const moment = require('moment')
 const CryptoJS = require('crypto-js');
 const config = {
-  app_id: '2553',
-  key1: 'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
-  key2: 'kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz',
+  app_id: '2554',
+  key1: 'sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn',
+  key2: 'trMrHtvjo6myautxDUiAcYsVtaeQ8nhf',
   endpoint: 'https://sb-openapi.zalopay.vn/v2/create',
 };
 
@@ -31,7 +31,7 @@ router
       amount: req.body.amount,
       //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
       //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-      callback_url: 'https://7d64-2001-ee0-5362-a3f0-2c8f-ab09-6324-86ca.ngrok-free.app/api/callback/' + req.body.id,
+      callback_url: 'https://3f1e-2001-ee0-5363-7680-1500-7b3d-3f5f-6639.ngrok-free.app/api/callback/' + req.body.id,
       description: req.body.description,
       bank_code: '',
     };
@@ -51,11 +51,13 @@ router
       order.embed_data +
       '|' +
       order.item;
+
     order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
-  
+
     try {
       const result = await axios.post(config.endpoint, null, { params: order });
   
+      console.log(result)
       return res.status(200).json(result.data);
     } catch (error) {
       console.log(error);

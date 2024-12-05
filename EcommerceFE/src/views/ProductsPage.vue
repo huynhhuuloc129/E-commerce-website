@@ -584,11 +584,11 @@ async function addOrder(e: any) {
         newOrder.value = {
             accountId: currentUser.value.accountId,
             totalPrice: types.value[typeSelection.value].unitPrice * numberSelection.value,
-            shippingPrice: 50000,
+            shippingPrice: 30000,
             shippingAddress: currentUser.value.billingAddress,
             shipped: 0,
             shippedDate: null,
-            shipmentTracking: "",
+            shipmentTracking: "Đang chờ giao hàng",
             paid: 0,
             confirm: 0,
             proId: product.value.proId,

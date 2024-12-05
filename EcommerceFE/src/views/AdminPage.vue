@@ -4,8 +4,15 @@
     <div id="whole-section" class=" bg-white d-flex p-0 mb-5" style="width: 100vw;">
         <nav id="sidebarMenu" style="z-index: 0" class="bg-white sticky-top">
             <div class="position-sticky">
+
                 <div ref="fragment" class="list-group list-group-flush mx-3 mt-4">
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true"
+                    <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="false"
+                        data-bs-toggle="tab" data-bs-target="#order" aria-controls="order">
+                        <i class="fa-solid fa-list me-3"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true"
                         data-bs-toggle="tab" data-bs-target="#metric">
                         <i class="fas fa-chart-line fa-fw me-3"></i>
                         <span>Thống kê</span>
@@ -28,11 +35,6 @@
                             </div>
                         </div>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="false"
-                        data-bs-toggle="tab" data-bs-target="#order" aria-controls="order">
-                        <i class="fa-solid fa-list me-3"></i>
-                        <span>Đơn hàng</span>
-                    </a>
 
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="false"
                         data-bs-toggle="tab" data-bs-target="#users" aria-controls="users">
@@ -44,7 +46,7 @@
         </nav>
 
         <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active mt-4" id="metric" role="tabpanel" aria-labelledby="metric-tab"
+            <div class="tab-pane fade mt-4" id="metric" role="tabpanel" aria-labelledby="metric-tab"
                 style="width: 80vw">
                 <div class="content w-100 me-5">
                     <!-- Navbar Start -->
@@ -498,8 +500,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteProduct"
-                                    @click="choosenProductId = product.proId; deleteProduct()">
+                                    data-bs-target="#deleteProduct" @click="choosenProductId = product.proId;">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </th>
@@ -751,11 +752,11 @@
                                             <input class="w-75 form-control" type="text" id="comp-name-edit"
                                                 v-model="choosenComp.name" required>
 
-                                                
-                                                <label for="comp-desc-edit">Mô tả:</label>
-                                                <textarea class="form-control" type="text" id="comp-desc-edit"
-                                                    v-model="choosenComp.description" required></textarea>
-                                            </div>
+
+                                            <label for="comp-desc-edit">Mô tả:</label>
+                                            <textarea class="form-control" type="text" id="comp-desc-edit"
+                                                v-model="choosenComp.description" required></textarea>
+                                        </div>
 
                                     </div>
                                     <div class="modal-footer">
@@ -949,14 +950,59 @@
                 </div>
             </div>
 
-            <div class="bg-light rounded tab-pane fade show mt-4" id="order" role="tabpanel" aria-labelledby="order-tab"
-                style="width: 80vw">
+            <div class="bg-light rounded tab-pane fade show active mt-4" id="order" role="tabpanel"
+                aria-labelledby="order-tab" style="width: 80vw">
 
                 <h2 class="ms-4 pt-4">Danh sách đơn hàng</h2>
-                <h4 class="ms-4 pt-4">Đơn chưa duyệt</h4>
-                <div class="bg-light text-center rounded ps-4 pe-4 pb-4">
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <div class="container justify-content-center align-items-center">
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                type="button" role="tab" aria-controls="home" aria-selected="true" style="color: black;"
+                                @click="currentType = 99">Tất cả</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                type="button" role="tab" aria-controls="contact" aria-selected="false"
+                                style="color: black;" @click="currentType = 1">Chờ xác nhận</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                                type="button" role="tab" aria-controls="profile" aria-selected="false"
+                                style="color: black;" @click="currentType = 0">Chờ thanh
+                                toán</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                type="button" role="tab" aria-controls="contact" aria-selected="false"
+                                style="color: black;" @click="currentType = 5">Đang chờ giao hàng</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                type="button" role="tab" aria-controls="contact" aria-selected="false"
+                                style="color: black;" @click="currentType = 4">Đang vận chuyển</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                type="button" role="tab" aria-controls="contact" aria-selected="false"
+                                style="color: black;" @click="currentType = 6">Thành công</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                type="button" role="tab" aria-controls="contact" aria-selected="false"
+                                style="color: black;" @click="currentType = 3">Đã hủy</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+
+                    </div>
+                </div>
+
+                <h4 v-if="displayNotConfirm" class="ms-4 pt-4">Đơn chưa duyệt</h4>
+                <div  class="bg-light text-center rounded ps-4 pe-4 pb-4">
+                    <div  class="table-responsive">
+                        <table v-if="displayNotConfirm" class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-dark">
                                     <th style="vertical-align: middle;" class="fw-bold text-uppercase" scope="col">Ngày
@@ -981,7 +1027,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(order, index) in unconfirmOrders" :key="order.orderId">
+                                <tr v-for="(order, index) in filterOrder(unconfirmOrders)" :key="order.orderId">
                                     <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
                                     <td>{{ order.orderId }}</td>
                                     <td>{{ order.accountName }}</td>
@@ -1222,13 +1268,13 @@
                                             Xác nhận đơn hàng
                                         </button>
                                         <button
-                                            v-if="(orderDetail.confirm == 1 && orderDetail.shipmentTracking == 'Đang chờ giao hàng')"
+                                            v-if="(orderDetail.confirm == 1 && orderDetail.shipmentTracking == 'Đang chờ giao hàng' && orderDetail.cancel == 0)"
                                             class="btn btn-dark mb-3"
                                             @click="updateShipmentTracking(orderDetail.orderId)">
                                             Xác nhận giao hàng
                                         </button>
                                         <button disabled
-                                            v-if="(orderDetail.cancel == 0 && (orderDetail.shipmentTracking == 'Đang vận chuyển' || orderDetail.shipmentTracking == 'Đã nhận được hàng'))"
+                                            v-if="(orderDetail.cancel == 0 && (orderDetail.shipmentTracking == 'Đang vận chuyển' || orderDetail.shipmentTracking == 'Đã nhận được hàng') && orderDetail.cancel == 0)"
                                             class="btn btn-dark mb-3">
                                             Đã xác nhận giao hàng
                                         </button>
@@ -1237,9 +1283,9 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="pt-4 text-start">Đơn đã duyệt</h4>
+                    <h4 v-if="displayConfirm" class="pt-4 text-start">Đơn đã duyệt</h4>
                     <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <table v-if="displayConfirm" class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-dark">
                                     <th style="vertical-align: middle;" class="fw-bold text-uppercase" scope="col">Ngày
@@ -1264,7 +1310,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(order, index) in orders" :key="order.orderId">
+                                <tr v-for="(order, index) in filterOrder(orders)" :key="order.orderId">
                                     <td v-if="order.created_at != null">{{ order.created_at.slice(0, 10) }}</td>
                                     <td>{{ order.orderId }}</td>
                                     <td>{{ order.accountName }}</td>
@@ -1425,22 +1471,22 @@
                                             <div class="w-50">
                                                 <label v-if="index == 0" for="type"
                                                     class="fw-bold form-label">Loại:</label>
-                                                <input disabled v-model="editProduct.types[index].name" type="text"
-                                                    id="type" class="form-control" required>
+                                                <input v-model="editProduct.types[index].name" type="text" id="type"
+                                                    class="form-control" required>
                                             </div>
 
                                             <div class="w-25">
                                                 <label v-if="index == 0" for="count" class="fw-bold form-label">Số
                                                     lượng:</label>
-                                                <input disabled v-model="editProduct.types[index].quantityInStock"
-                                                    type="number" id="count" min="0" class="form-control" required>
+                                                <input v-model="editProduct.types[index].quantityInStock" type="number"
+                                                    id="count" min="0" class="form-control" required>
                                             </div>
 
                                             <div class="w-25">
                                                 <label v-if="index == 0" for="price" class="fw-bold form-label">Giá
                                                     loại:</label>
-                                                <input disabled v-model="editProduct.types[index].unitPrice"
-                                                    type="number" id="price" min="0" class="form-control" required>
+                                                <input v-model="editProduct.types[index].unitPrice" type="number"
+                                                    id="price" min="0" class="form-control" required>
                                             </div>
                                         </div>
 
@@ -1490,8 +1536,7 @@
                                         id="formFileMultiple" multiple>
                                 </div>
 
-                                <button type="submit" class="btn btn-success p-3" style="border-radius: 0px;"
-                                    @click="onEditProduct($event)">Cập nhật sản phẩm</button>
+
 
                             </div>
                             <!-- Profile Picture -->
@@ -1499,9 +1544,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal"
-                        style="background-color: #fbbfc0; border: 0px">Cập
-                        nhật</button>
+                    <button type="submit" class="btn btn-success p-3" style="border-radius: 0px;"
+                        @click="onEditProduct($event)" data-bs-dismiss="modal">Cập nhật sản phẩm</button>
                 </div>
             </div>
         </div>
@@ -1633,10 +1677,10 @@
 
                                     </div>
                                     <div class="d-flex flex-wrap" id="tag-wrap">
-                                        <div class="me-2 mb-2" v-for="tag in tags" :key="tag.tagId">
-                                            <input type="checkbox" class="btn-check" :id="'tag' + tag.tagId"
+                                        <div class="me-2 mb-2" v-for="tag in tags" :key="'addtag' + tag.tagId">
+                                            <input type="checkbox" class="btn-check" :id="'tag-' + tag.tagId"
                                                 v-model="newProduct.tagIds" autocomplete="off" :value="tag.tagId">
-                                            <label class="btn btn-outline-dark" :for="'tag' + tag.tagId"
+                                            <label class="btn btn-outline-dark" :for="'tag-' + tag.tagId"
                                                 style="border-radius: 0px;">{{ tag.name
                                                 }}</label>
                                         </div>
@@ -1652,12 +1696,12 @@
                                 <div class="d-flex flex-wrap" id="component-wrap">
                                     <div class="me-2 mb-2" v-for="component in components" :key="component.componentId">
                                         <input type="checkbox" class="btn-check"
-                                            :id="'componentEdit' + component.componentId"
+                                            :id="'componentNew' + component.componentId"
                                             v-model="newProduct.componentIds" autocomplete="off"
                                             :value="component.componentId">
                                         <label class="btn btn-outline-dark"
-                                            :for="'componentEdit' + component.componentId"
-                                            style="border-radius: 0px;">{{ component.name
+                                            :for="'componentNew' + component.componentId" style="border-radius: 0px;">{{
+                                                component.name
                                             }}</label>
                                     </div>
                                 </div>
@@ -1671,15 +1715,16 @@
                                     id="formFileMultiple" multiple>
                             </div>
 
-                            <button type="submit" class="btn btn-danger p-3" style="border-radius: 0px;"
-                                @click="addProduct($event)">Tạo sản phẩm</button>
+
 
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-danger">Thêm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        style="border-radius: 0px;">Hủy</button>
+                    <button type="submit" class="btn btn-danger " style="border-radius: 0px;"
+                        @click="addProduct($event)">Tạo sản phẩm</button>
                 </div>
             </div>
         </div>
@@ -1704,6 +1749,7 @@ import { useRouter } from 'vue-router';
 import accountServices from '@/services/account.services';
 import imageServices from '@/services/image.services';
 import typeServices from '@/services/type.services';
+import { useCookies } from 'vue3-cookies';
 const router = useRouter();
 
 const users = ref([{
@@ -1795,6 +1841,24 @@ const editProduct = ref({
     tagIds: [] as number[],
     componentIds: [] as number[]
 })
+type orderType = {
+    orderId: number,
+    created_at: string,
+    updated_at: string,
+    accountId: number,
+    totalPrice: number,
+    shippingPrice: number,
+    shippingAddress: string,
+    shipped: number,
+    shippedDate: string,
+    shipmentTracking: string,
+    paid: number,
+    accountName: string,
+    confirm: number,
+    cancel: number,
+    paymentType: string,
+    note: string
+}
 const orders = ref([{
     orderId: 0,
     created_at: "",
@@ -1916,13 +1980,10 @@ function VisibleTags() {
 const filteredOrders = computed(() => {
     return orders.value.filter(
         (order: any) => {
-            if (startDate.value != endDate.value) {
-                return order.created_at >= startDate.value && order.created_at <= endDate.value
-            } else {
-                const nextDay = new Date(startDate.value);
-                nextDay.setDate(nextDay.getDate() + 1); // Add one day to startDate
+
+                const nextDay = new Date(endDate.value);
+                nextDay.setDate(nextDay.getDate() + 1); // Add one day to endDate
                 return order.created_at >= startDate.value && order.created_at < nextDay.toISOString();
-            }
         }
     );
 });
@@ -1932,7 +1993,45 @@ const totalRevenue = computed(() => {
         return sum + (order.paid === 1 ? order.totalPrice : 0);
     }, 0);
 });
+const currentType = ref(99)
+const displayConfirm = ref(true)
+const displayNotConfirm = ref(true)
 
+function filterOrder(orders: orderType[]) {
+    if (currentType.value == 0) { // cho thanh toan
+        displayConfirm.value = true;
+        displayNotConfirm.value = false;
+        return orders.filter((o: orderType) => o.paid == 0 && o.confirm == 1 && o.cancel == 0 && o.paymentType == "Thanh toán online")
+    } else if (currentType.value == 1) { // cho duyet
+        displayConfirm.value = false;
+        displayNotConfirm.value = true;
+        return orders.filter((o: orderType) => o.confirm == 0 && o.cancel == 0)
+    } else if (currentType.value == 2) { // da hoan thanh
+        displayConfirm.value = true;
+        displayNotConfirm.value = false;
+        return orders.filter((o: orderType) => o.paid == 1 && o.cancel == 0 && o.shipmentTracking != "Đang vận chuyển")
+    } else if (currentType.value == 3) { // da huy
+        displayConfirm.value = true;
+        displayNotConfirm.value = false;
+        return orders.filter((o: orderType) => o.cancel == 1)
+    } else if (currentType.value == 4) { // dang van chuyen
+        displayConfirm.value = true;
+        displayNotConfirm.value = false;
+        return orders.filter((o: orderType) => o.shipmentTracking == "Đang vận chuyển" && o.cancel == 0)
+    } else if (currentType.value == 5) { // dang cho van chuyen
+        displayConfirm.value = true;
+        displayNotConfirm.value = false;
+        return orders.filter((o: orderType) => o.shipmentTracking == "Đang chờ giao hàng" && o.cancel == 0)
+    } else if (currentType.value == 6) { // Đã cho van chuyen
+        displayConfirm.value = true;
+        displayNotConfirm.value = false;
+        return orders.filter((o: orderType) => o.shipmentTracking == "Đã nhận được hàng" && o.cancel == 0)
+    } else {
+        displayConfirm.value = true;
+        displayNotConfirm.value = true;
+        return orders
+    }
+}
 async function onEditProduct(e: any) {
     e.preventDefault();
     try {
@@ -1946,7 +2045,7 @@ async function onEditProduct(e: any) {
         }
 
         for (let i = 0; i < editProduct.value.types.length; i++) {
-            if (editProduct.value.types[i].name == null || editProduct.value.types[i].name == '' || editProduct.value.types[i].unitPrice == 0 || editProduct.value.types[i].quantityInStock == 0) {
+            if (editProduct.value.types[i].name == null || editProduct.value.types[i].name == '' || editProduct.value.types[i].unitPrice == 0) {
                 throw "Vui lòng nhập đầy đủ thông tin về loại!"
             }
         }
@@ -1960,6 +2059,13 @@ async function onEditProduct(e: any) {
         }
 
         await productServices.update(choosenProduct.value.proId, editProduct.value)
+
+        for (let i = 0; i < products.value.length; i++) {
+            if (products.value[i].proId == choosenProduct.value.proId) {
+                products.value[i].name = editProduct.value.name
+
+            }
+        }
 
         Swal.fire({
             title: "Thành công!",
@@ -2022,11 +2128,16 @@ async function confirmOrder(e: any, orderDetail: any) {
         orderDetail.confirm = 1
         orderDetail.shipmentTracking = "Đang chờ giao hàng"
 
-        unconfirmOrders.value.forEach((o) => {
-            if (o.orderId == orderDetail.orderId) {
-                o.confirm = 1
+        let index = 0;
+        for (let i = 0; i < unconfirmOrders.value.length; i++) {
+            if (unconfirmOrders.value[i].orderId == orderDetail.orderId) {
+                unconfirmOrders.value[i].confirm = 1;
+                index = i;
+                orders.value.push(unconfirmOrders.value[i])
             }
-        })
+        }
+        unconfirmOrders.value.splice(index, 1);
+
     } catch (error) {
 
         Swal.fire({
@@ -2074,6 +2185,16 @@ async function addCategory() {
 
         if (resp == undefined) throw "Loại đã tồn tại."
 
+        const now = new Date();
+        const isoString = now.toISOString();
+        categories.value.unshift({
+            catId: resp.id,
+            name: newCategory.value.name,
+            description: newCategory.value.description,
+            created_at: isoString,
+            updated_at: isoString
+        })
+
         Swal.fire({
             title: "Thành công!",
             text: "Thêm loại thành công!",
@@ -2099,6 +2220,13 @@ async function editCategory() {
         if (choosenCategory.value.name == '' || choosenCategory.value.description == '') throw "Vui lòng nhập tên loại!"
 
         await categoryServices.update(choosenCategory.value.catId, choosenCategory.value.name, choosenCategory.value.description);
+
+        for (let i = 0; i < categories.value.length; i++) {
+            if (categories.value[i].catId == choosenCategory.value.catId) {
+                categories.value[i].name = choosenCategory.value.name
+                categories.value[i].description = choosenCategory.value.description
+            }
+        }
 
         Swal.fire({
             title: "Thành công!",
@@ -2132,6 +2260,15 @@ async function deleteBrand() {
 
         await brandServices.delete(choosenBrand.value.brandId);
 
+        let index = 0
+        for (let i = 0; i < brands.value.length; i++) {
+            if (brands.value[i].brandId == choosenBrand.value.brandId) {
+                index = i;
+            }
+        }
+
+        brands.value.splice(index, 1)
+
         Swal.fire({
             title: "Thành công!",
             text: "Xóa thương hiệu thành công!",
@@ -2155,6 +2292,15 @@ async function deleteComp() {
     try {
 
         await componentServices.delete(choosenComp.value.componentId);
+
+        let index = 0
+        for (let i = 0; i < components.value.length; i++) {
+            if (components.value[i].componentId == choosenComp.value.componentId) {
+                index = i;
+            }
+        }
+
+        components.value.splice(index, 1)
 
         Swal.fire({
             title: "Thành công!",
@@ -2180,6 +2326,14 @@ async function deleteProduct() {
 
         await productServices.delete(choosenProductId.value);
 
+        let index = 0;
+
+        for (let i = 0; i < products.value.length; i++) {
+            if (products.value[i].proId == choosenProductId.value) {
+                index = i;
+            }
+        }
+        products.value.splice(index, 1)
         Swal.fire({
             title: "Thành công!",
             text: "Xóa sản phẩm thành công!",
@@ -2203,6 +2357,15 @@ async function deleteTag() {
     try {
 
         await tagServices.delete(choosenTag.value.tagId);
+
+        let index = 0
+        for (let i = 0; i < tags.value.length; i++) {
+            if (tags.value[i].tagId == choosenTag.value.tagId) {
+                index = i;
+            }
+        }
+
+        tags.value.splice(index, 1)
 
         Swal.fire({
             title: "Thành công!",
@@ -2238,6 +2401,14 @@ async function addTag() {
             confirmButtonText: "OK",
             timer: 1500
         });
+        const now = new Date();
+        const isoString = now.toISOString();
+        tags.value.unshift({
+            tagId: resp.id,
+            name: newTagName.value,
+            created_at: isoString,
+            updated_at: isoString
+        })
     } catch (error) {
 
         Swal.fire({
@@ -2255,6 +2426,12 @@ async function editTag() {
         if (choosenTag.value.name == '') throw "Vui lòng nhập tên nhãn!"
 
         await tagServices.update(choosenTag.value.tagId, choosenTag.value.name);
+
+        for (let i = 0; i < tags.value.length; i++) {
+            if (tags.value[i].tagId == choosenTag.value.tagId) {
+                tags.value[i].name = choosenTag.value.name
+            }
+        }
 
         Swal.fire({
             title: "Thành công!",
@@ -2337,6 +2514,15 @@ async function addBrand() {
 
         if (resp == undefined) throw "Thương hiệu đã tồn tại."
 
+        const now = new Date();
+        const isoString = now.toISOString();
+        brands.value.unshift({
+            brandId: resp.id,
+            name: newBrandName.value,
+            created_at: isoString,
+            updated_at: isoString
+        })
+
         Swal.fire({
             title: "Thành công!",
             text: "Thêm thương hiệu thành công!",
@@ -2361,6 +2547,12 @@ async function editBrand() {
         if (choosenBrand.value.name == '') throw "Vui lòng nhập tên thương hiệu!"
 
         await brandServices.update(choosenBrand.value.brandId, { name: choosenBrand.value.name });
+
+        for (let i = 0; i < brands.value.length; i++) {
+            if (brands.value[i].brandId == choosenBrand.value.brandId) {
+                brands.value[i].name = choosenBrand.value.name
+            }
+        }
 
         Swal.fire({
             title: "Thành công!",
@@ -2394,6 +2586,17 @@ async function addComp() {
 
         if (resp == undefined) throw "Thành phần đã tồn tại."
 
+        const now = new Date();
+        const isoString = now.toISOString();
+
+        components.value.unshift({
+            componentId: resp.id,
+            name: newCompName.value,
+            description: newCompNameDescription.value,
+            created_at: isoString,
+            updated_at: isoString
+        })
+
         Swal.fire({
             title: "Thành công!",
             text: "Thêm thành phần thành công!",
@@ -2423,6 +2626,13 @@ async function editComp() {
             name: choosenComp.value.name,
             description: choosenComp.value.description
         });
+
+        for (let i = 0; i < components.value.length; i++) {
+            if (components.value[i].componentId == choosenComp.value.componentId) {
+                components.value[i].name = choosenComp.value.name
+                components.value[i].description = choosenComp.value.description
+            }
+        }
 
         Swal.fire({
             title: "Thành công!",
@@ -2469,9 +2679,19 @@ async function addProduct(e: any) {
     e.preventDefault();
     try {
 
-        console.log(newProduct.value)
+
+        if (newProduct.value.guide == undefined || newProduct.value.guide == "" || newProduct.value.note == undefined || newProduct.value.note == "" || newProduct.value.maintain == undefined || newProduct.value.maintain == "" || newProduct.value.description == undefined || newProduct.value.description == "" || newProduct.value.name == undefined || newProduct.value.name == "") {
+            throw "Vui lòng nhập đầy đủ thông tin quan trọng!"
+        }
+
+        for (let i = 0; i < newProduct.value.types.length; i++) {
+            if (newProduct.value.types[i].name == null || newProduct.value.types[i].name == '' || newProduct.value.types[i].unitPrice == 0) {
+                throw "Vui lòng nhập đầy đủ thông tin về loại!"
+            }
+        }
 
         await productServices.create(newProduct.value)
+
 
         Swal.fire({
             title: "Thành công!",
@@ -2662,13 +2882,50 @@ async function getChoosenProduct() {
         componentIds: choosenProduct.value.componentIds ? choosenProduct.value.componentIds.split(',').map(Number) : []
     };
 }
+const currentUser = ref({
+    accountId: 0,
+    username: "",
+    password: "",
+    email: "",
+    name: "",
+    phone: "",
+    birthDate: null,
+    avatar: "",
+    billingAddress: "",
+    created_at: null,
+    updated_at: null,
+    role: ""
+});
+const cookies = useCookies();
+const token = cookies.cookies.get("Token");
 
 onMounted(async () => {
     try {
+        document.querySelectorAll('label[for^="tagEdit"]').forEach(label => {
+            label.addEventListener('click', event => {
+                event.preventDefault(); // Ngăn cuộn
+            });
+        });
+
+
         if (!checkLogin()) {
             Swal.fire({
                 title: "Chưa đăng nhập!",
                 text: "Vui lòng đăng nhập để xem thông tin",
+                icon: "error",
+                confirmButtonText: "OK",
+                timer: 1500
+            });
+
+            router.push({ name: "home" });
+        } else {
+            let resp1 = await accountServices.getMe(token);
+            currentUser.value = resp1.data.account[0];
+        }
+        if (currentUser.value.role != 'Admin' || currentUser.value.accountId == 0) {
+            Swal.fire({
+                title: "Không có quyền!",
+                text: "Vui lòng đăng nhập dưới vai trò admin để xem thông tin",
                 icon: "error",
                 confirmButtonText: "OK",
                 timer: 1500
@@ -2756,8 +3013,8 @@ onMounted(async () => {
 
 #tag-wrap {
     max-height: 219px;
-    overflow: scroll;
-    overflow-x: hidden;
+    overflow-y: scroll;
+
 }
 
 

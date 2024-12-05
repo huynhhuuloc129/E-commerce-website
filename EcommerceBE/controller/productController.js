@@ -74,41 +74,43 @@ exports.getAllByBrandId = async (req, res) => {
 exports.getTopSales = async (req, res) => {
     try {
         connection.query(`SELECT 
-            p.*, 
-            i.base64 AS image,
-            b.name AS brandName,
-            b.brandId,
-            t.typeId,
-            t.unitPrice,
-            COALESCE(s.totalSales, 0) AS totalSales
-        FROM product p
-        LEFT JOIN (
-            SELECT img.imageId, img.base64, img.belongId
-            FROM image img
-            WHERE img.imageId = (
-                SELECT MIN(imageId) 
-                FROM image 
-                WHERE belongId = img.belongId
-            )
-        ) i ON i.belongId = CONCAT('product', p.proId)
-        JOIN brand b ON p.brandId = b.brandId
-        LEFT JOIN (
-            SELECT t1.typeId, t1.productId, t1.unitPrice
-            FROM type t1
-            WHERE t1.typeId = (
-                SELECT MIN(typeId)
-                FROM type 
-                WHERE productId = t1.productId
-            )
-        ) t ON t.productId = p.proId
-        LEFT JOIN (
-            SELECT sp.proId, SUM(sp.quantitySelected) AS totalSales
-            FROM selectedproduct sp
-            WHERE sp.block = 1
-            GROUP BY sp.proId
-        ) s ON s.proId = p.proId
-        ORDER BY s.totalSales DESC
-        LIMIT 20;`, (err, rows) => {
+    p.*, 
+    i.base64 AS image,
+    b.name AS brandName,
+    b.brandId,
+    t.typeId,
+    t.unitPrice,
+    COALESCE(s.totalSales, 0) AS totalSales
+FROM product p
+LEFT JOIN (
+    SELECT img.imageId, img.base64, img.belongId
+    FROM image img
+    WHERE img.imageId = (
+        SELECT MIN(imageId) 
+        FROM image 
+        WHERE belongId = img.belongId
+    )
+) i ON i.belongId = CONCAT('product', p.proId)
+JOIN brand b ON p.brandId = b.brandId
+LEFT JOIN (
+    SELECT t1.typeId, t1.productId, t1.unitPrice
+    FROM type t1
+    WHERE t1.typeId = (
+        SELECT MIN(typeId)
+        FROM type 
+        WHERE productId = t1.productId
+    )
+) t ON t.productId = p.proId
+LEFT JOIN (
+    SELECT sp.proId, SUM(sp.quantitySelected) AS totalSales
+    FROM selectedproduct sp
+    JOIN orders o ON sp.orderId = o.orderId
+    WHERE sp.block = 1 AND o.cancel = 0
+    GROUP BY sp.proId
+) s ON s.proId = p.proId
+ORDER BY s.totalSales DESC
+LIMIT 20;
+`, (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -601,6 +603,7 @@ exports.create = async (req, res) => {
                     // Send success response after inserting product
                     res.status(200).json({
                         message: "Product and images inserted successfully",
+                        id: row.insertId,
                         status: true
                     });
                 }
@@ -623,7 +626,7 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        connection.query("DELETE FROM product WHERE id = ?", req.params.id, (err, row) => {
+        connection.query("DELETE FROM product WHERE proId = ?", req.params.id, (err, row) => {
             if (err) {
                 console.log(err)
                 res.status(400).json({

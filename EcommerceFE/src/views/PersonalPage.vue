@@ -2,62 +2,43 @@
     <div class="mb-5" style="height: 145px; background-color: #fbbfc0;">
     </div>
 
-    <div style="width: 100vw;" class="mb-5">
+    <div style="width: 100vw;" class="mb-5 bg-light">
 
 
+        <div class="container d-flex justify-content-center">
+            <div class="w-100 mt-3">
+                <h2>Hồ Sơ Của Tôi</h2>
+                <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
 
-        <div id="whole-section" class="d-flex" style="margin: 0; background-color: white;">
-            <nav id="sidebarMenu" style="z-index: 0" class="bg-white sticky-top">
-                <div class="position-sticky">
-                    <div ref="fragment" class="list-group list-group-flush mx-3 mt-4">
-                        <a href="#" class="list-group-item list-group-item-action py-2 ripple active"
-                            aria-current="true" data-bs-toggle="tab" data-bs-target="#personal">
-                            <i class="fas fa-user fa-fw me-3"></i>
-                            <span>Thông tin cá nhân</span>
-                        </a>
-                    </div>
-                </div>
-            </nav>
+                <form @submit="updateUser" class="d-flex w-100 justify-content-between mb-5">
+                    <div class="w-50">
 
-            <div class="tab-content" id="v-pills-tabContent">
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên đăng nhập: {{ currentUser.username
+                                }}</label>
+                        </div>
 
-                <div class="bg-light rounded tab-pane fade show active mt-4" id="personal" role="tabpanel"
-                    aria-labelledby="personal-tab" style="width: 80vw">
-                    <div class="container d-flex justify-content-center">
-                        <div class="w-100 mt-3">
-                            <h2>Hồ Sơ Của Tôi</h2>
-                            <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label for="name" class="fw-bold form-label">Tên:</label>
+                            <input type="text" class="form-control" id="name" v-model="currentUser.name" required>
+                        </div>
 
-                            <form @submit="updateUser" class="d-flex w-100 justify-content-between mb-5">
-                                <div class="w-50">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="fw-bold form-label">Email:</label>
+                            <div class="d-flex align-items-center">
+                                <input type="email" class="form-control" id="email" v-model="currentUser.email"
+                                    required />
+                            </div>
+                        </div>
 
-                                    <!-- Username -->
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Tên đăng nhập: {{ currentUser.username
-                                            }}</label>
-                                    </div>
-
-                                    <!-- Name -->
-                                    <div class="mb-3">
-                                        <label for="name" class="fw-bold form-label">Tên:</label>
-                                        <input type="text" class="form-control" id="name" v-model="currentUser.name"
-                                            required>
-                                    </div>
-
-                                    <!-- Email -->
-                                    <div class="mb-3">
-                                        <label for="email" class="fw-bold form-label">Email:</label>
-                                        <div class="d-flex align-items-center">
-                                            <input type="email" class="form-control" id="email"
-                                                v-model="currentUser.email" required />
-                                        </div>
-                                    </div>
-
-                                    <!-- Phone -->
+                        <!-- Phone -->
 
 
-                                    <!-- Gender -->
-                                    <!-- <div class="mb-3">
+                        <!-- Gender -->
+                        <!-- <div class="mb-3">
                                     <label class="form-label">Giới tính</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault"
@@ -74,231 +55,205 @@
                                         </label>
                                     </div>
                                 </div> -->
-                                    <div class="d-flex">
-                                        <div class="mb-3 w-75">
-                                            <label for="phone" class="fw-bold form-label">Số điện thoại:</label>
-                                            <div class="d-flex align-items-center">
-                                                <input type="tel" class="form-control" id="phone"
-                                                    v-model="currentUser.phone" required />
-                                            </div>
-                                        </div>
-                                        <!-- Date of Birth -->
-                                        <div class="mb-3 w-25">
-                                            <label for="dob" class="fw-bold form-label">Ngày sinh:</label>
-                                            <input type="date" id="dob" class="form-control" required>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="mb-3">
-                                        <label for="address" class="fw-bold form-label">Địa chỉ:</label>
-                                        <input v-model="currentUser.billingAddress" type="text" id="address"
-                                            class="form-control" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-danger">Lưu</button>
-
-                                </div>
-                                <!-- Profile Picture -->
-                            </form>
-                            <form @submit="changePassword" class="">
-                                <div>
-                                    <label class="fw-bold" for="oldPassword">Mật khẩu cũ: </label>
-                                    <input v-model="oldPassword" type="password" id="oldPassword" class="form-control"
-                                        required>
-                                </div>
-                                <div class="mt-3">
-                                    <label class="fw-bold" for="newPassword">Mật khẩu mới: </label>
-                                    <input v-model="newPassword" type="password" id="newPassword" class="form-control"
-                                        required>
-                                </div>
-                                <div class="mt-3">
-                                    <label class="fw-bold" for="newRepeatPassword">Nhập lại mật khẩu: </label>
-                                    <input v-model="newRepeatPassword" type="password" id="newRepeatPassword"
-                                        class="form-control" required>
-                                </div>
-
-                                <button type="submit" class="mb-3 mt-3 btn btn-primary">Đổi mật khẩu</button>
-                            </form>
-                        </div>
-                        <div class="mb-3 d-flex flex-column text-center mt-3 me-5">
-                            <div class="d-flex flex-column">
-
-                                <h4>Ảnh đại diện</h4>
-                                <div class="d-flex align-items-center flex-column mt-3">
-                                    <img v-if="currentUser.avatar != null && currentUser.avatar != ''"
-                                        :src="currentUser.avatar" class="rounded-circle me-3 mb-5"
-                                        style="width: 150px; height: 150px;" alt="Profile Image" />
-                                    <input type="file" @change="uploadAvatar($event)" class="form-control"
-                                        id="profileImage" />
+                        <div class="d-flex">
+                            <div class="mb-3 w-75">
+                                <label for="phone" class="fw-bold form-label">Số điện thoại:</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="tel" class="form-control" id="phone" v-model="currentUser.phone"
+                                        required />
                                 </div>
                             </div>
-                            <small class="form-text text-muted">
-                                Dung lượng file tối đa 1 MB, Định dạng: JPEG, PNG
-                            </small>
+                            <!-- Date of Birth -->
+                            <div class="mb-3 w-25">
+                                <label for="dob" class="fw-bold form-label">Ngày sinh:</label>
+                                <input type="date" id="dob" class="form-control" required>
+                            </div>
                         </div>
 
 
+                        <div class="mb-3">
+                            <label for="address" class="fw-bold form-label">Địa chỉ:</label>
+                            <input v-model="currentUser.billingAddress" type="text" id="address" class="form-control"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Lưu</button>
 
                     </div>
+                    <!-- Profile Picture -->
+                </form>
+                <form @submit="changePassword" class="">
+                    <div>
+                        <label class="fw-bold" for="oldPassword">Mật khẩu cũ: </label>
+                        <input v-model="oldPassword" type="password" id="oldPassword" class="form-control" required>
+                    </div>
+                    <div class="mt-3">
+                        <label class="fw-bold" for="newPassword">Mật khẩu mới: </label>
+                        <input v-model="newPassword" type="password" id="newPassword" class="form-control" required>
+                    </div>
+                    <div class="mt-3">
+                        <label class="fw-bold" for="newRepeatPassword">Nhập lại mật khẩu: </label>
+                        <input v-model="newRepeatPassword" type="password" id="newRepeatPassword" class="form-control"
+                            required>
+                    </div>
 
+                    <button type="submit" class="mb-3 mt-3 btn btn-primary">Đổi mật khẩu</button>
+                </form>
+            </div>
+            <div class="mb-3 d-flex flex-column text-center mt-3 me-5">
+                <div class="d-flex flex-column">
+
+                    <h4>Ảnh đại diện</h4>
+                    <div class="d-flex align-items-center flex-column mt-3">
+                        <img v-if="currentUser.avatar != null && currentUser.avatar != ''" :src="currentUser.avatar"
+                            class="rounded-circle me-3 mb-5" style="width: 150px; height: 150px;" alt="Profile Image" />
+                        <input type="file" @change="uploadAvatar($event)" class="form-control" id="profileImage" />
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab"
-                    style="width: 80vw">
-                    <div v-if="orders.length == 0" class="d-flex flex-column justify-content-center align-items-center">
-                        <h4 class="mt-5 text-center">Hiện tại chưa có đơn hàng nào</h4>
-                        <button class="w-25 btn btn-primary"
-                            style="border-radius: 0; background-color: #fbbfc0; border: 0;">
-                            <a href="http://localhost:5173/" class="fw-bold"
-                                style="text-decoration: none; color: white;">
-                                Mua ngay
-                            </a>
-                        </button>
+                <small class="form-text text-muted">
+                    Dung lượng file tối đa 1 MB, Định dạng: JPEG, PNG
+                </small>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab" style="width: 80vw">
+        <div v-if="orders.length == 0" class="d-flex flex-column justify-content-center align-items-center">
+            <h4 class="mt-5 text-center">Hiện tại chưa có đơn hàng nào</h4>
+            <button class="w-25 btn btn-primary" style="border-radius: 0; background-color: #fbbfc0; border: 0;">
+                <a href="http://localhost:5173/" class="fw-bold" style="text-decoration: none; color: white;">
+                    Mua ngay
+                </a>
+            </button>
+        </div>
+
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">Đánh giá sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <div class="mb-2" v-for="(productId, index) in choosenOrder.productIds" :key="productId">
+                            <div class="row d-flex justify-content-center w-100">
+                                <div class="">
+                                    <div class="card">
+                                        <div class=" p-4">
+                                            <div class="d-flex">
+                                                <img class="me-3" :src="choosenOrder.imageBase64[index]" height="50"
+                                                    width="50" alt="">
 
-                    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="reviewModalLabel">Đánh giá sản phẩm</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-2" v-for="(productId, index) in choosenOrder.productIds"
-                                        :key="productId">
-                                        <div class="row d-flex justify-content-center w-100">
-                                            <div class="">
-                                                <div class="card">
-                                                    <div class=" p-4">
-                                                        <div class="d-flex">
-                                                            <img class="me-3" :src="choosenOrder.imageBase64[index]"
-                                                                height="50" width="50" alt="">
+                                                <div>
+                                                    <h6 class="fw-bold">{{ choosenOrder.productNames[index]
+                                                        }}</h6>
+                                                    <div>{{ choosenOrder.typeNames[index] }}</div>
+                                                </div>
+                                            </div>
+                                            <hr>
 
-                                                            <div>
-                                                                <h6 class="fw-bold">{{ choosenOrder.productNames[index]
-                                                                    }}</h6>
-                                                                <div>{{ choosenOrder.typeNames[index] }}</div>
+                                            <div class="d-flex flex-start w-100">
+                                                <img class="rounded-circle shadow-1-strong me-3"
+                                                    v-if="checkLogin() == true && currentUser.avatar != ''"
+                                                    :src="currentUser.avatar" alt="avatar" width="50" height="50" />
+                                                <img v-else src="https://placehold.co/65x65" alt=""
+                                                    class="rounded-circle shadow-1-strong me-3" width="65" height="65">
+                                                <div class="w-100">
+
+                                                    <h6>{{ currentUser.name }}</h6>
+                                                    <div class="">
+                                                        <div class="d-flex align-items-center justify-content-start ">
+                                                            <div class="row justify-content-center">
+
+                                                                <!-- star rating -->
+                                                                <div class="rating-wrapper">
+
+                                                                    <!-- star 5 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'5-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="5">
+                                                                    <label :for="'5-star-rating' + index"
+                                                                        class="star-rating">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 4 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'4-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="4">
+                                                                    <label :for="'4-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 3 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'3-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="3">
+                                                                    <label :for="'3-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 2 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'2-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="2">
+                                                                    <label :for="'2-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                    <!-- star 1 -->
+                                                                    <input v-model="starNums[index]"
+                                                                        class="rating-input" type="radio"
+                                                                        :id="'1-star-rating' + index"
+                                                                        :name="'star-rating' + index" value="1">
+                                                                    <label :for="'1-star-rating' + index"
+                                                                        class="star-rating star">
+                                                                        <i class="fas fa-star d-inline-block"></i>
+                                                                    </label>
+
+                                                                </div>
+
                                                             </div>
                                                         </div>
-                                                        <hr>
-
-                                                        <div class="d-flex flex-start w-100">
-                                                            <img class="rounded-circle shadow-1-strong me-3"
-                                                                v-if="checkLogin() == true && currentUser.avatar != ''"
-                                                                :src="currentUser.avatar" alt="avatar" width="50"
-                                                                height="50" />
-                                                            <img v-else src="https://placehold.co/65x65" alt=""
-                                                                class="rounded-circle shadow-1-strong me-3" width="65"
-                                                                height="65">
-                                                            <div class="w-100">
-
-                                                                <h6>{{ currentUser.name }}</h6>
-                                                                <div class="">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-start ">
-                                                                        <div class="row justify-content-center">
-
-                                                                            <!-- star rating -->
-                                                                            <div class="rating-wrapper">
-
-                                                                                <!-- star 5 -->
-                                                                                <input v-model="starNums[index]"
-                                                                                    class="rating-input" type="radio"
-                                                                                    :id="'5-star-rating' + index"
-                                                                                    :name="'star-rating' + index"
-                                                                                    value="5">
-                                                                                <label :for="'5-star-rating' + index"
-                                                                                    class="star-rating">
-                                                                                    <i
-                                                                                        class="fas fa-star d-inline-block"></i>
-                                                                                </label>
-
-                                                                                <!-- star 4 -->
-                                                                                <input v-model="starNums[index]"
-                                                                                    class="rating-input" type="radio"
-                                                                                    :id="'4-star-rating' + index"
-                                                                                    :name="'star-rating' + index"
-                                                                                    value="4">
-                                                                                <label :for="'4-star-rating' + index"
-                                                                                    class="star-rating star">
-                                                                                    <i
-                                                                                        class="fas fa-star d-inline-block"></i>
-                                                                                </label>
-
-                                                                                <!-- star 3 -->
-                                                                                <input v-model="starNums[index]"
-                                                                                    class="rating-input" type="radio"
-                                                                                    :id="'3-star-rating' + index"
-                                                                                    :name="'star-rating' + index"
-                                                                                    value="3">
-                                                                                <label :for="'3-star-rating' + index"
-                                                                                    class="star-rating star">
-                                                                                    <i
-                                                                                        class="fas fa-star d-inline-block"></i>
-                                                                                </label>
-
-                                                                                <!-- star 2 -->
-                                                                                <input v-model="starNums[index]"
-                                                                                    class="rating-input" type="radio"
-                                                                                    :id="'2-star-rating' + index"
-                                                                                    :name="'star-rating' + index"
-                                                                                    value="2">
-                                                                                <label :for="'2-star-rating' + index"
-                                                                                    class="star-rating star">
-                                                                                    <i
-                                                                                        class="fas fa-star d-inline-block"></i>
-                                                                                </label>
-
-                                                                                <!-- star 1 -->
-                                                                                <input v-model="starNums[index]"
-                                                                                    class="rating-input" type="radio"
-                                                                                    :id="'1-star-rating' + index"
-                                                                                    :name="'star-rating' + index"
-                                                                                    value="1">
-                                                                                <label :for="'1-star-rating' + index"
-                                                                                    class="star-rating star">
-                                                                                    <i
-                                                                                        class="fas fa-star d-inline-block"></i>
-                                                                                </label>
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div data-mdb-input-init class="form-outline"
-                                                                    v-if="reviews[index] != undefined">
-                                                                    <textarea class="form-control" id="textAreaExample"
-                                                                        rows="2"
-                                                                        v-model="reviews[index].content"></textarea>
-                                                                </div>
-                                                                <div class="d-flex justify-content-between mt-3"
-                                                                    v-if="reviews[index] != undefined">
-                                                                    <button type="button" data-mdb-button-init
-                                                                        data-mdb-ripple-init class="btn btn-dark"
-                                                                        @click="reviews[index].content = ''">Xóa</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                    <div data-mdb-input-init class="form-outline"
+                                                        v-if="reviews[index] != undefined">
+                                                        <textarea class="form-control" id="textAreaExample" rows="2"
+                                                            v-model="reviews[index].content"></textarea>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mt-3"
+                                                        v-if="reviews[index] != undefined">
+                                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                                            class="btn btn-dark"
+                                                            @click="reviews[index].content = ''">Xóa</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                        style="border-radius: 0px; border: 0px;">Hủy</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                                        style="border-radius: 0px;  border: 0px;" @click="modifyReview">Đánh
-                                        giá</button>
-                                </div>
-
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            style="border-radius: 0px; border: 0px;">Hủy</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            style="border-radius: 0px;  border: 0px;" @click="modifyReview">Đánh
+                            giá</button>
+                    </div>
+
+
                 </div>
                 <div class="tab-pane fade" id="favorite" role="tabpanel" aria-labelledby="favorite-tab"
                     style="width: 80vw">

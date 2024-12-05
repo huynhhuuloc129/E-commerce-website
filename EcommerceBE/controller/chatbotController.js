@@ -12,13 +12,13 @@ exports.ask = async (req, res) => {
 7. tag: tagId (int), name(varchar), created_at (timestampt), updated_at(timestampt) chứa dữ liệu nhãn dán
 8. type: typeId (int), name(varchar), productId(int), unitPrice(int), quantityInStock(int), created_at (timestampt), updated_at (timestampt) chứa dữ liệu loại sản phẩm (một sản phẩm có bao nhiêu loại)
 9. review: reviewId (int), productId (int), accountId (int), content (varchar), star (int), created_at (timestampt), updated_at (timestampt) chứa dữ liệu đánh giá
-10. selectedproduct: selectProductId (int), quantitySelected (int), sellingPrice(int), created_at (timestampt), updated_at (timestampt), proId (int), orderId(int), accountId(int), typeId (int), block (tinyInt) (block = 1 có nghĩa là sản phẩm đã được đặt hàng, = 0 là còn đang nằm trong giỏ hàng) chứa dữ liệu các sản phẩm được lưu trong giỏ hàng
-11. orders: orderId (int), created_at (timestampt), updated_at (timestampt), accountId (int), totalPrice (int), shippingPrice(int), shippingAddress (varchar), shipped(tinyInt), shippedDate(varchar), shipmentTracking (varchar), paid(tinyInt), confirm(tinyInt) - Nếu confirm == 0 là chưa được admin duyệt đơn, =1 là đã duyệt, cancel (int) Nếu cancel == 0 là đơn chưa hủy, =1 là đã hủy. chứa dữ liệu các đơn hàng
+10. selectedproduct: selectProductId (int), quantitySelected (int), sellingPrice(int), created_at (timestampt), updated_at (timestampt), proId (int), orderId(int), accountId(int), typeId (int), block (tinyInt) (block = 1 có nghĩa là sản phẩm đã được đặt hàng, = 0 là còn đang nằm trong giỏ hàng) chứa dữ liệu các sản phẩm được lưu trong giỏ hàng, lưu ý nhớ loại ra những cái nào bị hủy (nối với orders có cancel = 1)
+11. orders: orderId (int), created_at (timestampt), updated_at (timestampt), accountId (int), totalPrice (int), shippingPrice(int), shippingAddress (varchar), shipped(tinyInt), shippedDate(varchar), shipmentTracking (varchar), paid(tinyInt), confirm(tinyInt) - Nếu confirm == 0 là chưa được admin duyệt đơn, =1 là đã duyệt, cancel (int) Nếu cancel == 0 là đơn chưa hủy, =1 là đã hủy. chứa dữ liệu các đơn hàng, lưu ý đừng trả lời mấy đơn đã hủy, paymentType(string) - Phương thức thanh toán, note(string) - Lưu ý khi đặt hàng
 
 Khi nhận được câu hỏi, hãy thực hiện như sau:
 - Nếu câu hỏi liên quan đến các yêu cầu truy vấn hay các bảng trên và yêu cầu câu lệnh SQL, hãy trả về câu lệnh SQL ngắn nhất có thể, không cần định dạng.
 - Nếu câu hỏi liên quan đến một bảng không nằm trong danh sách trên, hãy trả lời tương tự như "Hệ thống không tồn tại bảng này." nhưng thân thiện hơn bằng Tiếng Việt.
-- Nếu câu hỏi không liên quan đến SQL hoặc là một câu hỏi thông thường (ví dụ: "Hello"), hãy trả lời như một Gemini thông thường nhưng không cần định dạng bằng Tiếng Việt.
+- Nếu câu hỏi không liên quan đến SQL hoặc là một câu hỏi thông thường (ví dụ: "Hello" hay các kiến thức chăm sóc da, vâng vâng), hãy trả lời như một Gemini thông thường nhưng không cần định dạng bằng Tiếng Việt.
 `
 
     const userQuery = myTable + req.body.query;

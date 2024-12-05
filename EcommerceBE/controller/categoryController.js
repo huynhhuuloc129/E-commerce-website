@@ -1,6 +1,6 @@
 exports.getAll = async (req, res) => {
     try {
-        connection.query('SELECT * FROM category', (err, rows) => {
+        connection.query('SELECT * FROM category  ORDER BY created_at DESC', (err, rows) => {
             if (err) throw err;
 
             console.log('Data received from Db:');
@@ -73,7 +73,8 @@ exports.create = async (req, res) => {
                         } else
                             res.status(200).json({
                                 status: true,
-                                title: 'Created Successfully.'
+                                title: 'Created Successfully.',
+                                id: row.insertId
                             });
                     })
                     } else {
